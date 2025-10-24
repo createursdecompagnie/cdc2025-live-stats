@@ -1,0 +1,43 @@
+name: Update CDC2025 Live Stats
+
+on:
+  # Exécute toutes les 5 minutes
+  schedule:
+    - cron: '*/5 * * * *'
+  
+  # Permet de lancer manuellement depuis l'interface GitHub
+  workflow_dispatch:
+  
+  # Exécute au push (pour tester)
+  push:
+    branches: [ main ]
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: 📊 Update live stats
+      env:
+        TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+        TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+      run: |
+        python update_stats_twitch.py
+    
+    - name: 📤 Commit and push changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add out/live_stats.json
+        git diff --staged --quiet || git commit -m "🔄 Update live stats (automated)"
+        git push
