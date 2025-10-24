@@ -1,0 +1,372 @@
+{
+  "members": [
+    {
+      "id": "158696820",
+      "user_data": {
+        "id": "158696820",
+        "login": "misternooton",
+        "display_name": "MisterNooton",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/64f355f1-3f47-4f93-bfc7-7eea9fd82a5c-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "41846016",
+      "user_data": {
+        "id": "41846016",
+        "login": "netouss",
+        "display_name": "Netouss",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ec2c4640-a686-4d82-93d6-c6f47a79f49f-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "546766441",
+      "user_data": {
+        "id": "546766441",
+        "login": "sokyutie",
+        "display_name": "soKyutie",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "158945723",
+      "user_data": {
+        "id": "158945723",
+        "login": "renegadeslive",
+        "display_name": "RenegadesLive",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94efb04f-b63e-4679-a6cb-f4906498268d-profile_image-300x300.png"
+      },
+      "is_live": true,
+      "viewer_count": 8
+    },
+    {
+      "id": "71762061",
+      "user_data": {
+        "id": "71762061",
+        "login": "ghost_deus",
+        "display_name": "Ghost_Deus",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/d55b2359-14d6-4a11-a9a4-c0830d4a6d6d-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "96408688",
+      "user_data": {
+        "id": "96408688",
+        "login": "mallicette",
+        "display_name": "Mallicette",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/60adb223-5950-4dcc-bde4-9d0fa0a541a9-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "138566598",
+      "user_data": {
+        "id": "138566598",
+        "login": "shaellaa",
+        "display_name": "Shaellaa",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0fc16feb-057b-4856-bbb4-f7feba13ea17-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "62305678",
+      "user_data": {
+        "id": "62305678",
+        "login": "buddakhiin",
+        "display_name": "Buddakhiin",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "95948501",
+      "user_data": {
+        "id": "95948501",
+        "login": "misterkiva",
+        "display_name": "Misterkiva",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/40f68f8e-332d-4091-9a8f-a8e66e307082-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "454434987",
+      "user_data": {
+        "id": "454434987",
+        "login": "nymphelya",
+        "display_name": "Nymphelya",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b2a3f5a8-b5e7-4b51-a483-20b5559af483-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "103569937",
+      "user_data": {
+        "id": "103569937",
+        "login": "piikashall",
+        "display_name": "PiikaShall",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/7adc14ac-2114-459d-9b2c-ef7c402361b8-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "189573851",
+      "user_data": {
+        "id": "189573851",
+        "login": "myzucka",
+        "display_name": "Myzucka",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/29d2f497-8d4c-4c89-a99c-855acf151902-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "67052570",
+      "user_data": {
+        "id": "67052570",
+        "login": "angelvayuu",
+        "display_name": "AngelVayuu",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3769cd50-9e78-43cf-80ae-44b4034c5bd4-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "624201380",
+      "user_data": {
+        "id": "624201380",
+        "login": "nx_stormy",
+        "display_name": "NX_Stormy",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "658160635",
+      "user_data": {
+        "id": "658160635",
+        "login": "remi_lemon",
+        "display_name": "Remi_Lemon",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0f386f16-70a9-4b49-8157-a1dc9f5c649e-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "121477770",
+      "user_data": {
+        "id": "121477770",
+        "login": "exytv",
+        "display_name": "ExyTV",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/aa15a133-3f5c-4eae-a2aa-3450c76c3e14-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "149299903",
+      "user_data": {
+        "id": "149299903",
+        "login": "midogeek",
+        "display_name": "MidoGeek",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/265e18a5-20f0-45f9-badb-06ee7662de67-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "118898203",
+      "user_data": {
+        "id": "118898203",
+        "login": "raivals_sio2",
+        "display_name": "Raivals_SiO2",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ad8d968f-5719-4000-83cb-1a72dca65bd7-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "86729677",
+      "user_data": {
+        "id": "86729677",
+        "login": "flapiix",
+        "display_name": "FLaPiiX",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "51966081",
+      "user_data": {
+        "id": "51966081",
+        "login": "monsieurflop",
+        "display_name": "MonsieurFlop",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/eff2d196-ee05-4b22-a74e-5cc07e9b1a8b-profile_image-300x300.jpeg"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "515342263",
+      "user_data": {
+        "id": "515342263",
+        "login": "mushlyn",
+        "display_name": "mushlyn",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/beabc079-a200-48ad-b81b-d793e92b9f92-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "184756458",
+      "user_data": {
+        "id": "184756458",
+        "login": "oceadolphine31",
+        "display_name": "oceadolphine31",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e167eb33-38be-41d3-bea0-0f66acbd9e14-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "487828823",
+      "user_data": {
+        "id": "487828823",
+        "login": "phijese",
+        "display_name": "phijese",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "205342156",
+      "user_data": {
+        "id": "205342156",
+        "login": "eoscall__",
+        "display_name": "EosCall__",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "538688273",
+      "user_data": {
+        "id": "538688273",
+        "login": "aurorexpress",
+        "display_name": "Aurorexpress",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "61642471",
+      "user_data": {
+        "id": "61642471",
+        "login": "le_maty",
+        "display_name": "Le_Maty",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d1a9875-e6a7-4f2e-8a66-39cd4154f152-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "529592842",
+      "user_data": {
+        "id": "529592842",
+        "login": "kibishiii_",
+        "display_name": "Kibishiii_",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/1276b9a4-3170-4c9f-8369-13c631a82626-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "652413685",
+      "user_data": {
+        "id": "652413685",
+        "login": "gamplethore",
+        "display_name": "GamPlethore",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "159857073",
+      "user_data": {
+        "id": "159857073",
+        "login": "yunaleska",
+        "display_name": "Yunaleska",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
+      },
+      "is_live": true,
+      "viewer_count": 10
+    },
+    {
+      "id": "405413203",
+      "user_data": {
+        "id": "405413203",
+        "login": "flaviensr",
+        "display_name": "FlavienSR",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b59735e0-3e56-48b8-b109-698bd6f5eb20-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "106179685",
+      "user_data": {
+        "id": "106179685",
+        "login": "qentiko",
+        "display_name": "Qentiko",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "922542142",
+      "user_data": {
+        "id": "922542142",
+        "login": "princesse_piche",
+        "display_name": "princesse_piche",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0ec4c1cf-6d27-496b-8770-a0b1646a7ad4-profile_image-300x300.png"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    },
+    {
+      "id": "768284594",
+      "user_data": {
+        "id": "768284594",
+        "login": "faylhee",
+        "display_name": "Faylhee",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
+      },
+      "is_live": false,
+      "viewer_count": 0
+    }
+  ],
+  "stats": {
+    "live_count": 2,
+    "total_viewers": 18,
+    "total_members": 33
+  }
+}
