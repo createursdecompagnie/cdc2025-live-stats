@@ -85,8 +85,8 @@
         "display_name": "Buddakhiin",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 4
     },
     {
       "id": "95948501",
@@ -251,7 +251,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 9
+      "viewer_count": 8
     },
     {
       "id": "205342156",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 9,
+    "live_count": 2,
+    "total_viewers": 12,
     "total_members": 33
   }
 }
