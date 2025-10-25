@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 Goal Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --glass:rgba(0,0,0,0.5);
+  --text:#f2f5f8;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --radius:20px;
+}
+
+* { box-sizing:border-box; }
+html, body { 
+  margin:0; padding:0; 
+  width:100vw; height:100vh; 
+  background:transparent; 
+  color:var(--text); 
+  font-family: "Outfit", -apple-system, system-ui; 
+  overflow:hidden; 
+}
+
+.widget-container {
+  width: 100%;
+  height: 100%;
+  padding: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5vh;
+  width: 100%;
+  height: 100%;
+}
+
+.event-title {
+  font-size: 5vw;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #f0e6d2, var(--accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 0.5vw rgba(252,160,0,0.3));
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.goal-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+}
+
+.goal-badge {
+  background: var(--accent);
+  color: #0b0f14;
+  padding: 0.5vh 1.5vw;
+  border-radius: 999px;
+  font-size: 1.8vw;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.goal-amount {
+  font-size: 6vw;
+  font-weight: 900;
+  color: var(--text);
+  text-shadow: 0 0.2vh 1vh rgba(252,160,0,0.2);
+}
+</style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="card">
+      <div class="event-title">🐾 CDC2025</div>
+      <div class="goal-section">
+        <span class="goal-badge">Global</span>
+        <span class="goal-amount" id="globalAmount">0 €</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Configuration via URL params
+const params = new URLSearchParams(window.location.search);
+
+// CONFIGURATION MANUELLE - Modifier ici pour ajouter des montants bonus (t-shirts, etc.)
+const MANUAL_BONUS = 0; // Montant en euros à ajouter à la cagnotte globale
+
+const CFG = {
+  bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
+};
+
+// Format currency
+function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
+
+// Update global goal from Streamlabs Charity widget
+async function updateGlobalGoal() {
+  try {
+    // Fetch the Streamlabs charity widget page
+    const res = await fetch('https://streamlabs.com/widgets/streamlabs-charity-donation-goal?token=03311CF526D2843D8B1C');
+    const html = await res.text();
+    
+    // Parse the HTML to extract the current amount
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Look for donation amount in various possible formats
+    const scriptTags = doc.querySelectorAll('script');
+    let amount = 0;
+    
+    for(const script of scriptTags) {
+      const content = script.textContent;
+      // Look for patterns like "current_amount": 12345 or similar
+      const amountMatch = content.match(/(?:current_amount|raised|amount)["']?\s*:\s*(\d+(?:\.\d+)?)/i);
+      if(amountMatch) {
+        amount = parseFloat(amountMatch[1]);
+        break;
+      }
+    }
+    
+    // Add bonus amount (t-shirts, etc.)
+    const totalAmount = Math.floor(amount) + CFG.bonusAmount;
+    document.getElementById('globalAmount').textContent = fmt(totalAmount);
+  } catch(e) {
+    console.warn('Global goal fetch failed:', e);
+    // Fallback: show only bonus amount if fetch fails
+    document.getElementById('globalAmount').textContent = fmt(CFG.bonusAmount);
+  }
+}
+
+// Init
+updateGlobalGoal();
+
+// Update every 2 seconds for live event
+setInterval(updateGlobalGoal, 2000);
+</script>
+</body>
+</html>
