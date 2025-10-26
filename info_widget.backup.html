@@ -197,8 +197,8 @@ html, body {
 
 .info-image {
   flex: 0 0 auto;
-  width: 96px;
-  height: 96px;
+  width: 80px;
+  height: 80px;
   border-radius: 16px;
   object-fit: cover;
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
@@ -414,22 +414,6 @@ const CFG = {
   bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
 };
 
-// Image de la boutique (t-shirts) :
-// - Par défaut, on prend l'image locale du dossier IMAGES (utile en local / hébergement perso)
-// - Pour StreamElements (doit être en https), passez un paramètre d'URL : ?imgTshirt=https://votre.site/image.png
-//   Exemple: .../info_widget.html?imgTshirt=https://createursdecompagnie.github.io/cdc2025-live-stats/assets/tshirtfondnoir.png
-// - Si vous fournissez un nom de fichier sans protocole (ex: tshirts/mon.png), il sera résolu vers IMAGES/<valeur>
-const _rawImgTshirt = params.get('imgTshirt');
-function resolveTshirtImage(v){
-  if(!v) return 'IMAGES/tshirtfondnoir.png';
-  if(/^https?:/i.test(v)) return v; // URL absolue
-  if(v.startsWith('IMAGES/')) return v; // chemin déjà relatif au dossier
-  return 'IMAGES/' + v; // nom de fichier simple -> IMAGES/<nom>
-}
-const IMG_TSHIRT = resolveTshirtImage(_rawImgTshirt);
-// Fallback en ligne si l'image locale n'est pas accessible (optionnel)
-const IMG_TSHIRT_FALLBACK = 'https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg';
-
 /* ============================================================================
    INFO CAROUSEL - ROTATING MESSAGES
    ============================================================================
@@ -455,37 +439,37 @@ const INFO_MESSAGES = [
     icon: "🌐",
     text: "Site de l'association",
     subtext: "potironfamily.fr",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg" // Optionnel: URL d'une image
   },
   {
     icon: "🎮",
     text: "Site CDC",
     subtext: "createursdecompagnie.fr",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoCDC_Bleu.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
   },
   {
     icon: "💰",
     text: "Faire un don",
     subtext: "!don dans le chat",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
   },
   {
     icon: "👕",
     text: "T-shirts et sweats dispo",
     subtext: "potironfamily.fr/nos-produits",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/tshirtfondnoir.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
   },
   {
     icon: "🐾",
     text: "Merci de votre soutien",
     subtext: "Ensemble pour les animaux !",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
   },
   {
     icon: "🔴",
     text: "Rejoignez-nous",
     subtext: "sur Twitch maintenant !",
-    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoTwitch.png"
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
   },
 ];
 
@@ -508,29 +492,11 @@ function initCarousel() {
     slide.dataset.index = index;
     
     // Image (optionnelle)
-    if(msg.image || msg.icon || msg.text) {
+    if(msg.image) {
       const img = document.createElement('img');
       img.className = 'info-image';
-      img.alt = msg.text || '';
-
-      // Utiliser directement l'image fournie (hébergée sur GitHub Pages)
-      let candidates = [];
-      if (msg.image) {
-        candidates = [msg.image];
-      }
-
-      // Initialiser la source + fallback chain via onerror
-      let tryIndex = 0;
-      const tryNext = () => {
-        if (tryIndex < candidates.length) {
-          img.src = candidates[tryIndex++];
-        } else {
-          img.classList.add('hidden');
-        }
-      };
-      img.onerror = tryNext;
-      tryNext();
-
+      img.src = msg.image;
+      img.alt = msg.text;
       slide.appendChild(img);
     }
     
