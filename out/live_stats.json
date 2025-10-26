@@ -118,7 +118,7 @@
         "display_name": "MlleCkat",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
-      "is_live": false,
+      "is_live": true,
       "viewer_count": 0
     },
     {
@@ -295,7 +295,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d1a9875-e6a7-4f2e-8a66-39cd4154f152-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 5
+      "viewer_count": 4
     },
     {
       "id": "529592842",
@@ -387,8 +387,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 12,
+    "live_count": 3,
+    "total_viewers": 11,
     "total_members": 35
   }
 }
