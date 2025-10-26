@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 Info Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --card:rgba(0,0,0,0.4);
+  --glass:rgba(0,0,0,0.5);
+  --text:#f2f5f8;
+  --muted:#a7b1bd;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --accent-3:#EDD2BC;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+* { box-sizing:border-box; }
+html, body { 
+  margin:0; padding:0; 
+  width:1920px; height:180px; 
+  background:transparent; 
+  color:var(--text); 
+  font-family: "Outfit", -apple-system, system-ui; 
+  overflow:hidden; 
+}
+
+.widget-container {
+  width: 1920px;
+  height: 180px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+}
+
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Left section: Empty placeholder for external overlay */
+.branding-section {
+  flex: 0 0 280px;
+  background: var(--glass);
+}
+
+.branding-section iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+
+
+/* Personal goal section - standalone */
+.personal-section {
+  flex: 0 0 420px;
+  gap: 8px;
+}
+
+.personal-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Hide personal goal content but keep the block size */
+.personal-section .personal-goal { 
+  visibility: hidden; 
+}
+
+.goal-label {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  width: 0%;
+  transition: width 1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.goal-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Info rotating section - full card with image support */
+.info-section {
+  flex: 0 1 500px;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+  background: var(--glass);
+}
+
+.info-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transform: translateX(100%) scale(0.9);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.info-slide.active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+.info-slide.exiting {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.9);
+}
+
+.info-image {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.info-image.hidden {
+  display: none;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 8px rgba(252,160,0,0.5));
+}
+
+.info-text {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  line-height: 1.3;
+}
+
+.info-subtext {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Right section: Stats in vertical layout */
+.stats-section {
+  flex: 0 0 200px;
+  gap: 8px;
+  background: var(--glass);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.stat-label-left {
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.stat-icon {
+  font-size: 14px;
+}
+
+.stat-value {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 2px 8px rgba(252,160,0,0.3);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Animations */
+.float { animation: float 5s ease-in-out infinite; }
+@keyframes float { 
+  0%, 100% { transform: translateY(0px); } 
+  50% { transform: translateY(-6px); } 
+}
+</style>
+</head>
+<body>
+  <div class="widget-container">
+    <!-- Left: Global goal widget embedded -->
+    <div class="card branding-section">
+      <iframe
+        src="https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html"
+        title="CDC Global Goal"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+        aria-label="Cagnotte Globale CDC"
+      ></iframe>
+    </div>
+
+    <!-- Personal goal - separate card -->
+    <div class="card personal-section">
+      <div class="personal-goal">
+        <div class="goal-label">Ma cagnotte personnelle</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="personalBar" style="width:0%"></div>
+        </div>
+        <div class="goal-values">
+          <span id="personalCurrent">0 €</span>
+          <span id="personalTarget">10 000 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info carousel - full card with smooth transitions -->
+    <div class="card info-section">
+      <div class="info-carousel" id="infoCarousel">
+        <!-- Slides will be injected here by JS -->
+      </div>
+    </div>
+
+    <!-- Right: Stats vertical -->
+    <div class="card stats-section">
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">🔴</span>
+          <span>En live</span>
+        </div>
+        <div class="stat-value" id="liveCount">0/0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">👀</span>
+          <span>Viewers<br>Total</span>
+        </div>
+        <div class="stat-value" id="viewerCount">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">🕐</span>
+          <span>Heure</span>
+        </div>
+        <div class="stat-value" id="currentTime">--:--</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Configuration via URL params
+const params = new URLSearchParams(window.location.search);
+
+// CONFIGURATION MANUELLE - Modifier ici pour ajouter des montants bonus (t-shirts, etc.)
+const MANUAL_BONUS = 0; // Montant en euros à ajouter à la cagnotte globale
+
+const CFG = {
+  globalGoalUrl: params.get('global') || '', // URL source cagnotte globale
+  personalGoalUrl: params.get('personal') || '', // URL source cagnotte perso
+  statsUrl: params.get('stats') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
+  updateInterval: parseInt(params.get('interval')) || 30000, // 30s par défaut
+  bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
+};
+
+// Messages tournants avec support d'images
+const INFO_MESSAGES = [
+  {
+    icon: "🌐",
+    text: "Site de l'association",
+    subtext: "potironfamily.fr",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg" // Optionnel: URL d'une image
+  },
+  {
+    icon: "🎮",
+    text: "Site CDC",
+    subtext: "createursdecompagnie.fr",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
+  },
+  {
+    icon: "💰",
+    text: "Faire un don",
+    subtext: "!don dans le chat",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
+  },
+  {
+    icon: "👕",
+    text: "T-shirts et sweats dispo",
+    subtext: "potironfamily.fr/nos-produits",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
+  },
+  {
+    icon: "🐾",
+    text: "Merci de votre soutien",
+    subtext: "Ensemble pour les animaux !",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
+  },
+  {
+    icon: "🔴",
+    text: "Rejoignez-nous",
+    subtext: "sur Twitch maintenant !",
+    image: "https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg"
+  },
+];
+
+let currentInfoIndex = 0;
+let slides = [];
+
+// Create carousel slides
+function initCarousel() {
+  const carousel = document.getElementById('infoCarousel');
+  if(!carousel) return;
+  
+  INFO_MESSAGES.forEach((msg, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'info-slide';
+    slide.dataset.index = index;
+    
+    // Image (optionnelle)
+    if(msg.image) {
+      const img = document.createElement('img');
+      img.className = 'info-image';
+      img.src = msg.image;
+      img.alt = msg.text;
+      slide.appendChild(img);
+    }
+    
+    // Content
+    const content = document.createElement('div');
+    content.className = 'info-content';
+    
+    if(msg.icon) {
+      const icon = document.createElement('div');
+      icon.className = 'info-icon';
+      icon.textContent = msg.icon;
+      content.appendChild(icon);
+    }
+    
+    const text = document.createElement('div');
+    text.className = 'info-text';
+    text.textContent = msg.text;
+    content.appendChild(text);
+    
+    if(msg.subtext) {
+      const subtext = document.createElement('div');
+      subtext.className = 'info-subtext';
+      subtext.textContent = msg.subtext;
+      content.appendChild(subtext);
+    }
+    
+    slide.appendChild(content);
+    carousel.appendChild(slide);
+    slides.push(slide);
+  });
+  
+  // Show first slide
+  if(slides.length > 0) {
+    slides[0].classList.add('active');
+  }
+}
+
+// Smooth carousel rotation
+function rotateCarousel() {
+  if(slides.length === 0) return;
+  
+  const current = slides[currentInfoIndex];
+  const nextIndex = (currentInfoIndex + 1) % slides.length;
+  const next = slides[nextIndex];
+  
+  // Exit current
+  current.classList.add('exiting');
+  current.classList.remove('active');
+  
+  // Enter next
+  setTimeout(() => {
+    next.classList.add('active');
+    next.classList.remove('exiting');
+    
+    // Clean up
+    setTimeout(() => {
+      current.classList.remove('exiting');
+    }, 1000);
+  }, 100);
+  
+  currentInfoIndex = nextIndex;
+}
+
+// Update clock
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('currentTime').textContent = `${h}:${m}`;
+}
+
+// Fetch stats from GitHub Pages
+async function updateStats() {
+  if(!CFG.statsUrl) return;
+  try {
+    const res = await fetch(CFG.statsUrl);
+    const data = await res.json();
+    
+    // Count live streamers and total
+    const liveCount = data.members.filter(m => m.is_live).length;
+    const totalCount = data.members.length;
+    document.getElementById('liveCount').textContent = `${liveCount}/${totalCount}`;
+    
+    // Total viewers
+    const totalViewers = data.members.reduce((sum, m) => sum + (m.viewer_count || 0), 0);
+    document.getElementById('viewerCount').textContent = new Intl.NumberFormat().format(totalViewers);
+  } catch(e) {
+    console.warn('Stats fetch failed:', e);
+  }
+}
+
+// Format currency
+function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
+
+// Update personal goal (à adapter selon ta source)
+function updatePersonalGoal() {
+  // Exemple de données
+  const current = 0;
+  const target = 10000;
+  const pct = Math.min((current / target) * 100, 100);
+  
+  document.getElementById('personalCurrent').textContent = fmt(current);
+  document.getElementById('personalTarget').textContent = fmt(target);
+  document.getElementById('personalBar').style.width = pct + '%';
+}
+
+// Init
+initCarousel();
+updateClock();
+updateStats();
+updatePersonalGoal();
+
+// Intervals
+setInterval(rotateCarousel, 8000); // Change slide every 8s (smooth)
+setInterval(updateClock, 10000); // Update clock every 10s
+setInterval(updateStats, CFG.updateInterval); // Update stats every 30s
+setInterval(updatePersonalGoal, 30000); // Update personal goal every 30s
+</script>
+</body>
+</html>
