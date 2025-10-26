@@ -48,7 +48,7 @@ html, body {
 }
 
 .event-title {
-  font-size: 5vw;
+  font-size: calc(5vw * var(--fontScale, 1));
   font-weight: 900;
   letter-spacing: 0.5px;
   background: linear-gradient(90deg, #f0e6d2, var(--accent));
@@ -73,14 +73,14 @@ html, body {
   color: #0b0f14;
   padding: 0.5vh 1.5vw;
   border-radius: 999px;
-  font-size: 1.8vw;
+  font-size: calc(1.8vw * var(--fontScale, 1));
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .goal-amount {
-  font-size: 6vw;
+  font-size: calc(6vw * var(--fontScale, 1));
   font-weight: 900;
   color: var(--text);
   text-shadow: 0 0.2vh 1vh rgba(252,160,0,0.2);
@@ -99,20 +99,122 @@ html, body {
   </div>
 
 <script>
+/* ============================================================================
+   CDC2025 GLOBAL GOAL WIDGET - STANDALONE VERSION
+   ============================================================================
+   PURPOSE:
+   - Display CDC2025 branding with global donation amount
+   - Transparent background for OBS/StreamElements overlay
+   - Updates every 2 seconds during live event
+   - Fetches from Streamlabs Charity widget (HTML parsing)
+   
+   USAGE:
+   - Direct: Open in browser, embed in OBS browser source
+   - StreamElements: Use GitHub Pages URL in Custom Widget iframe
+   - URL: https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html
+   
+   RESPONSIVE SIZING:
+   - Uses vw/vh units (viewport-relative)
+   - Automatically scales with container size
+   - Works in any dimension ratio
+   
+   ⚠️ IFRAME WARNING:
+   - When embedded in another overlay, vw/vh units scale to iframe size
+   - Parent overlay should force iframe dimensions and use transform: scale()
+   - See info_widget.html lines 63-82 for correct iframe setup
+   
+   URL PARAMETERS:
+   - ?bonus=150 : Add 150€ bonus amount (t-shirts, offline donations)
+   
+   MODIFICATION INSTRUCTIONS:
+   - Change MANUAL_BONUS below to add permanent offline donations
+   - Adjust setInterval(updateGlobalGoal, 2000) to change update frequency
+   - Edit font sizes (5vw, 6vw) for different text sizing
+   - Change colors in :root CSS variables
+   ============================================================================ */
+
 // Configuration via URL params
 const params = new URLSearchParams(window.location.search);
 
-// CONFIGURATION MANUELLE - Modifier ici pour ajouter des montants bonus (t-shirts, etc.)
+/* ============================================================================
+  FONT SCALING (URL PARAM)
+  ============================================================================
+  Control text size independently of viewport using ?fontScale=1.4
+  Applies to event title, badge, and amount.
+  Example: cdc_goal_widget.html?fontScale=1.6
+  ============================================================================ */
+const FONT_SCALE = parseFloat(params.get('fontScale')) || 1;
+document.documentElement.style.setProperty('--fontScale', String(FONT_SCALE));
+
+/* ============================================================================
+   CONFIGURATION - MANUAL BONUS AMOUNT
+   ============================================================================
+   Add offline donations (t-shirts, cash, etc.) here.
+   This value is ADDED to the Streamlabs Charity amount.
+   
+   EXAMPLE:
+   const MANUAL_BONUS = 150; // Add 150€ from t-shirt sales
+   
+   PRIORITY:
+   - URL parameter ?bonus=X takes priority if present
+   - Otherwise uses MANUAL_BONUS value below
+   
+   TROUBLESHOOTING:
+   - If amount seems wrong, check browser console (F12)
+   - Verify Streamlabs URL is still valid (line 142)
+   - Test with ?bonus=100 URL param to verify display works
+   ============================================================================ */
 const MANUAL_BONUS = 0; // Montant en euros à ajouter à la cagnotte globale
 
 const CFG = {
   bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
 };
 
-// Format currency
+/* ============================================================================
+   UTILITY FUNCTION - CURRENCY FORMATTING
+   ============================================================================
+   Formats numbers as French currency (1234 → "1 234 €")
+   Uses French locale with space separator, no decimals
+   ============================================================================ */
 function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
 
-// Update global goal from Streamlabs Charity widget
+/* ============================================================================
+   MAIN FUNCTION - UPDATE GLOBAL GOAL FROM STREAMLABS
+   ============================================================================
+   Fetches current donation amount from Streamlabs Charity widget.
+   
+   DATA SOURCE:
+   - Streamlabs Charity widget URL (HTML page, not JSON API)
+   - Parses HTML to extract donation amount
+   - Regex pattern looks for: "current_amount": 12345
+   
+   PROCESS:
+   1. Fetch HTML page from Streamlabs
+   2. Parse HTML with DOMParser
+   3. Search all <script> tags for amount pattern
+   4. Extract number with regex: /(?:current_amount|raised|amount)["']?\s*:\s*(\d+(?:\.\d+)?)/i
+   5. Add MANUAL_BONUS or URL ?bonus= value
+   6. Display formatted amount
+   
+   ERROR HANDLING:
+   - If fetch fails: shows only bonus amount (CFG.bonusAmount)
+   - Logs warning to console for debugging
+   
+   UPDATE FREQUENCY:
+   - Called on page load (immediate)
+   - Then every 2 seconds via setInterval (line 172)
+   
+   TROUBLESHOOTING:
+   - Open browser console (F12) to see errors
+   - Check if Streamlabs URL is still valid
+   - Verify CORS is not blocking request
+   - Test manually: updateGlobalGoal() in console
+   
+   MODIFICATION:
+   - Change Streamlabs URL (line 142) if widget token changes
+   - Adjust regex pattern if Streamlabs HTML format changes
+   - Change Math.floor(amount) to amount.toFixed(2) to show cents
+   ============================================================================ */
 async function updateGlobalGoal() {
   try {
     // Fetch the Streamlabs charity widget page
@@ -147,6 +249,21 @@ async function updateGlobalGoal() {
   }
 }
 
+/* ============================================================================
+   INITIALIZATION & UPDATE LOOP
+   ============================================================================
+   IMMEDIATE EXECUTION:
+   - updateGlobalGoal() runs on page load
+   
+   AUTO-UPDATE:
+   - setInterval runs updateGlobalGoal() every 2 seconds
+   - 2000ms = 2 seconds (live event frequency)
+   
+   MODIFICATION:
+   - Change 2000 to 5000 for 5-second updates
+   - Change 2000 to 30000 for 30-second updates (less load)
+   - Remove setInterval line to disable auto-updates
+   ============================================================================ */
 // Init
 updateGlobalGoal();
 
