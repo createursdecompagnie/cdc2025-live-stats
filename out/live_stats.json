@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94efb04f-b63e-4679-a6cb-f4906498268d-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 6
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "71762061",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 30,
+    "live_count": 2,
+    "total_viewers": 24,
     "total_members": 37
   }
 }
