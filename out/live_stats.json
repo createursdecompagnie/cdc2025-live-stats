@@ -130,7 +130,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 10
+      "viewer_count": 11
     },
     {
       "id": "103569937",
@@ -152,7 +152,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/29d2f497-8d4c-4c89-a99c-855acf151902-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 5
+      "viewer_count": 7
     },
     {
       "id": "67052570",
@@ -163,7 +163,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3769cd50-9e78-43cf-80ae-44b4034c5bd4-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 15
+      "viewer_count": 17
     },
     {
       "id": "624201380",
@@ -195,8 +195,8 @@
         "display_name": "ExyTV",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/aa15a133-3f5c-4eae-a2aa-3450c76c3e14-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 1
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "149299903",
@@ -295,7 +295,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 26
+      "viewer_count": 34
     },
     {
       "id": "61642471",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 17
+      "viewer_count": 20
     },
     {
       "id": "405413203",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 7,
-    "total_viewers": 79,
+    "live_count": 6,
+    "total_viewers": 94,
     "total_members": 37
   }
 }
