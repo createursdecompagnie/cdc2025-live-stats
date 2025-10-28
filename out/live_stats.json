@@ -218,7 +218,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ad8d968f-5719-4000-83cb-1a72dca65bd7-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 1
     },
     {
       "id": "86729677",
@@ -261,8 +261,8 @@
         "display_name": "oceadolphine31",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e167eb33-38be-41d3-bea0-0f66acbd9e14-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 7
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "487828823",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 9,
+    "live_count": 1,
+    "total_viewers": 1,
     "total_members": 37
   }
 }
