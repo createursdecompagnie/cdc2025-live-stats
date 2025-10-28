@@ -103,6 +103,55 @@ info_widget.html?interval=60000
 info_widget.html?bonus=50&stats=hide
 ```
 
+### Paramètres URL détaillés (nouveaux)
+
+Vous pouvez maintenant contrôler le rendu du widget via des paramètres URL. Ils fonctionnent aussi bien dans OBS (Browser Source) que dans StreamElements.
+
+- `?w=<number>` — Force la largeur logique (px) utilisée par le système d'auto-scale. Ex: `?w=1400`.
+- `?interval=<ms>` — Intervalle de mise à jour des stats en millisecondes. Ex: `?interval=60000`.
+- `?bonus=<number>` — Ajoute une somme fixe (en €) au total affiché. Ex: `?bonus=150`.
+- `?imgTshirt=<url>` — Remplace l'image t-shirt par l'URL fournie (doit être HTTPS). Ex: `&imgTshirt=https://.../mon.png`.
+- `?theme=auto|dark|light` — Choisit le thème visuel :
+  - `auto` (défaut) : détecte `prefers-color-scheme` du navigateur
+  - `dark` : force thème sombre
+  - `light` : force thème clair
+  Exemple: `?theme=dark`.
+- `?hide=<csv>` — Masque des sections par nom. Valeurs possibles : `personal`, `branding`, `stats`, `info`.
+  Exemple: `?hide=personal,branding`.
+- `?showSeconds=true|false` — Affiche ou non les secondes sur l'horloge. Exemple: `?showSeconds=true`.
+- `?lang=fr|en` — Langue pour quelques labels (par ex. "Heure" / "Time"). Exemple: `?lang=en`.
+- `?v=<number|string>` — Paramètre de cache-bust pour forcer un refresh après déploiement. Ex: `?v=2`.
+
+Exemple complet :
+```
+https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html?w=1400&theme=dark&hide=personal&showSeconds=true&lang=en&v=3
+```
+
+Notes de sécurité & bonnes pratiques
+- Pour les URLs d'images (`imgTshirt`) et `stats` utilisez des URLs HTTPS publiques.
+- Si vous utilisez StreamElements, collez l'URL complète dans le widget Custom/Website et adaptez la largeur/hauteur côté StreamElements (voir section OBS ci-dessous).
+
+### Utiliser `info_widget.html` dans OBS (Browser Source)
+
+1. Dans OBS, Sources → -> `+` → `Browser`.
+2. Collez l'URL publique (GitHub Pages), par exemple :
+   `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html`
+   - Ajoutez les paramètres souhaités (voir ci‑dessus), par ex :
+     `.../info_widget.html?theme=dark&hide=personal&showSeconds=true&lang=en`
+3. Réglez Width / Height :
+   - Widget natif : `Width = 1920`, `Height = 180` (design de base)
+   - Si vous forcez `?w=1400`, calculez la hauteur : `H = 180 * (1400/1920) ≈ 131`.
+4. Désactivez la mise en pause (untick "Shutdown source when not visible") si vous voulez continuer les mises à jour en arrière-plan, sinon cochez-le pour économiser CPU.
+5. Si OBS n'affiche pas la dernière version après un déploiement GitHub, ajoutez `?v=NN` à l'URL et rechargez la source.
+
+Exemples pratiques pour OBS
+- Simple (thème auto) :
+  `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html`
+- En-tête réduit (width 1400, thème sombre, masque la partie perso) :
+  `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html?w=1400&theme=dark&hide=personal`
+
+Souhaitez-vous que j'ajoute ces exemples aussi dans le `README.md` du dépôt (je peux committer directement) ?
+
 ### 2. CDC Goal Widget (`cdc_goal_widget.html`)
 
 **Description**: Widget transparent standalone affichant "CDC2025 - Global - X €"
