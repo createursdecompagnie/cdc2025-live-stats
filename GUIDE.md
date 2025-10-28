@@ -43,7 +43,8 @@ P:\[STREAM_CDC]\[CDC2025]\OVERLAY\
 
 ### GitHub Pages (pour StreamElements)
 - **Widget CDC2025 Goal**: https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html
-- **Info Widget**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html
+- **Info Widget (horizontal)**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html
+- **Info Widget (vertical)**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html
 - **Stats JSON (Twitch)**: https://createursdecompagnie.github.io/cdc2025-live-stats/live_stats.json
 
 ### Streamlabs
@@ -131,7 +132,7 @@ Notes de sécurité & bonnes pratiques
 - Pour les URLs d'images (`imgTshirt`) et `stats` utilisez des URLs HTTPS publiques.
 - Si vous utilisez StreamElements, collez l'URL complète dans le widget Custom/Website et adaptez la largeur/hauteur côté StreamElements (voir section OBS ci-dessous).
 
-### Utiliser `info_widget.html` dans OBS (Browser Source)
+### Utiliser `info_widget.html` (horizontal) dans OBS (Browser Source)
 
 1. Dans OBS, Sources → -> `+` → `Browser`.
 2. Collez l'URL publique (GitHub Pages), par exemple :
@@ -150,7 +151,64 @@ Exemples pratiques pour OBS
 - En-tête réduit (width 1400, thème sombre, masque la partie perso) :
   `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html?w=1400&theme=dark&hide=personal`
 
-Souhaitez-vous que j'ajoute ces exemples aussi dans le `README.md` du dépôt (je peux committer directement) ?
+### Utiliser `info_widget_vertical.html` (vertical) dans OBS (Browser Source)
+
+**Nouveau** : Version verticale du widget info (360×1200px) pour affichage latéral.
+
+1. Dans OBS, Sources → `+` → `Browser`.
+2. Collez l'URL :
+   `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html`
+3. Réglez Width / Height :
+   - Widget natif : `Width = 360`, `Height = 1200` (design de base)
+   - Pour adapter à 1080p vertical : `?h=1080`, Width : `360 * (1080/1200) = 324`
+4. Paramètres URL supportés (identiques à la version horizontale) :
+   - `?h=1080` : Force la hauteur cible pour le scaling
+   - `?theme=dark|light|auto` : Thème visuel
+   - `?hide=personal,stats` : Masquer des sections
+   - `?showSeconds=true` : Afficher les secondes dans l'horloge
+   - `?lang=en` : Langue anglaise
+
+Exemples pratiques
+- Simple (thème auto) :
+  `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html`
+- Adapté 1080p vertical, thème sombre, anglais :
+  `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html?h=1080&theme=dark&lang=en`
+### 1b. Info Widget Vertical (`info_widget_vertical.html`)
+
+**Description**: Version verticale du widget info avec les mêmes 4 sections empilées verticalement, idéale pour affichage latéral
+
+**Dimensions**: 360×1200px (auto-scaling)
+
+**Sections** (de haut en bas):
+- **Branding** (280px): Contient `cdc_goal_widget.html` en iframe
+- **Personal Goal** (120px): Objectif personnel (placeholder)
+- **Info Carousel** (400px): Messages rotatifs (8s par slide) - centré verticalement avec images agrandies
+- **Stats** (300px): Live/Viewers/Heure - layout centré vertical
+
+**Utilisation**:
+
+#### Dans OBS:
+1. Source → Browser
+2. URL: `https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html`
+3. Dimensions: Width=360, Height=1200
+4. Pour adapter à d'autres résolutions : `?h=1080` (force hauteur cible)
+
+**Paramètres URL** (identiques à la version horizontale):
+```
+?h=1080           # Force hauteur cible pour scaling (au lieu de ?w)
+?theme=dark       # dark, light, auto
+?hide=personal    # Masquer sections : personal,branding,stats,info
+?showSeconds=true # Afficher secondes horloge
+?lang=en          # Langue (fr|en)
+?v=3              # Cache busting
+```
+
+**Exemple complet**:
+```
+# Widget vertical adapté 1080p, thème sombre, anglais
+info_widget_vertical.html?h=1080&theme=dark&lang=en&showSeconds=true
+```
+
 
 ### 2. CDC Goal Widget (`cdc_goal_widget.html`)
 
