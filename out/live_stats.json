@@ -162,8 +162,8 @@
         "display_name": "AngelVayuu",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3769cd50-9e78-43cf-80ae-44b4034c5bd4-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 17
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "624201380",
@@ -295,7 +295,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 34
+      "viewer_count": 30
     },
     {
       "id": "61642471",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 20
+      "viewer_count": 19
     },
     {
       "id": "405413203",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 6,
-    "total_viewers": 94,
+    "live_count": 5,
+    "total_viewers": 72,
     "total_members": 37
   }
 }
