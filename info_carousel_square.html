@@ -17,6 +17,7 @@
   --accent:#FCA000;
   --accent-2:#104E59;
   --radius:20px;
+  --fs:1.1;
 }
 .theme-light { --bg:#fff; --card:rgba(0,0,0,0.06); --glass:rgba(0,0,0,0.04); --text:#0b2230; --muted:#5b6b75; }
 .theme-dark  { --bg:#050608; --card:rgba(0,0,0,0.5); --glass:rgba(0,0,0,0.55); --text:#f2f5f8; --muted:#96a0aa; }
@@ -31,9 +32,9 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:transparent;color
 .slide.exiting{opacity:0;transform:translateY(-40px) scale(0.95)}
 .image{width:150px;height:150px;border-radius:24px;object-fit:cover;border:2px solid rgba(255,255,255,0.2);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
 .image.hidden{display:none}
-.icon{font-size:54px;filter:drop-shadow(0 2px 8px rgba(252,160,0,0.5))}
-.text{font-size:28px;font-weight:900;line-height:1.2;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
-.sub{font-size:20px;font-weight:700;color:var(--muted);text-align:center}
+.icon{font-size:calc(54px * var(--fs));filter:drop-shadow(0 2px 8px rgba(252,160,0,0.5))}
+.text{font-size:calc(28px * var(--fs));font-weight:900;line-height:1.2;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+.sub{font-size:calc(20px * var(--fs));font-weight:700;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
@@ -63,6 +64,7 @@ const params=new URLSearchParams(location.search);
 const CFG={
   theme:(params.get('theme')||'auto').toLowerCase(),
   lang:(params.get('lang')||'fr').toLowerCase(),
+  fontScale:(()=>{ const r=parseFloat(params.get('fontScale')||params.get('fontsize')||params.get('fs')); return isNaN(r)?1.1:Math.min(3,Math.max(0.5,r)); })(),
 };
 
 function applyTheme(){
@@ -72,6 +74,7 @@ function applyTheme(){
   else { const prefersDark=matchMedia && matchMedia('(prefers-color-scheme: dark)').matches; html.classList.add(prefersDark?'theme-dark':'theme-light'); }
 }
 applyTheme();
+try{ document.documentElement.style.setProperty('--fs', String(CFG.fontScale)); }catch(e){}
 
 // Messages (reuse from main widget)
 const INFO_MESSAGES=[

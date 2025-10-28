@@ -19,6 +19,7 @@
   --accent-3:#EDD2BC;
   --radius:20px;
   --shadow:0 10px 30px rgba(0,0,0,0.5);
+  --fs:1.1; /* font scale default */
 }
 
 /* Theme overrides: add class `theme-light` or `theme-dark` on <html> to override variables */
@@ -118,7 +119,7 @@ html, body {
 }
 
 .goal-label {
-  font-size: 14px;
+  font-size: calc(14px * var(--fs));
   color: var(--muted);
   font-weight: 700;
   text-transform: uppercase;
@@ -160,7 +161,7 @@ html, body {
 .goal-values {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: calc(13px * var(--fs));
   color: var(--muted);
   font-weight: 700;
 }
@@ -232,12 +233,12 @@ html, body {
 }
 
 .info-icon {
-  font-size: 48px;
+  font-size: calc(48px * var(--fs));
   filter: drop-shadow(0 2px 8px rgba(252,160,0,0.5));
 }
 
 .info-text {
-  font-size: 24px;
+  font-size: calc(24px * var(--fs));
   font-weight: 800;
   color: var(--text);
   text-shadow: 0 2px 10px rgba(0,0,0,0.3);
@@ -245,7 +246,7 @@ html, body {
 }
 
 .info-subtext {
-  font-size: 18px;
+  font-size: calc(18px * var(--fs));
   color: var(--muted);
   font-weight: 600;
 }
@@ -272,7 +273,7 @@ html, body {
 }
 
 .stat-label-left {
-  font-size: 14px;
+  font-size: calc(14px * var(--fs));
   color: var(--muted);
   font-weight: 700;
   text-transform: uppercase;
@@ -283,11 +284,11 @@ html, body {
 }
 
 .stat-icon {
-  font-size: 18px;
+  font-size: calc(18px * var(--fs));
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: calc(28px * var(--fs));
   font-weight: 900;
   color: var(--accent);
   text-shadow: 0 2px 8px rgba(252,160,0,0.3);
@@ -420,6 +421,8 @@ const _theme = (params.get('theme') || 'auto').toLowerCase(); // auto|dark|light
 const _hide = (params.get('hide') || '').split(',').map(s => s.trim()).filter(Boolean); // e.g. 'personal,stats'
 const _showSeconds = (params.get('showSeconds') || params.get('showseconds') || 'false').toLowerCase() === 'true';
 const _lang = (params.get('lang') || 'fr').toLowerCase(); // fr|en
+const _fsRaw = parseFloat(params.get('fontScale') || params.get('fontsize') || params.get('fs'));
+const _fs = isNaN(_fsRaw) ? 1.1 : Math.min(3, Math.max(0.5, _fsRaw));
 
 const CFG = {
   globalGoalUrl: params.get('global') || '', // URL source cagnotte globale (unused currently)
@@ -431,10 +434,12 @@ const CFG = {
   hide: _hide,
   showSeconds: _showSeconds,
   lang: _lang,
+  fontScale: _fs,
 };
 
 // Compute derived values
 const CLOCK_INTERVAL_MS = CFG.showSeconds ? 1000 : 10000;
+try { document.documentElement.style.setProperty('--fs', String(CFG.fontScale)); } catch(e){}
 
 // Image de la boutique (t-shirts) :
 const _rawImgTshirt = params.get('imgTshirt');
