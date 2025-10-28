@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 Info Widget Vertical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --card:rgba(0,0,0,0.4);
+  --glass:rgba(0,0,0,0.5);
+  --text:#f2f5f8;
+  --muted:#a7b1bd;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --accent-3:#EDD2BC;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Theme overrides: add class `theme-light` or `theme-dark` on <html> to override variables */
+.theme-light {
+  --bg: #ffffff;
+  --card: rgba(255,255,255,0.06);
+  --glass: rgba(255,255,255,0.04);
+  --text: #0b2230;
+  --muted: #5b6b75;
+  --accent: #FCA000;
+  --accent-2: #104E59;
+}
+.theme-dark {
+  --bg: #050608;
+  --card: rgba(0,0,0,0.5);
+  --glass: rgba(0,0,0,0.55);
+  --text: #f2f5f8;
+  --muted: #96a0aa;
+}
+
+* { box-sizing:border-box; }
+html, body { 
+  margin:0; padding:0; 
+  width:100%; height:100%; 
+  background:transparent; 
+  color:var(--text); 
+  font-family: "Outfit", -apple-system, system-ui; 
+  overflow:hidden; 
+}
+
+/* Fixed 360x1200 stage scaled to fit container */
+.stage { 
+  position: relative; 
+  width:360px; 
+  height:1200px; 
+  transform: scale(var(--scale, 1)); 
+  transform-origin: top left; 
+}
+
+.widget-container {
+  width: 360px;
+  height: 1200px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Top section: CDC2025 Global Goal widget embedded */
+.branding-section {
+  flex: 0 0 280px;
+  background: var(--glass);
+  position: relative;
+  overflow: hidden;
+}
+
+.branding-section iframe {
+  width: 664px;
+  height: 332px;
+  border: none;
+  display: block;
+  border-radius: calc(var(--radius) - 2px);
+  transform: scale(0.5);
+  transform-origin: top left;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Personal goal section - standalone */
+.personal-section {
+  flex: 0 0 120px;
+  gap: 8px;
+}
+
+.personal-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Hide personal goal content but keep the block size */
+.personal-section .personal-goal { 
+  visibility: hidden; 
+}
+
+.goal-label {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  width: 0%;
+  transition: width 1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.goal-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Info rotating section - taller vertical card */
+.info-section {
+  flex: 0 0 400px;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+  background: var(--glass);
+}
+
+.info-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(50px) scale(0.9);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.info-slide.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.info-slide.exiting {
+  opacity: 0;
+  transform: translateY(-50px) scale(0.9);
+}
+
+.info-image {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.info-image.hidden {
+  display: none;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+}
+
+.info-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 2px 8px rgba(252,160,0,0.5));
+}
+
+.info-text {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  line-height: 1.3;
+}
+
+.info-subtext {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Bottom section: Stats vertical layout */
+.stats-section {
+  flex: 0 0 300px;
+  gap: 16px;
+  background: var(--glass);
+  padding: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label-left {
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-icon {
+  font-size: 18px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 2px 8px rgba(252,160,0,0.3);
+}
+
+/* Animations */
+.float { animation: float 5s ease-in-out infinite; }
+@keyframes float { 
+  0%, 100% { transform: translateY(0px); } 
+  50% { transform: translateY(-6px); } 
+}
+</style>
+</head>
+<body>
+  <div class="stage">
+  <div class="widget-container">
+    <!-- Top: Global goal widget embedded -->
+    <div class="card branding-section">
+      <iframe
+        src="https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html?fontScale=2.0"
+        title="CDC Global Goal"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+        aria-label="Cagnotte Globale CDC"
+      ></iframe>
+    </div>
+
+    <!-- Personal goal - separate card -->
+    <div class="card personal-section">
+      <div class="personal-goal">
+        <div class="goal-label">Ma cagnotte personnelle</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="personalBar" style="width:0%"></div>
+        </div>
+        <div class="goal-values">
+          <span id="personalCurrent">0 €</span>
+          <span id="personalTarget">10 000 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info carousel - taller vertical card -->
+    <div class="card info-section">
+      <div class="info-carousel" id="infoCarousel">
+        <!-- Slides will be injected here by JS -->
+      </div>
+    </div>
+
+    <!-- Bottom: Stats -->
+    <div class="card stats-section">
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">🔴</span>
+          <span>En live</span>
+        </div>
+        <div class="stat-value" id="liveCount">0/0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">👀</span>
+          <span>Viewers Total</span>
+        </div>
+        <div class="stat-value" id="viewerCount">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label-left">
+          <span class="stat-icon">🕐</span>
+          <span>Heure</span>
+        </div>
+        <div class="stat-value" id="currentTime">--:--</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+<script>
+/* ============================================================================
+   AUTO-SCALING SYSTEM - VERTICAL VERSION
+   ============================================================================
+   This widget is designed at 360×1200px but can be embedded at any size.
+   The fitWidget() function calculates a scale factor and applies it via CSS.
+   
+   USAGE IN OBS:
+   - Set widget dimensions to desired height (e.g., 1080px)
+   - Width auto-adjusts based on scale (360 * scale)
+   - Use ?h=1080 in URL to force specific logic height
+   ============================================================================ */
+function fitWidget(){
+  const targetW = 360;  // Base design width
+  const targetH = 1200; // Base design height
+  
+  // Allow explicit height via URL: ?h=1080
+  const p = new URLSearchParams(location.search);
+  const forcedH = parseInt(p.get('h') || '', 10);
+  
+  // Calculate scale from container height (or forced height)
+  const containerH = document.documentElement.clientHeight || document.body.clientHeight || window.innerHeight || targetH;
+  const s = (forcedH ? (forcedH/targetH) : (containerH/targetH));
+  
+  // Apply scale via CSS custom property
+  document.documentElement.style.setProperty('--scale', String(s));
+  
+  // Set body dimensions so OBS auto-sizes correctly
+  document.body.style.width = Math.round(targetW * s) + 'px';
+  document.body.style.height = Math.round(targetH * s) + 'px';
+}
+window.addEventListener('resize', fitWidget);
+fitWidget();
+
+/* ============================================================================
+   CONFIGURATION
+   ============================================================================
+   URL Parameters (pass via query string):
+   - ?stats=URL       : Override GitHub Pages stats JSON URL
+   - ?interval=30000  : Stats update interval in milliseconds (default: 30s)
+   - ?bonus=150       : Add bonus amount to global goal (for offline donations)
+   - ?theme=dark      : Theme (auto|dark|light)
+   - ?hide=personal   : Hide sections (comma-separated: personal,branding,stats,info)
+   - ?showSeconds=true: Show seconds in clock
+   - ?lang=en         : Language (fr|en)
+   - ?h=1080          : Force target height for scaling
+   ============================================================================ */
+const params = new URLSearchParams(window.location.search);
+
+// CONFIGURATION MANUELLE - Modifier ici pour ajouter des montants bonus (t-shirts, etc.)
+const MANUAL_BONUS = 0; // Montant en euros à ajouter à la cagnotte globale
+
+// Parse common parameters and new options: theme, hide, showSeconds, lang
+const _theme = (params.get('theme') || 'auto').toLowerCase(); // auto|dark|light
+const _hide = (params.get('hide') || '').split(',').map(s => s.trim()).filter(Boolean); // e.g. 'personal,stats'
+const _showSeconds = (params.get('showSeconds') || params.get('showseconds') || 'false').toLowerCase() === 'true';
+const _lang = (params.get('lang') || 'fr').toLowerCase(); // fr|en
+
+const CFG = {
+  globalGoalUrl: params.get('global') || '', // URL source cagnotte globale (unused currently)
+  personalGoalUrl: params.get('personal') || '', // URL source cagnotte perso (unused currently)
+  statsUrl: params.get('stats') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
+  updateInterval: parseInt(params.get('interval')) || 30000, // 30s par défaut
+  bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
+  theme: _theme,
+  hide: _hide,
+  showSeconds: _showSeconds,
+  lang: _lang,
+};
+
+// Compute derived values
+const CLOCK_INTERVAL_MS = CFG.showSeconds ? 1000 : 10000;
+
+// Image de la boutique (t-shirts) :
+const _rawImgTshirt = params.get('imgTshirt');
+function resolveTshirtImage(v){
+  if(!v) return 'IMAGES/tshirtfondnoir.png';
+  if(/^https?:/i.test(v)) return v; // URL absolue
+  if(v.startsWith('IMAGES/')) return v; // chemin déjà relatif au dossier
+  return 'IMAGES/' + v; // nom de fichier simple -> IMAGES/<nom>
+}
+const IMG_TSHIRT = resolveTshirtImage(_rawImgTshirt);
+const IMG_TSHIRT_FALLBACK = 'https://www.potironfamily.fr/modules/ps_imageslider/images/49d213fed437601c75714d1ed01016cc70a61a65_1.jpg';
+
+/* ============================================================================
+   INFO CAROUSEL - ROTATING MESSAGES
+   ============================================================================ */
+const INFO_MESSAGES = [
+  {
+    icon: "🌐",
+    text: "Site de l'association",
+    text_en: "Association website",
+    subtext: "potironfamily.fr",
+    subtext_en: "potironfamily.fr",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+  },
+  {
+    icon: "🎮",
+    text: "Site CDC",
+    text_en: "CDC website",
+    subtext: "createursdecompagnie.fr",
+    subtext_en: "createursdecompagnie.fr",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoCDC_Bleu.png"
+  },
+  {
+    icon: "💰",
+    text: "Faire un don",
+    text_en: "Make a donation",
+    subtext: "!don dans le chat",
+    subtext_en: "!don in chat",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+  },
+  {
+    icon: "👕",
+    text: "T-shirts et sweats dispo",
+    text_en: "T-shirts & hoodies available",
+    subtext: "potironfamily.fr/nos-produits",
+    subtext_en: "potironfamily.fr/our-products",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/tshirtfondnoir.png"
+  },
+  {
+    icon: "🐾",
+    text: "Merci de votre soutien",
+    text_en: "Thank you for your support",
+    subtext: "Ensemble pour les animaux !",
+    subtext_en: "Together for the animals!",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
+  },
+  {
+    icon: "🔴",
+    text: "Rejoignez-nous",
+    text_en: "Join us",
+    subtext: "sur Twitch maintenant !",
+    subtext_en: "on Twitch now!",
+    image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoTwitch.png"
+  },
+];
+
+let currentInfoIndex = 0;
+let slides = [];
+
+/* ============================================================================
+   CAROUSEL INITIALIZATION
+   ============================================================================ */
+function initCarousel() {
+  const carousel = document.getElementById('infoCarousel');
+  if(!carousel) return;
+  
+  INFO_MESSAGES.forEach((msg, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'info-slide';
+    slide.dataset.index = index;
+    
+    // Image (optionnelle)
+    if(msg.image || msg.icon || msg.text) {
+      const img = document.createElement('img');
+      img.className = 'info-image';
+      img.alt = msg.text || '';
+
+      let candidates = [];
+      if (msg.image) {
+        candidates = [msg.image];
+      }
+
+      let tryIndex = 0;
+      const tryNext = () => {
+        if (tryIndex < candidates.length) {
+          img.src = candidates[tryIndex++];
+        } else {
+          img.classList.add('hidden');
+        }
+      };
+      img.onerror = tryNext;
+      tryNext();
+
+      slide.appendChild(img);
+    }
+    
+    // Content
+    const content = document.createElement('div');
+    content.className = 'info-content';
+    
+    if(msg.icon) {
+      const icon = document.createElement('div');
+      icon.className = 'info-icon';
+      icon.textContent = msg.icon;
+      content.appendChild(icon);
+    }
+    
+    const text = document.createElement('div');
+    text.className = 'info-text';
+    text.textContent = (CFG.lang === 'en' && msg.text_en) ? msg.text_en : msg.text;
+    content.appendChild(text);
+    
+    if(msg.subtext) {
+      const subtext = document.createElement('div');
+      subtext.className = 'info-subtext';
+      const originalSub = msg.subtext || '';
+      const enSub = msg.subtext_en || '';
+      const isLikelyLink = /https?:\/\//i.test(originalSub) || originalSub.indexOf('/') !== -1 || originalSub.indexOf('.') !== -1;
+      const chosenSub = (CFG.lang === 'en' && enSub && !isLikelyLink) ? enSub : originalSub;
+      subtext.textContent = chosenSub;
+      content.appendChild(subtext);
+    }
+    
+    slide.appendChild(content);
+    carousel.appendChild(slide);
+    slides.push(slide);
+  });
+  
+  // Show first slide
+  if(slides.length > 0) {
+    slides[0].classList.add('active');
+  }
+}
+
+/* ============================================================================
+   CAROUSEL ROTATION
+   ============================================================================ */
+function rotateCarousel() {
+  if(slides.length === 0) return;
+  
+  const current = slides[currentInfoIndex];
+  const nextIndex = (currentInfoIndex + 1) % slides.length;
+  const next = slides[nextIndex];
+  
+  // Exit current
+  current.classList.add('exiting');
+  current.classList.remove('active');
+  
+  // Enter next
+  setTimeout(() => {
+    next.classList.add('active');
+    next.classList.remove('exiting');
+    
+    // Clean up
+    setTimeout(() => {
+      current.classList.remove('exiting');
+    }, 1000);
+  }, 100);
+  
+  currentInfoIndex = nextIndex;
+}
+
+/* ============================================================================
+   CLOCK UPDATE
+   ============================================================================ */
+function updateClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const display = CFG.showSeconds ? `${hours}:${minutes}:${seconds}` : `${hours}:${minutes}`;
+  const el = document.getElementById('currentTime');
+  if(el) el.textContent = display;
+}
+
+// Apply theme, hide and language settings based on URL params
+function applyTheme() {
+  try {
+    const html = document.documentElement;
+    html.classList.remove('theme-light', 'theme-dark');
+    if (CFG.theme === 'light') html.classList.add('theme-light');
+    else if (CFG.theme === 'dark') html.classList.add('theme-dark');
+    else if (CFG.theme === 'auto') {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.classList.add(prefersDark ? 'theme-dark' : 'theme-light');
+    }
+  } catch(e) { console.warn('applyTheme failed', e); }
+}
+
+function applyHide() {
+  try {
+    const map = {
+      'personal': '.personal-section',
+      'branding': '.branding-section',
+      'stats': '.stats-section',
+      'info': '.info-section'
+    };
+    CFG.hide.forEach(name => {
+      const sel = map[name];
+      if (!sel) return;
+      const el = document.querySelector(sel);
+      if (el) el.style.display = 'none';
+    });
+  } catch(e) { console.warn('applyHide failed', e); }
+}
+
+function applyLang() {
+  try {
+    const lang = CFG.lang === 'en' ? 'en' : 'fr';
+    // labels
+    const goalLabel = document.querySelector('.goal-label');
+    if (goalLabel) goalLabel.textContent = (lang === 'en') ? 'My personal fund' : "Ma cagnotte personnelle";
+
+    const statTiles = document.querySelectorAll('.stats-section .stat-item');
+    if (statTiles && statTiles.length >= 3) {
+      // Live
+      statTiles[0].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Live' : 'En live';
+      // Viewers
+      statTiles[1].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Viewers Total' : 'Viewers Total';
+      // Time
+      statTiles[2].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Time' : 'Heure';
+    }
+  } catch(e) { console.warn('applyLang failed', e); }
+}
+
+// Override number formatting locale based on language
+function fmt(n){ return new Intl.NumberFormat(CFG.lang === 'en' ? 'en-GB' : 'fr-FR').format(n) + ' €'; }
+
+/* ============================================================================
+   TWITCH TEAM STATS
+   ============================================================================ */
+async function updateStats() {
+  if(!CFG.statsUrl) return;
+  try {
+    const res = await fetch(CFG.statsUrl);
+    const data = await res.json();
+    
+    // Count live streamers and total
+    const liveCount = data.members.filter(m => m.is_live).length;
+    const totalCount = data.members.length;
+    document.getElementById('liveCount').textContent = `${liveCount}/${totalCount}`;
+    
+    // Total viewers
+    const totalViewers = data.members.reduce((sum, m) => sum + (m.viewer_count || 0), 0);
+    document.getElementById('viewerCount').textContent = new Intl.NumberFormat().format(totalViewers);
+  } catch(e) {
+    console.warn('Stats fetch failed:', e);
+  }
+}
+
+/* ============================================================================
+   PERSONAL GOAL UPDATE (PLACEHOLDER)
+   ============================================================================ */
+function updatePersonalGoal() {
+  const current = 0;
+  const target = 10000;
+  const pct = Math.min((current / target) * 100, 100);
+  
+  document.getElementById('personalCurrent').textContent = fmt(current);
+  document.getElementById('personalTarget').textContent = fmt(target);
+  document.getElementById('personalBar').style.width = pct + '%';
+}
+
+/* ============================================================================
+   INITIALIZATION & UPDATE INTERVALS
+   ============================================================================ */
+// Init
+initCarousel();
+updateClock();
+updateStats();
+updatePersonalGoal();
+
+// Apply URL-driven UI options
+applyTheme();
+applyHide();
+applyLang();
+
+// Intervals
+setInterval(rotateCarousel, 8000);
+setInterval(updateClock, CLOCK_INTERVAL_MS);
+setInterval(updateStats, CFG.updateInterval);
+setInterval(updatePersonalGoal, 30000);
+</script>
+</body>
+</html>
