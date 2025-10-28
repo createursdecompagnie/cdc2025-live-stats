@@ -30,18 +30,38 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 20px;
-      display: grid;
-      grid-template-columns: 400px 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
 
     h1 {
-      grid-column: 1 / -1;
       color: var(--accent);
       margin: 0 0 20px 0;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .full-preview {
+      margin-top: 20px;
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+
+    .full-preview iframe {
+      width: 100%;
+      height: 180px;
+      border: none;
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.2);
     }
 
     .controls {
@@ -63,18 +83,48 @@
     }
 
     .section {
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding-bottom: 16px;
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
-    .section:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
+    .section-content {
+      display: flex;
+      gap: 20px;
+    }
+
+    .section-controls {
+      flex: 1;
+    }
+
+    .section-preview {
+      width: 300px;
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius);
+      padding: 10px;
+    }
+
+    .section-preview iframe {
+      width: 100%;
+      height: 100px;
+      border: none;
+      border-radius: calc(var(--radius) - 4px);
+      background: rgba(0,0,0,0.2);
     }
 
     h2 {
       color: var(--accent);
-      margin: 0 0 16px 0;
+      margin: 0;
+      font-size: 1.2em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2 .icon {
       font-size: 1.2em;
     }
 
@@ -169,58 +219,79 @@
   <div class="container">
     <h1>Générateur Widget Bar - CDC2025</h1>
     
-    <div class="controls">
+    <div class="content">
       <div class="section">
-        <h2>📐 Personnalisation</h2>
-        <div class="field">
-          <label>Couleur d'accent</label>
-          <input type="color" id="accent" value="#FCA000">
-        </div>
-        <div class="field">
-          <label>Couleur du texte principal</label>
-          <input type="color" id="text" value="#f2f5f8">
-        </div>
-        <div class="field">
-          <label>Couleur du texte secondaire</label>
-          <input type="color" id="muted" value="#96a0aa">
-        </div>
-        <div class="field">
-          <label>Couleur de fond de la barre</label>
-          <input type="color" id="barBg" value="#000000">
-          <input type="text" id="barBgAlpha" value="0.4" placeholder="Opacité (0-1)">
+        <h2><span class="icon">🎨</span> Personnalisation</h2>
+        <div class="section-content">
+          <div class="section-controls">
+            <div class="field">
+              <label>Couleur d'accent</label>
+              <input type="color" id="accent" value="#FCA000">
+            </div>
+            <div class="field">
+              <label>Couleur du texte principal</label>
+              <input type="color" id="text" value="#f2f5f8">
+            </div>
+            <div class="field">
+              <label>Couleur du texte secondaire</label>
+              <input type="color" id="muted" value="#96a0aa">
+            </div>
+            <div class="field">
+              <label>Couleur de fond de la barre</label>
+              <input type="color" id="barBg" value="#000000">
+              <input type="text" id="barBgAlpha" value="0.4" placeholder="Opacité (0-1)">
+            </div>
+          </div>
+          <div class="section-preview">
+            <iframe id="preview-colors" src=""></iframe>
+          </div>
         </div>
       </div>
 
       <div class="section">
-        <h2>📏 Taille du texte</h2>
-        <div class="field">
-          <label>Échelle (1 = normal)</label>
-          <input type="number" id="fontScale" value="1.0" min="0.5" max="2" step="0.1">
+        <h2><span class="icon">📏</span> Taille du texte</h2>
+        <div class="section-content">
+          <div class="section-controls">
+            <div class="field">
+              <label>Échelle (1 = normal)</label>
+              <input type="number" id="fontScale" value="1.0" min="0.5" max="2" step="0.1">
+            </div>
+          </div>
+          <div class="section-preview">
+            <iframe id="preview-font" src=""></iframe>
+          </div>
         </div>
       </div>
 
       <div class="section">
-        <h2>📝 Contenu</h2>
-        <div class="field">
-          <label>Hashtag</label>
-          <input type="text" id="hashtag" value="#CDC2025" placeholder="#CDC2025">
+        <h2><span class="icon">📝</span> Contenu</h2>
+        <div class="section-content">
+          <div class="section-controls">
+            <div class="field">
+              <label>Hashtag</label>
+              <input type="text" id="hashtag" value="#CDC2025" placeholder="#CDC2025">
+            </div>
+            <div class="field">
+              <label>URL du Logo</label>
+              <input type="url" id="logo" placeholder="https://exemple.com/logo.png">
+            </div>
+          </div>
+          <div class="section-preview">
+            <iframe id="preview-content" src=""></iframe>
+          </div>
         </div>
-        <div class="field">
-          <label>URL du Logo</label>
-          <input type="url" id="logo" placeholder="https://exemple.com/logo.png">
-        </div>
-      </div>
-
-      <div class="section">
-        <h2>🔗 URL Générée</h2>
-        <div class="generated-url" id="url"></div>
-        <button class="copy-button" onclick="copyUrl()">Copier l'URL</button>
       </div>
     </div>
 
-    <div class="preview">
-      <h2>👁️ Aperçu en direct</h2>
-      <iframe id="preview" src=""></iframe>
+    <div class="section">
+      <h2><span class="icon">🔗</span> URL Générée</h2>
+      <div class="generated-url" id="url"></div>
+      <button class="copy-button" onclick="copyUrl()">Copier l'URL</button>
+    </div>
+
+    <div class="full-preview">
+      <h2><span class="icon">👁️</span> Aperçu complet</h2>
+      <iframe id="preview-full" src=""></iframe>
     </div>
   </div>
 
@@ -298,7 +369,30 @@
       
       // Mettre à jour l'affichage
       document.getElementById('url').textContent = url;
-      document.getElementById('preview').src = url;
+      // Mettre à jour tous les aperçus
+      document.getElementById('preview-full').src = url;
+      
+      // Aperçu des couleurs uniquement
+      const colorParams = new URLSearchParams();
+      if (accent !== '#FCA000') colorParams.set('accent', accent);
+      if (text !== '#f2f5f8') colorParams.set('text', text);
+      if (muted !== '#96a0aa') colorParams.set('muted', muted);
+      if (barBg !== '#000000' || barBgAlpha !== '0.4') {
+        const rgba = `rgba(${parseInt(barBg.slice(1,3),16)},${parseInt(barBg.slice(3,5),16)},${parseInt(barBg.slice(5,7),16)},${barBgAlpha})`;
+        colorParams.set('barBg', rgba);
+      }
+      document.getElementById('preview-colors').src = `${BASE_URL}${colorParams.toString() ? '?' + colorParams.toString() : ''}`;
+
+      // Aperçu de la taille de police uniquement
+      const fontParams = new URLSearchParams();
+      if (fontScale !== '1.0') fontParams.set('fs', fontScale);
+      document.getElementById('preview-font').src = `${BASE_URL}${fontParams.toString() ? '?' + fontParams.toString() : ''}`;
+
+      // Aperçu du contenu uniquement
+      const contentParams = new URLSearchParams();
+      if (hashtag && hashtag !== '#CDC2025') contentParams.set('hashtag', hashtag);
+      if (logo) contentParams.set('logo', logo);
+      document.getElementById('preview-content').src = `${BASE_URL}${contentParams.toString() ? '?' + contentParams.toString() : ''}`;
     }
 
     // Ajouter les événements sur tous les champs
