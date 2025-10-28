@@ -21,6 +21,24 @@
   --shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
+/* Theme overrides: add class `theme-light` or `theme-dark` on <html> to override variables */
+.theme-light {
+  --bg: #ffffff;
+  --card: rgba(255,255,255,0.06);
+  --glass: rgba(255,255,255,0.04);
+  --text: #0b2230;
+  --muted: #5b6b75;
+  --accent: #FCA000;
+  --accent-2: #104E59;
+}
+.theme-dark {
+  --bg: #050608;
+  --card: rgba(0,0,0,0.5);
+  --glass: rgba(0,0,0,0.55);
+  --text: #f2f5f8;
+  --muted: #96a0aa;
+}
+
 * { box-sizing:border-box; }
 html, body { 
   margin:0; padding:0; 
@@ -406,13 +424,26 @@ const params = new URLSearchParams(window.location.search);
 // CONFIGURATION MANUELLE - Modifier ici pour ajouter des montants bonus (t-shirts, etc.)
 const MANUAL_BONUS = 0; // Montant en euros à ajouter à la cagnotte globale
 
+// Parse common parameters and new options: theme, hide, showSeconds, lang
+const _theme = (params.get('theme') || 'auto').toLowerCase(); // auto|dark|light
+const _hide = (params.get('hide') || '').split(',').map(s => s.trim()).filter(Boolean); // e.g. 'personal,stats'
+const _showSeconds = (params.get('showSeconds') || params.get('showseconds') || 'false').toLowerCase() === 'true';
+const _lang = (params.get('lang') || 'fr').toLowerCase(); // fr|en
+
 const CFG = {
   globalGoalUrl: params.get('global') || '', // URL source cagnotte globale (unused currently)
   personalGoalUrl: params.get('personal') || '', // URL source cagnotte perso (unused currently)
   statsUrl: params.get('stats') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
   updateInterval: parseInt(params.get('interval')) || 30000, // 30s par défaut
   bonusAmount: parseFloat(params.get('bonus')) || MANUAL_BONUS, // Montant bonus (URL prioritaire, sinon MANUAL_BONUS)
+  theme: _theme,
+  hide: _hide,
+  showSeconds: _showSeconds,
+  lang: _lang,
 };
+
+// Compute derived values
+const CLOCK_INTERVAL_MS = CFG.showSeconds ? 1000 : 10000;
 
 // Image de la boutique (t-shirts) :
 // - Par défaut, on prend l'image locale du dossier IMAGES (utile en local / hébergement perso)
@@ -607,10 +638,68 @@ function rotateCarousel() {
    ============================================================================ */
 function updateClock() {
   const now = new Date();
-  const h = String(now.getHours()).padStart(2, '0');
-  const m = String(now.getMinutes()).padStart(2, '0');
-  document.getElementById('currentTime').textContent = `${h}:${m}`;
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const display = CFG.showSeconds ? `${hours}:${minutes}:${seconds}` : `${hours}:${minutes}`;
+  const el = document.getElementById('currentTime');
+  if(el) el.textContent = display;
 }
+
+// Apply theme, hide and language settings based on URL params
+function applyTheme() {
+  try {
+    const html = document.documentElement;
+    html.classList.remove('theme-light', 'theme-dark');
+    if (CFG.theme === 'light') html.classList.add('theme-light');
+    else if (CFG.theme === 'dark') html.classList.add('theme-dark');
+    else if (CFG.theme === 'auto') {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      html.classList.add(prefersDark ? 'theme-dark' : 'theme-light');
+    }
+  } catch(e) { console.warn('applyTheme failed', e); }
+}
+
+function applyHide() {
+  try {
+    const map = {
+      'personal': '.personal-section',
+      'branding': '.branding-section',
+      'stats': '.stats-section',
+      'info': '.info-section'
+    };
+    CFG.hide.forEach(name => {
+      const sel = map[name];
+      if (!sel) return;
+      const el = document.querySelector(sel);
+      if (el) el.style.display = 'none';
+    });
+  } catch(e) { console.warn('applyHide failed', e); }
+}
+
+function applyLang() {
+  try {
+    const lang = CFG.lang === 'en' ? 'en' : 'fr';
+    // labels
+    const goalLabel = document.querySelector('.goal-label');
+    if (goalLabel) goalLabel.textContent = (lang === 'en') ? 'My personal fund' : "Ma cagnotte personnelle";
+
+    const statTiles = document.querySelectorAll('.stats-section .stat-item');
+    if (statTiles && statTiles.length >= 3) {
+      // Live
+      statTiles[0].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Live' : 'En live';
+      // Viewers
+      statTiles[1].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Viewers\nTotal' : 'Viewers\nTotal';
+      // Time
+      statTiles[2].querySelector('.stat-label-left span:nth-child(2)').textContent = (lang === 'en') ? 'Time' : 'Heure';
+    }
+
+    // Currency formatter will use lang in fmt()
+  } catch(e) { console.warn('applyLang failed', e); }
+}
+
+// Override number formatting locale based on language
+function fmt(n){ return new Intl.NumberFormat(CFG.lang === 'en' ? 'en-GB' : 'fr-FR').format(n) + ' €'; }
 
 /* ============================================================================
    TWITCH TEAM STATS - LIVE STREAMERS & VIEWERS
@@ -713,10 +802,15 @@ updateClock();
 updateStats();
 updatePersonalGoal();
 
+// Apply URL-driven UI options
+applyTheme();
+applyHide();
+applyLang();
+
 // Intervals
 setInterval(rotateCarousel, 8000); // Change slide every 8s (smooth)
-setInterval(updateClock, 10000); // Update clock every 10s
-setInterval(updateStats, CFG.updateInterval); // Update stats every 30s
+setInterval(updateClock, CLOCK_INTERVAL_MS); // Update clock (every 1s if seconds enabled, otherwise 10s)
+setInterval(updateStats, CFG.updateInterval); // Update stats per CFG
 setInterval(updatePersonalGoal, 30000); // Update personal goal every 30s
 </script>
 </body>
