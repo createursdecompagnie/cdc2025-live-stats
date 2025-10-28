@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 Stats Vertical</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14; --glass:rgba(0,0,0,0.5); --text:#f2f5f8; --muted:#a7b1bd; --accent:#FCA000; --accent-2:#104E59; --radius:20px;
+}
+.theme-light{ --bg:#fff; --glass:rgba(255,255,255,0.06); --text:#0b2230; --muted:#5b6b75 }
+.theme-dark { --bg:#050608; --glass:rgba(0,0,0,0.55); --text:#f2f5f8; --muted:#96a0aa }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;background:transparent;color:var(--text);font-family:"Outfit",system-ui;overflow:hidden}
+.stage{position:relative;width:360px;height:480px;transform:scale(var(--scale,1));transform-origin:top left}
+.container{width:360px;height:480px;padding:16px;display:flex}
+.card{flex:1;background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,0.4);padding:20px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+.item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+.item:last-child{border-bottom:none}
+.label{font-size:14px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.icon{font-size:18px}
+.value{font-size:32px;font-weight:900;color:var(--accent);text-shadow:0 2px 8px rgba(252,160,0,0.3)}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="container">
+      <div class="card">
+        <div class="item">
+          <div class="label"><span class="icon">🔴</span><span id="lblLive">En live</span></div>
+          <div class="value" id="liveCount">0/0</div>
+        </div>
+        <div class="item">
+          <div class="label"><span class="icon">👀</span><span id="lblViewers">Viewers Total</span></div>
+          <div class="value" id="viewerCount">0</div>
+        </div>
+        <div class="item">
+          <div class="label"><span class="icon">🕐</span><span id="lblTime">Heure</span></div>
+          <div class="value" id="currentTime">--:--</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+// Scaling: design 360x480; use ?h= to force height
+function fit(){
+  const targetW=360, targetH=480;
+  const p=new URLSearchParams(location.search);
+  const forcedH=parseInt(p.get('h')||'',10);
+  const ch=document.documentElement.clientHeight||window.innerHeight||targetH;
+  const s=(forcedH? (forcedH/targetH):(ch/targetH));
+  document.documentElement.style.setProperty('--scale', String(s));
+  document.body.style.width=Math.round(targetW*s)+'px';
+  document.body.style.height=Math.round(targetH*s)+'px';
+}
+addEventListener('resize',fit);fit();
+
+const params=new URLSearchParams(location.search);
+const CFG={
+  statsUrl: params.get('stats') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
+  updateInterval: parseInt(params.get('interval')) || 30000,
+  theme: (params.get('theme')||'auto').toLowerCase(),
+  showSeconds: (params.get('showSeconds')||params.get('showseconds')||'false').toLowerCase()==='true',
+  lang: (params.get('lang')||'fr').toLowerCase(),
+};
+
+function applyTheme(){
+  const html=document.documentElement; html.classList.remove('theme-light','theme-dark');
+  if(CFG.theme==='light') html.classList.add('theme-light');
+  else if(CFG.theme==='dark') html.classList.add('theme-dark');
+  else { const prefersDark=matchMedia && matchMedia('(prefers-color-scheme: dark)').matches; html.classList.add(prefersDark?'theme-dark':'theme-light'); }
+}
+applyTheme();
+
+function applyLang(){
+  const en=CFG.lang==='en';
+  document.getElementById('lblLive').textContent = en? 'Live' : 'En live';
+  document.getElementById('lblViewers').textContent = en? 'Total viewers' : 'Viewers Total';
+  document.getElementById('lblTime').textContent = en? 'Time' : 'Heure';
+}
+applyLang();
+
+function updateClock(){
+  const now=new Date();
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('currentTime').textContent = CFG.showSeconds? `${h}:${m}:${s}` : `${h}:${m}`;
+}
+
+async function updateStats(){
+  if(!CFG.statsUrl) return;
+  try{
+    const res=await fetch(CFG.statsUrl);
+    const data=await res.json();
+    const live=data.members.filter(m=>m.is_live).length;
+    const total=data.members.length;
+    const viewers=data.members.reduce((sum,m)=>sum+(m.viewer_count||0),0);
+    document.getElementById('liveCount').textContent = `${live}/${total}`;
+    document.getElementById('viewerCount').textContent = new Intl.NumberFormat().format(viewers);
+  }catch(e){ console.warn('Stats fetch failed', e); }
+}
+
+updateClock(); updateStats();
+setInterval(updateClock, CFG.showSeconds?1000:10000);
+setInterval(updateStats, CFG.updateInterval);
+</script>
+</body>
+</html>

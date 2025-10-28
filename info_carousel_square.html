@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 Carousel Square</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --card:rgba(0,0,0,0.4);
+  --glass:rgba(0,0,0,0.5);
+  --text:#f2f5f8;
+  --muted:#a7b1bd;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --radius:20px;
+}
+.theme-light { --bg:#fff; --card:rgba(0,0,0,0.06); --glass:rgba(0,0,0,0.04); --text:#0b2230; --muted:#5b6b75; }
+.theme-dark  { --bg:#050608; --card:rgba(0,0,0,0.5); --glass:rgba(0,0,0,0.55); --text:#f2f5f8; --muted:#96a0aa; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;background:transparent;color:var(--text);font-family:"Outfit",system-ui;overflow:hidden}
+.stage{position:relative;width:600px;height:600px;transform:scale(var(--scale,1));transform-origin:top left}
+.container{width:600px;height:600px;padding:16px;display:flex}
+.card{flex:1;background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,0.4);padding:20px;display:flex;align-items:center;justify-content:center}
+.carousel{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;transform:translateY(40px) scale(0.95);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+.slide.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.slide.exiting{opacity:0;transform:translateY(-40px) scale(0.95)}
+.image{width:150px;height:150px;border-radius:24px;object-fit:cover;border:2px solid rgba(255,255,255,0.2);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.image.hidden{display:none}
+.icon{font-size:54px;filter:drop-shadow(0 2px 8px rgba(252,160,0,0.5))}
+.text{font-size:28px;font-weight:900;line-height:1.2;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+.sub{font-size:20px;font-weight:700;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="container">
+      <div class="card">
+        <div class="carousel" id="carousel"></div>
+      </div>
+    </div>
+  </div>
+<script>
+// Scaling: design 600x600; use ?size= e.g., 480
+function fit(){
+  const target=600;
+  const p=new URLSearchParams(location.search);
+  const forced=parseInt(p.get('size')||'',10);
+  const cw=document.documentElement.clientWidth||window.innerWidth||target;
+  const s=(forced? (forced/target):(cw/target));
+  document.documentElement.style.setProperty('--scale', String(s));
+  document.body.style.width=Math.round(target*s)+'px';
+  document.body.style.height=Math.round(target*s)+'px';
+}
+addEventListener('resize',fit);fit();
+
+// Params
+const params=new URLSearchParams(location.search);
+const CFG={
+  theme:(params.get('theme')||'auto').toLowerCase(),
+  lang:(params.get('lang')||'fr').toLowerCase(),
+};
+
+function applyTheme(){
+  const html=document.documentElement; html.classList.remove('theme-light','theme-dark');
+  if(CFG.theme==='light') html.classList.add('theme-light');
+  else if(CFG.theme==='dark') html.classList.add('theme-dark');
+  else { const prefersDark=matchMedia && matchMedia('(prefers-color-scheme: dark)').matches; html.classList.add(prefersDark?'theme-dark':'theme-light'); }
+}
+applyTheme();
+
+// Messages (reuse from main widget)
+const INFO_MESSAGES=[
+  {icon:"🌐", text:"Site de l'association", text_en:"Association website", subtext:"potironfamily.fr", subtext_en:"potironfamily.fr", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"},
+  {icon:"🎮", text:"Site CDC", text_en:"CDC website", subtext:"createursdecompagnie.fr", subtext_en:"createursdecompagnie.fr", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoCDC_Bleu.png"},
+  {icon:"💰", text:"Faire un don", text_en:"Make a donation", subtext:"!don dans le chat", subtext_en:"!don in chat", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"},
+  {icon:"👕", text:"T-shirts et sweats dispo", text_en:"T-shirts & hoodies available", subtext:"potironfamily.fr/nos-produits", subtext_en:"potironfamily.fr/our-products", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/tshirtfondnoir.png"},
+  {icon:"🐾", text:"Merci de votre soutien", text_en:"Thank you for your support", subtext:"Ensemble pour les animaux !", subtext_en:"Together for the animals!", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"},
+  {icon:"🔴", text:"Rejoignez-nous", text_en:"Join us", subtext:"sur Twitch maintenant !", subtext_en:"on Twitch now!", image:"https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoTwitch.png"},
+];
+
+let idx=0; let slides=[];
+function init(){
+  const root=document.getElementById('carousel');
+  INFO_MESSAGES.forEach((m,i)=>{
+    const slide=document.createElement('div'); slide.className='slide'; slide.dataset.index=i;
+    if(m.image||m.icon||m.text){
+      const img=document.createElement('img'); img.className='image'; img.alt=m.text||'';
+      if(m.image){ img.src=m.image; img.onerror=()=>img.classList.add('hidden'); } else { img.classList.add('hidden'); }
+      slide.appendChild(img);
+    }
+    const content=document.createElement('div'); content.style.display='flex'; content.style.flexDirection='column'; content.style.alignItems='center'; content.style.gap='8px';
+    if(m.icon){ const ic=document.createElement('div'); ic.className='icon'; ic.textContent=m.icon; content.appendChild(ic); }
+    const t=document.createElement('div'); t.className='text'; t.textContent=(CFG.lang==='en'&&m.text_en)?m.text_en:m.text; content.appendChild(t);
+    if(m.subtext){ const s=document.createElement('div'); s.className='sub'; const orig=m.subtext||''; const en=m.subtext_en||''; const isLink=/https?:\/\//i.test(orig)||orig.indexOf('/')!==-1||orig.indexOf('.')!==-1; s.textContent=(CFG.lang==='en'&&en&&!isLink)?en:orig; content.appendChild(s); }
+    slide.appendChild(content);
+    root.appendChild(slide); slides.push(slide);
+  });
+  if(slides.length) slides[0].classList.add('active');
+}
+function rotate(){ if(!slides.length) return; const cur=slides[idx]; const next=(idx+1)%slides.length; const nx=slides[next]; cur.classList.add('exiting'); cur.classList.remove('active'); setTimeout(()=>{ nx.classList.add('active'); nx.classList.remove('exiting'); setTimeout(()=>cur.classList.remove('exiting'),800); },80); idx=next; }
+
+init(); setInterval(rotate,8000);
+</script>
+</body>
+</html>
