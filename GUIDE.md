@@ -45,6 +45,8 @@ P:\[STREAM_CDC]\[CDC2025]\OVERLAY\
 - **Widget CDC2025 Goal**: https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html
 - **Info Widget (horizontal)**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget.html
 - **Info Widget (vertical)**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_widget_vertical.html
+- **Carousel carré (seul)**: https://createursdecompagnie.github.io/cdc2025-live-stats/info_carousel_square.html
+- **Stats vertical (seul)**: https://createursdecompagnie.github.io/cdc2025-live-stats/stats_vertical.html
 - **Stats JSON (Twitch)**: https://createursdecompagnie.github.io/cdc2025-live-stats/live_stats.json
 
 ### Streamlabs
@@ -98,6 +100,61 @@ P:\[STREAM_CDC]\[CDC2025]\OVERLAY\
 info_widget.html?w=1400&bonus=100
 
 # Update stats toutes les minutes
+
+---
+
+### 1a. Carousel carré seul (`info_carousel_square.html`)
+
+**Description**: Bloc carré autonome affichant le carrousel d'infos uniquement (images + textes). Idéal pour une colonne latérale.
+
+**Dimensions**: 600×600 (auto-scaling)
+
+**Utilisation OBS**:
+1. Source → Browser
+2. URL: `https://createursdecompagnie.github.io/cdc2025-live-stats/info_carousel_square.html`
+3. Dimensions: 600×600 (ou utilisez `?size=480`)
+
+**Paramètres URL**:
+```
+?size=480       # Force taille cible (carré)
+?theme=dark     # dark | light | auto
+?lang=en        # fr | en
+?v=3            # cache busting
+```
+
+**Exemple**:
+```
+info_carousel_square.html?size=480&theme=dark&lang=en
+```
+
+---
+
+### 1b. Stats vertical seul (`stats_vertical.html`)
+
+**Description**: Bloc vertical autonome pour les stats (En live, Viewers total, Heure).
+
+**Dimensions**: 360×480 (auto-scaling)
+
+**Utilisation OBS**:
+1. Source → Browser
+2. URL: `https://createursdecompagnie.github.io/cdc2025-live-stats/stats_vertical.html`
+3. Dimensions: 360×480 (ou utilisez `?h=1080` pour s'adapter à une colonne 1080px)
+
+**Paramètres URL**:
+```
+?h=720          # Force hauteur cible (scaling vertical)
+?theme=dark     # dark | light | auto
+?showSeconds=1  # Horloge avec secondes
+?lang=en        # fr | en
+?stats=...      # URL JSON alternative
+?interval=60000 # Rafraîchissement stats
+?v=3            # cache busting
+```
+
+**Exemple**:
+```
+stats_vertical.html?h=900&theme=dark&lang=en&showSeconds=true
+```
 info_widget.html?interval=60000
 
 # Cache stats, bonus 50€
