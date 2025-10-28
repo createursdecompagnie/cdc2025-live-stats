@@ -92,6 +92,7 @@ P:\[STREAM_CDC]\[CDC2025]\OVERLAY\
 ?bonus=150        # Ajoute 150€ à la cagnotte (dons offline)
 ?interval=60000   # Stats update toutes les 60s (défaut: 30s)
 ?stats=hide       # Cache la section stats
+?fontScale=1.25   # Agrandit la police (alias: fs, fontsize) [0.5 à 3] (défaut: 1.1)
 ```
 
 **Exemples**:
@@ -119,6 +120,7 @@ info_widget.html?w=1400&bonus=100
 ?size=480       # Force taille cible (carré)
 ?theme=dark     # dark | light | auto
 ?lang=en        # fr | en
+?fontScale=1.25 # Échelle de police (alias: fs, fontsize) [0.5–3] (défaut: 1.1)
 ?v=3            # cache busting
 ```
 
@@ -148,6 +150,7 @@ info_carousel_square.html?size=480&theme=dark&lang=en
 ?lang=en        # fr | en
 ?stats=...      # URL JSON alternative
 ?interval=60000 # Rafraîchissement stats
+?fontScale=1.25 # Échelle de police (alias: fs, fontsize) [0.5–3] (défaut: 1.1)
 ?v=3            # cache busting
 ```
 
