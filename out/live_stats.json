@@ -261,8 +261,8 @@
         "display_name": "oceadolphine31",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e167eb33-38be-41d3-bea0-0f66acbd9e14-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 4
     },
     {
       "id": "487828823",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 0,
-    "total_viewers": 0,
+    "live_count": 1,
+    "total_viewers": 4,
     "total_members": 37
   }
 }
