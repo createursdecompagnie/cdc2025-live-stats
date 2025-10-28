@@ -485,37 +485,49 @@ const INFO_MESSAGES = [
   {
     icon: "🌐",
     text: "Site de l'association",
+    text_en: "Association website",
     subtext: "potironfamily.fr",
+    subtext_en: "potironfamily.fr",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
   },
   {
     icon: "🎮",
     text: "Site CDC",
+    text_en: "CDC website",
     subtext: "createursdecompagnie.fr",
+    subtext_en: "createursdecompagnie.fr",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoCDC_Bleu.png"
   },
   {
     icon: "💰",
     text: "Faire un don",
+    text_en: "Make a donation",
     subtext: "!don dans le chat",
+    subtext_en: "!don in chat",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
   },
   {
     icon: "👕",
     text: "T-shirts et sweats dispo",
+    text_en: "T-shirts & hoodies available",
     subtext: "potironfamily.fr/nos-produits",
+    subtext_en: "potironfamily.fr/our-products",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/tshirtfondnoir.png"
   },
   {
     icon: "🐾",
     text: "Merci de votre soutien",
+    text_en: "Thank you for your support",
     subtext: "Ensemble pour les animaux !",
+    subtext_en: "Together for the animals!",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/PotironFamilyLogo.png"
   },
   {
     icon: "🔴",
     text: "Rejoignez-nous",
+    text_en: "Join us",
     subtext: "sur Twitch maintenant !",
+    subtext_en: "on Twitch now!",
     image: "https://createursdecompagnie.github.io/cdc2025-live-stats/assets/LogoTwitch.png"
   },
 ];
@@ -578,13 +590,14 @@ function initCarousel() {
     
     const text = document.createElement('div');
     text.className = 'info-text';
-    text.textContent = msg.text;
+    // choose translated text when available
+    text.textContent = (CFG.lang === 'en' && msg.text_en) ? msg.text_en : msg.text;
     content.appendChild(text);
     
     if(msg.subtext) {
       const subtext = document.createElement('div');
       subtext.className = 'info-subtext';
-      subtext.textContent = msg.subtext;
+      subtext.textContent = (CFG.lang === 'en' && msg.subtext_en) ? msg.subtext_en : msg.subtext;
       content.appendChild(subtext);
     }
     
