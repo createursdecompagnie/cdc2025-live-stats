@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 8
+      "viewer_count": 11
     },
     {
       "id": "158945723",
@@ -229,7 +229,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 236
+      "viewer_count": 242
     },
     {
       "id": "51966081",
@@ -295,7 +295,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 36
+      "viewer_count": 32
     },
     {
       "id": "61642471",
@@ -327,8 +327,8 @@
         "display_name": "GamPlethore",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 4
     },
     {
       "id": "159857073",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 23
+      "viewer_count": 24
     },
     {
       "id": "405413203",
@@ -361,7 +361,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 16
+      "viewer_count": 12
     },
     {
       "id": "922542142",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 7,
-    "total_viewers": 330,
+    "live_count": 8,
+    "total_viewers": 336,
     "total_members": 37
   }
 }
