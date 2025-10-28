@@ -41,8 +41,8 @@
         "display_name": "soKyutie",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 5
     },
     {
       "id": "158945723",
@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94efb04f-b63e-4679-a6cb-f4906498268d-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 7
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "71762061",
@@ -130,7 +130,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 8
+      "viewer_count": 9
     },
     {
       "id": "103569937",
@@ -152,7 +152,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/29d2f497-8d4c-4c89-a99c-855acf151902-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 10
+      "viewer_count": 8
     },
     {
       "id": "67052570",
@@ -228,8 +228,8 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 102
     },
     {
       "id": "51966081",
@@ -295,7 +295,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 37
+      "viewer_count": 34
     },
     {
       "id": "61642471",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 21
+      "viewer_count": 20
     },
     {
       "id": "405413203",
@@ -361,7 +361,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 9
     },
     {
       "id": "922542142",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 7,
-    "total_viewers": 100,
+    "live_count": 8,
+    "total_viewers": 190,
     "total_members": 37
   }
 }
