@@ -597,7 +597,12 @@ function initCarousel() {
     if(msg.subtext) {
       const subtext = document.createElement('div');
       subtext.className = 'info-subtext';
-      subtext.textContent = (CFG.lang === 'en' && msg.subtext_en) ? msg.subtext_en : msg.subtext;
+      // If the original subtext looks like a URL/path, keep it untranslated (important for links)
+      const originalSub = msg.subtext || '';
+      const enSub = msg.subtext_en || '';
+      const isLikelyLink = /https?:\/\//i.test(originalSub) || originalSub.indexOf('/') !== -1 || originalSub.indexOf('.') !== -1;
+      const chosenSub = (CFG.lang === 'en' && enSub && !isLikelyLink) ? enSub : originalSub;
+      subtext.textContent = chosenSub;
       content.appendChild(subtext);
     }
     
