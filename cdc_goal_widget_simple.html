@@ -13,6 +13,7 @@
   --text: #ffffff;
   --accent: #FCA000;
   --font: 'Outfit', ui-sans-serif, system-ui;
+  --shadow-intensity: 0.4;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,6 +54,27 @@ html, body {
 <div class="amount" id="globalAmount">0 €</div>
 
 <script>
+// Parse URL parameters for customization
+const params = new URLSearchParams(window.location.search);
+
+// Color customization
+const textColor = params.get('textColor') || '#ffffff';
+const accentColor = params.get('accentColor') || '#FCA000';
+const shadowIntensity = parseFloat(params.get('shadowIntensity')) || 0.4;
+
+// Apply custom colors
+document.documentElement.style.setProperty('--text', textColor);
+document.documentElement.style.setProperty('--accent', accentColor);
+document.documentElement.style.setProperty('--shadow-intensity', shadowIntensity);
+
+// Dynamic shadow color (derived from accent)
+const accentRGB = parseInt(accentColor.slice(1), 16);
+const r = (accentRGB >> 16) & 255;
+const g = (accentRGB >> 8) & 255;
+const b = accentRGB & 255;
+const shadowCSS = `0 0 20px rgba(${r}, ${g}, ${b}, ${shadowIntensity * 0.4}), 0 0 40px rgba(${r}, ${g}, ${b}, ${shadowIntensity * 0.2})`;
+document.getElementById('globalAmount')?.style.setProperty('text-shadow', shadowCSS);
+
 // Animation fluide du compteur
 let currentDisplayValue = 0;
 let targetValue = 0;
