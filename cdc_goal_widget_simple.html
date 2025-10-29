@@ -135,6 +135,15 @@ async function updateGlobalGoal() {
     // Si la valeur a changé, animer
     if (Math.abs(ajouts - currentDisplayValue) > 0.01) {
       animateCounter(ajouts);
+    } else if (currentDisplayValue === 0 && ajouts === 0) {
+      // Force initial display even if both are 0
+      const formatted = new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: SHOW_CENTS ? 2 : 0,
+        maximumFractionDigits: SHOW_CENTS ? 2 : 0
+      }).format(0);
+      document.getElementById('globalAmount').textContent = formatted;
     }
   } catch (err) {
     console.warn('Failed to update:', err);
