@@ -15,8 +15,39 @@
       min-height: 100vh;
     }
     .container {
-      max-width: 600px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .main-panel {
+      grid-column: 1;
+    }
+    .preview-panel {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .preview-widget {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+    }
+    .preview-widget h3 {
+      color: #FCA000;
+      margin: 0 0 10px 0;
+      font-size: 0.9em;
+    }
+    .preview-widget iframe {
+      width: 100%;
+      height: 150px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.2);
     }
     .panel {
       background: rgba(0,0,0,0.4);
@@ -143,13 +174,126 @@
     .help a:hover {
       text-decoration: underline;
     }
+    .history-section {
+      margin-top: 25px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 20px;
+    }
+    .history-toggle {
+      background: rgba(252,160,0,0.2);
+      border: 1px solid rgba(252,160,0,0.3);
+      border-radius: 6px;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: #FCA000;
+      transition: all 0.2s;
+    }
+    .history-toggle:hover {
+      background: rgba(252,160,0,0.3);
+    }
+    .history-toggle.open {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .history-list {
+      display: none;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(252,160,0,0.2);
+      border-top: none;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .history-list.open {
+      display: block;
+    }
+    .history-item {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9em;
+      color: #a7b1bd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    .history-item.add {
+      color: #64c864;
+    }
+    .history-item.remove {
+      color: #ff6b6b;
+    }
+    .history-amount {
+      font-family: monospace;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    .color-picker-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    .color-input-wrapper {
+      flex: 1;
+      min-width: 120px;
+    }
+    .color-input-wrapper label {
+      display: block;
+      font-size: 0.85em;
+      color: #a7b1bd;
+      margin-bottom: 5px;
+    }
+    .color-input-wrapper input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .generated-link {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(252,160,0,0.2);
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 0.85em;
+      word-break: break-all;
+      color: #FFE259;
+      max-height: 100px;
+      overflow-y: auto;
+      line-height: 1.4;
+    }
+    .copy-btn {
+      padding: 8px 15px;
+      background: rgba(252,160,0,0.3);
+      color: #FCA000;
+      border: 1px solid rgba(252,160,0,0.5);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: rgba(252,160,0,0.5);
+    }
   </style>
 </head>
 <body>
   <h1>Gestionnaire Cagnotte CDC2025</h1>
 
   <div class="container">
-    <div class="panel">
+    <div class="panel main-panel">
+      <h2 style="color: #FCA000; margin-top: 0;">Gestionnaire</h2>
       <div class="field">
         <label>Token GitHub personnel</label>
         <input type="password" id="ghToken" placeholder="ghp_..." title="Ton token GitHub personnel">
@@ -180,6 +324,58 @@
         </div>
       </div>
 
+      <div class="info-box" style="background: rgba(100, 200, 100, 0.1); border-color: rgba(100, 200, 100, 0.3);">
+        <div class="info-label">Historique de tes demandes</div>
+        <div style="margin-top: 10px;">
+          <div style="margin-bottom: 12px;">
+            <div style="color: #a7b1bd; font-size: 0.85em; margin-bottom: 5px;">Total ajouté</div>
+            <div class="amount" id="totalAddedAmount" style="color: #64c864;">0 €</div>
+            <small style="color: #a7b1bd;">Montants que tu as ajoutés</small>
+          </div>
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; margin-top: 10px;">
+            <div style="color: #a7b1bd; font-size: 0.85em; margin-bottom: 5px;">Total retiré</div>
+            <div class="amount" id="totalRemovedAmount" style="color: #ff6b6b;">0 €</div>
+            <small style="color: #a7b1bd;">Montants que tu as retirés</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box" style="background: rgba(100, 200, 100, 0.1); border-color: rgba(100, 200, 100, 0.3); border-top: 2px solid rgba(252,160,0,0.5);">
+        <div class="info-label">🎨 Générateur de lien personnalisé</div>
+        <div style="margin-top: 10px;">
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 10px;">
+              <input type="radio" name="widgetType" value="simple" checked onchange="updateGeneratedLink()"> Widget Simple (montant seul)
+            </label>
+            <label style="display: block;">
+              <input type="radio" name="widgetType" value="full" onchange="updateGeneratedLink()"> Widget Complet (avec CDC2025)
+            </label>
+          </div>
+          
+          <div class="color-picker-group">
+            <div class="color-input-wrapper">
+              <label>Couleur du texte</label>
+              <input type="color" id="textColor" value="#ffffff" onchange="updateGeneratedLink()">
+            </div>
+            <div class="color-input-wrapper">
+              <label>Couleur accent</label>
+              <input type="color" id="accentColor" value="#FCA000" onchange="updateGeneratedLink()">
+            </div>
+            <div class="color-input-wrapper">
+              <label>Intensité ombre</label>
+              <input type="range" id="shadowIntensity" min="0" max="1" step="0.1" value="0.4" onchange="updateGeneratedLink()">
+              <small id="shadowValue" style="color: #a7b1bd;">0.4</small>
+            </div>
+          </div>
+          
+          <div>
+            <strong style="color: #FCA000; display: block; margin-bottom: 8px;">Lien généré:</strong>
+            <div class="generated-link" id="generatedLink">https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget_simple.html</div>
+            <button class="copy-btn" onclick="copyToClipboard()">📋 Copier le lien</button>
+          </div>
+        </div>
+      </div>
+
       <div class="field">
         <label>Ajouter/retirer un montant (€)</label>
         <input type="number" id="ajoutInput" placeholder="ex: 50.00" step="0.01" min="0">
@@ -204,6 +400,31 @@
           <li>Mise à jour visible en 1-5 secondes</li>
         </ol>
       </div>
+
+      <div class="history-section">
+        <div class="history-toggle" id="historyToggle" onclick="toggleHistory()">
+          <span>Historique des modifications</span>
+          <span id="historyArrow">▼</span>
+        </div>
+        <div class="history-list" id="historyList">
+          <div id="historyContent" style="padding: 10px 0;">
+            <div style="text-align: center; color: #a7b1bd; padding: 15px;">
+              Aucune modification pour le moment
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-panel">
+      <div class="preview-widget">
+        <h3>Widget Complet</h3>
+        <iframe id="previewFull" src="file:///\\legrandnas\projets\[STREAM_CDC]\[CDC2025]\OVERLAY\cdc_goal_widget.html"></iframe>
+      </div>
+      <div class="preview-widget">
+        <h3>Widget Simple</h3>
+        <iframe id="previewSimple" src="file:///\\legrandnas\projets\[STREAM_CDC]\[CDC2025]\OVERLAY\cdc_goal_widget_simple.html"></iframe>
+      </div>
     </div>
   </div>
 
@@ -213,9 +434,61 @@
     const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${CONFIG_FILE}`;
     const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
 
-    let configFromGit = null; // La vérité absolue = ce qu'on lit de GitHub
-    let streamlabsAmount = 0;
-    let streamlabsInputField = null; // Pour stocker la valeur saisie
+    let configFromGit = null;
+    let history = [];
+    let totalAdded = 0; // Somme totale des ajouts
+    let totalRemoved = 0; // Somme totale des retraits
+    
+    function toggleHistory() {
+      const toggle = document.getElementById('historyToggle');
+      const list = document.getElementById('historyList');
+      const arrow = document.getElementById('historyArrow');
+      
+      toggle.classList.toggle('open');
+      list.classList.toggle('open');
+      arrow.textContent = toggle.classList.contains('open') ? '▲' : '▼';
+    }
+    
+    function addToHistory(type, amount) {
+      const now = new Date();
+      const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      history.unshift({ type, amount, time });
+      
+      // Tracker les totaux
+      if (type === 'add') {
+        totalAdded += amount;
+      } else {
+        totalRemoved += amount;
+      }
+      
+      // Garder seulement les 50 derniers
+      if (history.length > 50) history.pop();
+      
+      updateHistoryDisplay();
+      
+      // Auto-expand history
+      if (!document.getElementById('historyToggle').classList.contains('open')) {
+        toggleHistory();
+      }
+    }
+    
+    function updateHistoryDisplay() {
+      const content = document.getElementById('historyContent');
+      
+      if (history.length === 0) {
+        content.innerHTML = '<div style="text-align: center; color: #a7b1bd; padding: 15px;">Aucune modification pour le moment</div>';
+        return;
+      }
+      
+      content.innerHTML = history.map(item => {
+        const sign = item.type === 'add' ? '+' : '−';
+        const color = item.type === 'add' ? '#64c864' : '#ff6b6b';
+        return `<div class="history-item ${item.type}">
+          <div>${item.time}</div>
+          <div class="history-amount" style="color: ${color};">${sign}${item.amount.toFixed(2)}€</div>
+        </div>`;
+      }).join('');
+    }
 
     function showStatus(message, type = 'loading') {
       const el = document.getElementById('status');
@@ -245,6 +518,10 @@
       // Afficher le total
       const total = brut + ajouts;
       document.getElementById('totalAmount').textContent = total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+      
+      // Afficher les totaux des demandes
+      document.getElementById('totalAddedAmount').textContent = totalAdded.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+      document.getElementById('totalRemovedAmount').textContent = totalRemoved.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
     }
 
     async function reloadFromGit() {
@@ -274,6 +551,7 @@
         return;
       }
       configFromGit.ajouts = (parseFloat(configFromGit.ajouts) || 0) + montant;
+      addToHistory('add', montant);
       updateDisplay();
       input.value = '0';
     }
@@ -290,8 +568,45 @@
         return;
       }
       configFromGit.ajouts = Math.max(0, (parseFloat(configFromGit.ajouts) || 0) - montant);
+      addToHistory('remove', montant);
       updateDisplay();
       input.value = '0';
+    }
+
+    function updateGeneratedLink() {
+      const widgetType = document.querySelector('input[name="widgetType"]:checked').value;
+      const textColor = document.getElementById('textColor').value;
+      const accentColor = document.getElementById('accentColor').value;
+      const shadowIntensity = document.getElementById('shadowIntensity').value;
+      
+      // Update shadow value display
+      document.getElementById('shadowValue').textContent = shadowIntensity;
+      
+      const baseUrl = widgetType === 'simple' 
+        ? 'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget_simple.html'
+        : 'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html';
+      
+      const params = new URLSearchParams();
+      params.append('textColor', textColor);
+      params.append('accentColor', accentColor);
+      params.append('shadowIntensity', shadowIntensity);
+      
+      const fullUrl = baseUrl + '?' + params.toString();
+      document.getElementById('generatedLink').textContent = fullUrl;
+    }
+
+    function copyToClipboard() {
+      const link = document.getElementById('generatedLink').textContent;
+      navigator.clipboard.writeText(link).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copié!';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2000);
+      }).catch(err => {
+        showStatus('Erreur lors de la copie', 'error');
+      });
     }
 
     async function saveToGit() {
@@ -341,6 +656,12 @@
         setTimeout(async () => {
           showStatus('Actualisation en cours...', 'loading');
           await reloadFromGit();
+          
+          // Rafraîchir les iframes
+          const now = Date.now();
+          document.getElementById('previewFull').src = `file:///\\legrandnas\projets\[STREAM_CDC]\[CDC2025]\OVERLAY\cdc_goal_widget.html?t=${now}`;
+          document.getElementById('previewSimple').src = `file:///\\legrandnas\projets\[STREAM_CDC]\[CDC2025]\OVERLAY\cdc_goal_widget_simple.html?t=${now}`;
+          
           showStatus('✓ Widgets en cours de mise à jour...', 'success');
           btnSave.disabled = false;
         }, 1000);
