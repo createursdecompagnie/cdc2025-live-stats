@@ -390,25 +390,48 @@
 
         <!-- Customization Options (Dynamic) -->
         <div id="customOptions" style="display: none;">
-          <div class="preset-buttons" id="presetButtons"></div>
-
-          <label style="color: #FCA000; font-weight: 600;">Couleurs</label>
-          <div class="color-input-group">
-            <div class="color-input-wrapper">
-              <label>Couleur du texte</label>
-              <input type="color" id="textColor" value="#ffffff" onchange="updatePreview()">
-            </div>
-            <div class="color-input-wrapper">
-              <label>Couleur accent</label>
-              <input type="color" id="accentColor" value="#FCA000" onchange="updatePreview()">
+          <!-- Theme Selection -->
+          <div id="themeOptions" style="display: none; margin-bottom: 20px;">
+            <label style="color: #FCA000; font-weight: 600;">Thème</label>
+            <div class="category-selector" id="themeSelector">
+              <button class="category-btn theme-btn" data-theme="light">☀️ Light</button>
+              <button class="category-btn theme-btn" data-theme="dark">🌙 Dark</button>
+              <button class="category-btn theme-btn" data-theme="auto">⚙️ Auto</button>
             </div>
           </div>
 
-          <div class="form-group" style="margin-top: 20px;">
+          <div class="preset-buttons" id="presetButtons"></div>
+
+          <!-- Color Options -->
+          <div id="colorOptions" style="display: none;">
+            <label style="color: #FCA000; font-weight: 600;">Couleurs</label>
+            <div class="color-input-group">
+              <div class="color-input-wrapper">
+                <label>Couleur du texte</label>
+                <input type="color" id="textColor" value="#ffffff" onchange="updatePreview()">
+              </div>
+              <div class="color-input-wrapper">
+                <label>Couleur accent</label>
+                <input type="color" id="accentColor" value="#FCA000" onchange="updatePreview()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Shadow/Opacity Options -->
+          <div id="shadowOptions" style="display: none; margin-top: 20px;">
             <label>Intensité de l'ombre</label>
             <div style="display: flex; gap: 10px; align-items: center;">
               <input type="range" id="shadowIntensity" min="0" max="1" step="0.1" value="0.4" onchange="updatePreview()">
               <span class="intensity-value" id="shadowValue">0.4</span>
+            </div>
+          </div>
+
+          <!-- Background Opacity (for Info widgets) -->
+          <div id="opacityOptions" style="display: none; margin-top: 20px;">
+            <label>Transparence du fond</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <input type="range" id="bgOpacity" min="0" max="1" step="0.1" value="0.5" onchange="updatePreview()">
+              <span class="intensity-value" id="opacityValue">0.5</span>
             </div>
           </div>
 
@@ -472,9 +495,15 @@
         'info_widget.html': {
           label: 'Info Standard',
           desc: 'Infos événement',
-          supportColors: false,
+          supportColors: true,
           supportCents: false,
-          showPreview: true
+          showPreview: true,
+          customOptions: {
+            themes: true,
+            textColor: true,
+            accentColor: true,
+            bgOpacity: true
+          }
         },
         'info_widget_vertical.html': {
           label: 'Info Vertical',
@@ -536,6 +565,16 @@
         selector.appendChild(btn);
       });
       selectCategory(Object.keys(overlaysByCategory)[0]);
+
+      // Add theme button event listeners
+      const themeSelector = document.getElementById('themeSelector');
+      if (themeSelector) {
+        themeSelector.querySelectorAll('.theme-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            applyTheme(btn.dataset.theme);
+          });
+        });
+      }
     }
 
     function selectCategory(cat) {
@@ -573,9 +612,15 @@
       const customOpts = document.getElementById('customOptions');
       const presetBtns = document.getElementById('presetButtons');
       const centsOpt = document.getElementById('centsOption');
+      const themeOpts = document.getElementById('themeOptions');
+      const colorOpts = document.getElementById('colorOptions');
+      const shadowOpts = document.getElementById('shadowOptions');
+      const opacityOpts = document.getElementById('opacityOptions');
 
-      if (currentOverlay.supportColors) {
+      // Cagnotte: Show colors + shadow + cents option
+      if (currentOverlay.file.includes('cdc_goal_widget')) {
         customOpts.style.display = 'block';
+        presetBtns.style.display = 'grid';
         presetBtns.innerHTML = '';
         ['default', 'dark', 'neon', 'pastel'].forEach(name => {
           const btn = document.createElement('button');
@@ -584,11 +629,35 @@
           btn.onclick = () => applyPreset(name);
           presetBtns.appendChild(btn);
         });
-      } else {
+        colorOpts.style.display = 'block';
+        shadowOpts.style.display = 'block';
+        opacityOpts.style.display = 'none';
+        themeOpts.style.display = 'none';
+        centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
+      }
+      // Info widgets: Show themes + colors + opacity
+      else if (currentOverlay.file.includes('info_widget')) {
+        customOpts.style.display = 'block';
+        presetBtns.style.display = 'none';
+        themeOpts.style.display = 'block';
+        colorOpts.style.display = 'block';
+        shadowOpts.style.display = 'none';
+        opacityOpts.style.display = 'block';
+        centsOpt.style.display = 'none';
+        
+        // Initialize theme buttons
+        const themeSelector = document.getElementById('themeSelector');
+        if (themeSelector) {
+          themeSelector.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.theme === 'light') btn.classList.add('active');
+          });
+        }
+      }
+      // Other overlays: Hide options
+      else {
         customOpts.style.display = 'none';
       }
-
-      centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
     }
 
     function applyPreset(name) {
@@ -599,46 +668,78 @@
       updatePreview();
     }
 
+    function applyTheme(theme) {
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === theme);
+      });
+      updatePreview();
+    }
+
     function updatePreview() {
       const textColor = document.getElementById('textColor').value;
       const accentColor = document.getElementById('accentColor').value;
       const shadowIntensity = document.getElementById('shadowIntensity').value;
+      const bgOpacity = document.getElementById('bgOpacity').value;
       const showCents = document.getElementById('showCents').checked;
 
+      // Get theme if available
+      const themeBtn = document.querySelector('.theme-btn.active');
+      const theme = themeBtn ? themeBtn.dataset.theme : 'light';
+
       if (currentOverlay.supportColors) {
-        document.getElementById('shadowValue').textContent = shadowIntensity;
+        if (currentOverlay.file.includes('cdc_goal_widget')) {
+          document.getElementById('shadowValue').textContent = shadowIntensity;
+        }
+        if (currentOverlay.file.includes('info_widget')) {
+          document.getElementById('opacityValue').textContent = bgOpacity;
+        }
       }
 
       const params = new URLSearchParams();
-      if (currentOverlay.supportColors) {
+      
+      // Cagnotte parameters
+      if (currentOverlay.file.includes('cdc_goal_widget')) {
         params.append('textColor', textColor);
         params.append('accentColor', accentColor);
         params.append('shadowIntensity', shadowIntensity);
+        if (currentOverlay.supportCents && showCents) {
+          params.append('showCents', 'true');
+        }
       }
-      if (currentOverlay.supportCents && showCents) {
-        params.append('showCents', 'true');
+      // Info parameters
+      else if (currentOverlay.file.includes('info_widget')) {
+        params.append('theme', theme);
+        params.append('textColor', textColor);
+        params.append('accentColor', accentColor);
+        params.append('bgOpacity', bgOpacity);
       }
 
       const fullUrl = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
       document.getElementById('generatedLink').textContent = fullUrl;
 
       // Render preview
-      renderPreview(textColor, accentColor, shadowIntensity, showCents);
+      renderPreview(textColor, accentColor, shadowIntensity, bgOpacity, showCents, theme);
     }
 
-    function renderPreview(textColor, accentColor, shadowIntensity, showCents) {
+    function renderPreview(textColor, accentColor, shadowIntensity, bgOpacity, showCents, theme) {
       const container = document.getElementById('previewContainer');
       container.innerHTML = '';
 
       if (currentOverlay.showPreview) {
         const params = new URLSearchParams();
-        if (currentOverlay.supportColors) {
+        
+        if (currentOverlay.file.includes('cdc_goal_widget')) {
           params.append('textColor', textColor);
           params.append('accentColor', accentColor);
           params.append('shadowIntensity', shadowIntensity);
-        }
-        if (currentOverlay.supportCents && showCents) {
-          params.append('showCents', 'true');
+          if (currentOverlay.supportCents && showCents) {
+            params.append('showCents', 'true');
+          }
+        } else if (currentOverlay.file.includes('info_widget')) {
+          params.append('theme', theme || 'light');
+          params.append('textColor', textColor);
+          params.append('accentColor', accentColor);
+          params.append('bgOpacity', bgOpacity);
         }
 
         const url = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
