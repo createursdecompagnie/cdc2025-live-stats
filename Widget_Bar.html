@@ -19,24 +19,28 @@
   --stage-scale: 1;
   --bar-bg: rgba(11,15,20,0.75);
   --fs: 1;
+  --numbers: #ffffff;
+  --logo-gradient-start: #FFE259;
+  --logo-gradient-end: #FFA751;
 }
 
 * { box-sizing:border-box; margin:0; padding:0; }
 html, body { 
-  width:100vw; height:100vh; 
+  width:100vw; height:100px; 
   background: transparent;
   color:var(--text);
   font-family:var(--font);
   overflow:hidden;
 }
 
-/* Fixed 1920x1080 stage scaled to fit viewport */
+/* Bar container */
 .stage {
   position: absolute;
-  left: 50%; top: 50%;
-  width: 1920px; height: 1080px;
-  transform: translate(-50%, -50%) scale(var(--stage-scale));
-  transform-origin: center center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100px;
+  transform-origin: left top;
 }
 
 /* Bottom taskbar - barre d'infos horizontale complète */
@@ -92,7 +96,7 @@ html, body {
 .goal-amount {
   font-weight: 800;
   font-size: calc(18px * var(--fs));
-  color: #fff;
+  color: var(--numbers);
 }
 
 /* Cagnotte perso (vide, prête pour contenu) */
@@ -130,7 +134,7 @@ html, body {
 
 .stat-value {
   font-weight: 700;
-  color: #fff;
+  color: var(--numbers);
 }
 
 /* Hashtag */
@@ -150,7 +154,7 @@ html, body {
 }
 
 .rainbow {
-  background: linear-gradient(90deg, #FFE259, #FFA751);
+  background: linear-gradient(90deg, var(--logo-gradient-start), var(--logo-gradient-end));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -191,7 +195,7 @@ body { font-family: "Outfit", var(--font); }
       <div class="stat-item">
   <span class="stat-icon">👥</span>
   <span class="stat-value" id="viewers-count">0</span>
-  <span class="small" id="viewers-label">participants</span>
+  <span class="small" id="viewers-label">viewers</span>
       </div>
       <div class="stat-item">
   <span class="stat-icon">🔴</span>
@@ -212,14 +216,6 @@ body { font-family: "Outfit", var(--font); }
 </div>
 
 <script>
-// Fit 1920x1080 stage to viewport
-function fitStage(){
-  const s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
-  document.documentElement.style.setProperty('--stage-scale', s);
-}
-window.addEventListener('resize', fitStage);
-fitStage();
-
 // URL params
 const url = new URLSearchParams(window.location.search);
 const CFG = {
@@ -231,7 +227,9 @@ const CFG = {
 if (CFG.accent) document.documentElement.style.setProperty('--accent', CFG.accent);
 // Color overrides
 if (url.get('text')) document.documentElement.style.setProperty('--text', url.get('text'));
-if (url.get('muted')) document.documentElement.style.setProperty('--muted', url.get('muted'));
+if (url.get('numbers')) document.documentElement.style.setProperty('--numbers', url.get('numbers'));
+if (url.get('logoGradientStart')) document.documentElement.style.setProperty('--logo-gradient-start', url.get('logoGradientStart'));
+if (url.get('logoGradientEnd')) document.documentElement.style.setProperty('--logo-gradient-end', url.get('logoGradientEnd'));
 if (url.get('barBg')) document.documentElement.style.setProperty('--bar-bg', url.get('barBg'));
 // Font scale overrides
 const fsParam = parseFloat(url.get('fs') || url.get('fontScale') || url.get('fontsize'));

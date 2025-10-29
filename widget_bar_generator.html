@@ -14,8 +14,11 @@
       --text: #f2f5f8;
       --muted: #96a0aa;
       --accent: #FCA000;
-      --accent-2: #104E59;
-      --radius: 12px;
+  --accent-2: #104E59;
+  --radius: 12px;
+  --numbers: #ffffff;
+  --logo-gradient-start: #FFE259;
+  --logo-gradient-end: #FFA751;
     }
 
     * { box-sizing: border-box; }
@@ -30,7 +33,7 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
       padding: 20px;
       display: flex;
@@ -39,13 +42,13 @@
     }
 
     h1 {
-      color: var(--accent);
+      color: #FCA000;
       margin: 0 0 20px 0;
     }
 
     .content {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
 
@@ -54,14 +57,25 @@
       background: var(--card);
       padding: 20px;
       border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview-container {
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius);
+      padding: 10px 0;
     }
 
     .full-preview iframe {
       width: 100%;
-      height: 180px;
+      height: 100px;
       border: none;
-      border-radius: var(--radius);
-      background: rgba(0,0,0,0.2);
     }
 
     .controls {
@@ -101,22 +115,102 @@
     }
 
     .section-preview {
-      width: 300px;
+      flex: 1;
+      min-width: 400px;
       background: rgba(0,0,0,0.2);
       border-radius: var(--radius);
-      padding: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .section-preview iframe {
+    .preview-sample {
+      padding: 20px;
+      border-radius: var(--radius);
+      background: var(--glass);
       width: 100%;
-      height: 100px;
-      border: none;
-      border-radius: calc(var(--radius) - 4px);
-      background: rgba(0,0,0,0.2);
+    }
+
+    .preview-colors-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .preview-label {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .preview-accent {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .preview-text {
+      font-size: 28px;
+      color: var(--text);
+    }
+
+    .preview-numbers {
+      font-size: 28px;
+      color: var(--numbers);
+    }
+
+    .preview-rainbow {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--logo-gradient-start), var(--logo-gradient-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .field-inline {
+      display: flex;
+      gap: 15px;
+    }
+
+    .field-group {
+      flex: 1;
+    }
+
+    .small-input {
+      width: 100%;
+    }
+
+    .preview-bg {
+      background: var(--bar-bg);
+      padding: 20px;
+      border-radius: var(--radius);
+    }
+
+    .preview-scale {
+      font-size: calc(24px * var(--fs));
+      color: var(--text);
+    }
+
+    .preview-hashtag {
+      font-size: 24px;
+      color: var(--text);
+    }
+
+    .preview-logo {
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .preview-placeholder {
+      font-size: 18px;
+      color: var(--muted);
     }
 
     h2 {
-      color: var(--accent);
+      color: #FCA000;
       margin: 0;
       font-size: 1.2em;
       display: flex;
@@ -183,7 +277,7 @@
     }
 
     .copy-button {
-      background: var(--accent);
+      background: #FCA000;
       color: black;
       border: none;
       padding: 8px 16px;
@@ -233,8 +327,16 @@
               <input type="color" id="text" value="#f2f5f8">
             </div>
             <div class="field">
-              <label>Couleur du texte secondaire</label>
-              <input type="color" id="muted" value="#96a0aa">
+              <label>Couleur des chiffres</label>
+              <input type="color" id="numbers" value="#ffffff">
+            </div>
+            <div class="field">
+              <label>Dégradé titre gauche — couleur 1</label>
+              <input type="color" id="logoGradientStart" value="#FFE259">
+            </div>
+            <div class="field">
+              <label>Dégradé titre gauche — couleur 2</label>
+              <input type="color" id="logoGradientEnd" value="#FFA751">
             </div>
             <div class="field">
               <label>Couleur de fond de la barre</label>
@@ -243,7 +345,30 @@
             </div>
           </div>
           <div class="section-preview">
-            <iframe id="preview-colors" src=""></iframe>
+            <div class="preview-sample">
+              <div class="preview-colors-grid">
+                <div>
+                  <div class="preview-label">Couleur stats (accent)</div>
+                  <div class="preview-accent">Cagnotte &amp; titre droite</div>
+                </div>
+                <div>
+                  <div class="preview-label">Titre gauche (dégradé)</div>
+                  <div class="preview-rainbow">CDC2025</div>
+                </div>
+                <div>
+                  <div class="preview-label">Texte principal</div>
+                  <div class="preview-text">viewers / en ligne</div>
+                </div>
+                <div>
+                  <div class="preview-label">Chiffres</div>
+                  <div class="preview-numbers">12 345 € • 256 viewers</div>
+                </div>
+                <div>
+                  <div class="preview-label">Fond de la barre</div>
+                  <div class="preview-bg">Aperçu du fond</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -258,7 +383,9 @@
             </div>
           </div>
           <div class="section-preview">
-            <iframe id="preview-font" src=""></iframe>
+            <div class="preview-sample">
+              <div class="preview-scale">CDC2025</div>
+            </div>
           </div>
         </div>
       </div>
@@ -268,16 +395,24 @@
         <div class="section-content">
           <div class="section-controls">
             <div class="field">
-              <label>Hashtag</label>
-              <input type="text" id="hashtag" value="#CDC2025" placeholder="#CDC2025">
+              <label>Texte fin de barre</label>
+              <input type="text" id="hashtag" value="Protection Animale" placeholder="Protection Animale">
             </div>
             <div class="field">
-              <label>URL du Logo</label>
-              <input type="url" id="logo" placeholder="https://exemple.com/logo.png">
+              <label>Émote + texte</label>
+              <input type="url" id="logo" placeholder="URL de l'émote" class="small-input">
             </div>
           </div>
           <div class="section-preview">
-            <iframe id="preview-content" src=""></iframe>
+              <div class="preview-sample">
+                <div class="preview-label">Aperçu fin de barre</div>
+                <div class="preview-text" id="preview-hashtag-text">Protection Animale</div>
+                <div class="preview-label" style="margin-top: 20px">Aperçu émote + texte</div>
+                <div class="preview-emote-group">
+                  <img class="preview-logo" id="preview-logo-img" src="" style="display: none">
+                  <span class="preview-placeholder" id="preview-logo-placeholder">Ajoutez une émote pour la prévisualiser</span>
+                </div>
+              </div>
           </div>
         </div>
       </div>
@@ -291,12 +426,25 @@
 
     <div class="full-preview">
       <h2><span class="icon">👁️</span> Aperçu complet</h2>
-      <iframe id="preview-full" src=""></iframe>
+      <div class="preview-container">
+        <iframe id="preview-full" src=""></iframe>
+      </div>
     </div>
   </div>
 
   <script>
-    const BASE_URL = 'https://createursdecompagnie.github.io/cdc2025-live-stats/Widget_Bar.html';
+  const BASE_URL = 'Widget_Bar.html';
+  const DEFAULTS = {
+    accent: '#FCA000',
+    text: '#f2f5f8',
+    numbers: '#ffffff',
+    logoGradientStart: '#FFE259',
+    logoGradientEnd: '#FFA751',
+    barBg: '#000000',
+    barBgAlpha: '0.4',
+    fontScale: '1.0',
+    hashtag: 'Protection Animale'
+  };
     let tooltip = null;
 
     function showTooltip(text, x, y) {
@@ -335,64 +483,96 @@
 
     function updateUrl() {
       const params = new URLSearchParams();
-      
+
       // Personnalisation
       const accent = document.getElementById('accent').value;
-      if (accent !== '#FCA000') params.set('accent', accent);
+      if (accent.toLowerCase() !== DEFAULTS.accent.toLowerCase()) {
+        params.set('accent', accent);
+      }
 
       const text = document.getElementById('text').value;
-      if (text !== '#f2f5f8') params.set('text', text);
+      if (text.toLowerCase() !== DEFAULTS.text.toLowerCase()) {
+        params.set('text', text);
+      }
 
-      const muted = document.getElementById('muted').value;
-      if (muted !== '#96a0aa') params.set('muted', muted);
+      const numbers = document.getElementById('numbers').value;
+      if (numbers.toLowerCase() !== DEFAULTS.numbers.toLowerCase()) {
+        params.set('numbers', numbers);
+      }
 
-      const barBg = document.getElementById('barBg').value;
+      const gradientStart = document.getElementById('logoGradientStart').value;
+      if (gradientStart.toLowerCase() !== DEFAULTS.logoGradientStart.toLowerCase()) {
+        params.set('logoGradientStart', gradientStart);
+      }
+
+      const gradientEnd = document.getElementById('logoGradientEnd').value;
+      if (gradientEnd.toLowerCase() !== DEFAULTS.logoGradientEnd.toLowerCase()) {
+        params.set('logoGradientEnd', gradientEnd);
+      }
+
+      const barBgHex = document.getElementById('barBg').value;
       const barBgAlpha = document.getElementById('barBgAlpha').value;
-      if (barBg !== '#000000' || barBgAlpha !== '0.4') {
-        const rgba = `rgba(${parseInt(barBg.slice(1,3),16)},${parseInt(barBg.slice(3,5),16)},${parseInt(barBg.slice(5,7),16)},${barBgAlpha})`;
-        params.set('barBg', rgba);
+      const parsedBg = `rgba(${parseInt(barBgHex.slice(1, 3), 16)},${parseInt(barBgHex.slice(3, 5), 16)},${parseInt(barBgHex.slice(5, 7), 16)},${barBgAlpha})`;
+      const isDefaultBg = barBgHex.toLowerCase() === DEFAULTS.barBg.toLowerCase() && barBgAlpha === DEFAULTS.barBgAlpha;
+      if (!isDefaultBg) {
+        params.set('barBg', parsedBg);
       }
 
       // Taille du texte
       const fontScale = document.getElementById('fontScale').value;
-      if (fontScale !== '1.0') params.set('fs', fontScale);
+      if (fontScale !== DEFAULTS.fontScale) {
+        params.set('fs', fontScale);
+      }
 
       // Contenu
-      const hashtag = document.getElementById('hashtag').value;
-      if (hashtag && hashtag !== '#CDC2025') params.set('hashtag', hashtag);
+      const hashtagInput = document.getElementById('hashtag');
+      const hashtag = hashtagInput.value.trim();
+      if (hashtag && hashtag !== DEFAULTS.hashtag) {
+        params.set('hashtag', hashtag);
+      }
 
-      const logo = document.getElementById('logo').value;
-      if (logo) params.set('logo', logo);
+      const logoInput = document.getElementById('logo');
+      const logo = logoInput.value.trim();
+      if (logo) {
+        params.set('logo', logo);
+      }
 
       // Générer l'URL finale
       const url = `${BASE_URL}${params.toString() ? '?' + params.toString() : ''}`;
-      
+
       // Mettre à jour l'affichage
       document.getElementById('url').textContent = url;
-      // Mettre à jour tous les aperçus
       document.getElementById('preview-full').src = url;
-      
-      // Aperçu des couleurs uniquement
-      const colorParams = new URLSearchParams();
-      if (accent !== '#FCA000') colorParams.set('accent', accent);
-      if (text !== '#f2f5f8') colorParams.set('text', text);
-      if (muted !== '#96a0aa') colorParams.set('muted', muted);
-      if (barBg !== '#000000' || barBgAlpha !== '0.4') {
-        const rgba = `rgba(${parseInt(barBg.slice(1,3),16)},${parseInt(barBg.slice(3,5),16)},${parseInt(barBg.slice(5,7),16)},${barBgAlpha})`;
-        colorParams.set('barBg', rgba);
+
+      const defaultBgRgba = `rgba(${parseInt(DEFAULTS.barBg.slice(1, 3), 16)},${parseInt(DEFAULTS.barBg.slice(3, 5), 16)},${parseInt(DEFAULTS.barBg.slice(5, 7), 16)},${DEFAULTS.barBgAlpha})`;
+
+      // Mettre à jour les aperçus simplifiés
+      document.documentElement.style.setProperty('--accent', accent);
+      document.documentElement.style.setProperty('--text', text);
+      document.documentElement.style.setProperty('--numbers', numbers);
+      document.documentElement.style.setProperty('--logo-gradient-start', gradientStart);
+      document.documentElement.style.setProperty('--logo-gradient-end', gradientEnd);
+      document.documentElement.style.setProperty('--bar-bg', isDefaultBg ? defaultBgRgba : parsedBg);
+      document.documentElement.style.setProperty('--fs', fontScale);
+
+      // Mettre à jour le contenu
+      document.getElementById('preview-hashtag-text').textContent = hashtag || DEFAULTS.hashtag;
+      const logoImg = document.getElementById('preview-logo-img');
+      const logoPlaceholder = document.getElementById('preview-logo-placeholder');
+
+      if (logo) {
+        logoImg.src = logo;
+        logoImg.style.display = 'block';
+        if (logoPlaceholder) {
+          logoPlaceholder.style.display = 'none';
+        }
+      } else {
+        logoImg.style.display = 'none';
+        logoImg.removeAttribute('src');
+        if (logoPlaceholder) {
+          logoPlaceholder.style.display = 'inline';
+        }
       }
-      document.getElementById('preview-colors').src = `${BASE_URL}${colorParams.toString() ? '?' + colorParams.toString() : ''}`;
-
-      // Aperçu de la taille de police uniquement
-      const fontParams = new URLSearchParams();
-      if (fontScale !== '1.0') fontParams.set('fs', fontScale);
-      document.getElementById('preview-font').src = `${BASE_URL}${fontParams.toString() ? '?' + fontParams.toString() : ''}`;
-
-      // Aperçu du contenu uniquement
-      const contentParams = new URLSearchParams();
-      if (hashtag && hashtag !== '#CDC2025') contentParams.set('hashtag', hashtag);
-      if (logo) contentParams.set('logo', logo);
-      document.getElementById('preview-content').src = `${BASE_URL}${contentParams.toString() ? '?' + contentParams.toString() : ''}`;
     }
 
     // Ajouter les événements sur tous les champs
