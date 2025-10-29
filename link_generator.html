@@ -394,9 +394,9 @@
           <div id="themeOptions" style="display: none; margin-bottom: 20px;">
             <label style="color: #FCA000; font-weight: 600;">Thème</label>
             <div class="category-selector" id="themeSelector">
-              <button class="category-btn theme-btn" data-theme="light">☀️ Light</button>
-              <button class="category-btn theme-btn" data-theme="dark">🌙 Dark</button>
-              <button class="category-btn theme-btn" data-theme="auto">⚙️ Auto</button>
+              <button class="category-btn theme-btn" data-theme="light" onclick="applyTheme('light')">☀️ Light</button>
+              <button class="category-btn theme-btn" data-theme="dark" onclick="applyTheme('dark')">🌙 Dark</button>
+              <button class="category-btn theme-btn" data-theme="auto" onclick="applyTheme('auto')">⚙️ Auto</button>
             </div>
           </div>
 
@@ -565,16 +565,6 @@
         selector.appendChild(btn);
       });
       selectCategory(Object.keys(overlaysByCategory)[0]);
-
-      // Add theme button event listeners
-      const themeSelector = document.getElementById('themeSelector');
-      if (themeSelector) {
-        themeSelector.querySelectorAll('.theme-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            applyTheme(btn.dataset.theme);
-          });
-        });
-      }
     }
 
     function selectCategory(cat) {
@@ -594,21 +584,29 @@
         btn.className = 'overlay-btn';
         btn.textContent = info.label;
         btn.title = info.desc;
-        btn.onclick = () => selectOverlay(file, info);
+        btn.onclick = (e) => selectOverlay(file, info, btn);
         grid.appendChild(btn);
       });
-      selectOverlay(Object.keys(overlays)[0], Object.values(overlays)[0]);
+      // Select first overlay
+      const firstBtn = grid.querySelector('.overlay-btn');
+      const firstFile = Object.keys(overlays)[0];
+      const firstInfo = Object.values(overlays)[0];
+      selectOverlay(firstFile, firstInfo, firstBtn);
     }
 
-    function selectOverlay(file, info) {
+    function selectOverlay(file, info, btnElement) {
       currentOverlay = { file, ...info };
       document.querySelectorAll('.overlay-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+      if (btnElement) {
+        btnElement.classList.add('active');
+      }
       updateCustomOptions();
       updatePreview();
     }
 
     function updateCustomOptions() {
+      if (!currentOverlay) return;
+
       const customOpts = document.getElementById('customOptions');
       const presetBtns = document.getElementById('presetButtons');
       const centsOpt = document.getElementById('centsOption');
@@ -629,21 +627,21 @@
           btn.onclick = () => applyPreset(name);
           presetBtns.appendChild(btn);
         });
-        colorOpts.style.display = 'block';
-        shadowOpts.style.display = 'block';
-        opacityOpts.style.display = 'none';
-        themeOpts.style.display = 'none';
-        centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
+        if (colorOpts) colorOpts.style.display = 'block';
+        if (shadowOpts) shadowOpts.style.display = 'block';
+        if (opacityOpts) opacityOpts.style.display = 'none';
+        if (themeOpts) themeOpts.style.display = 'none';
+        if (centsOpt) centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
       }
       // Info widgets: Show themes + colors + opacity
       else if (currentOverlay.file.includes('info_widget')) {
         customOpts.style.display = 'block';
         presetBtns.style.display = 'none';
-        themeOpts.style.display = 'block';
-        colorOpts.style.display = 'block';
-        shadowOpts.style.display = 'none';
-        opacityOpts.style.display = 'block';
-        centsOpt.style.display = 'none';
+        if (themeOpts) themeOpts.style.display = 'block';
+        if (colorOpts) colorOpts.style.display = 'block';
+        if (shadowOpts) shadowOpts.style.display = 'none';
+        if (opacityOpts) opacityOpts.style.display = 'block';
+        if (centsOpt) centsOpt.style.display = 'none';
         
         // Initialize theme buttons
         const themeSelector = document.getElementById('themeSelector');
@@ -669,18 +667,31 @@
     }
 
     function applyTheme(theme) {
-      document.querySelectorAll('.theme-btn').forEach(btn => {
+      const themeSelector = document.getElementById('themeSelector');
+      if (!themeSelector) return;
+      
+      // Update button states
+      themeSelector.querySelectorAll('.theme-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === theme);
       });
+      
+      // Update preview
       updatePreview();
     }
 
     function updatePreview() {
-      const textColor = document.getElementById('textColor').value;
-      const accentColor = document.getElementById('accentColor').value;
-      const shadowIntensity = document.getElementById('shadowIntensity').value;
-      const bgOpacity = document.getElementById('bgOpacity').value;
-      const showCents = document.getElementById('showCents').checked;
+      // Get values safely, with fallbacks
+      const textColorEl = document.getElementById('textColor');
+      const accentColorEl = document.getElementById('accentColor');
+      const shadowIntensityEl = document.getElementById('shadowIntensity');
+      const bgOpacityEl = document.getElementById('bgOpacity');
+      const showCentsEl = document.getElementById('showCents');
+
+      const textColor = textColorEl ? textColorEl.value : '#ffffff';
+      const accentColor = accentColorEl ? accentColorEl.value : '#FCA000';
+      const shadowIntensity = shadowIntensityEl ? shadowIntensityEl.value : '0.4';
+      const bgOpacity = bgOpacityEl ? bgOpacityEl.value : '0.5';
+      const showCents = showCentsEl ? showCentsEl.checked : false;
 
       // Get theme if available
       const themeBtn = document.querySelector('.theme-btn.active');
@@ -688,10 +699,12 @@
 
       if (currentOverlay.supportColors) {
         if (currentOverlay.file.includes('cdc_goal_widget')) {
-          document.getElementById('shadowValue').textContent = shadowIntensity;
+          const shadowVal = document.getElementById('shadowValue');
+          if (shadowVal) shadowVal.textContent = shadowIntensity;
         }
         if (currentOverlay.file.includes('info_widget')) {
-          document.getElementById('opacityValue').textContent = bgOpacity;
+          const opacityVal = document.getElementById('opacityValue');
+          if (opacityVal) opacityVal.textContent = bgOpacity;
         }
       }
 
@@ -715,7 +728,8 @@
       }
 
       const fullUrl = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
-      document.getElementById('generatedLink').textContent = fullUrl;
+      const linkEl = document.getElementById('generatedLink');
+      if (linkEl) linkEl.textContent = fullUrl;
 
       // Render preview
       renderPreview(textColor, accentColor, shadowIntensity, bgOpacity, showCents, theme);
