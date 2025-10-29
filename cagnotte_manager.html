@@ -15,11 +15,8 @@
       min-height: 100vh;
     }
     .container {
-      max-width: 1400px;
+      max-width: 600px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
     }
     .panel {
       background: rgba(0,0,0,0.4);
@@ -31,13 +28,7 @@
     h1 {
       color: #FCA000;
       margin-top: 0;
-      grid-column: 1/-1;
-    }
-    h2 {
-      color: #FCA000;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 1.2em;
+      text-align: center;
     }
     .field {
       margin-bottom: 15px;
@@ -47,10 +38,11 @@
       font-size: 0.9em;
       color: #a7b1bd;
       margin-bottom: 5px;
+      font-weight: 500;
     }
     input[type="number"], input[type="password"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 6px;
@@ -64,7 +56,7 @@
       background: rgba(0,0,0,0.5);
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 20px;
       background: #FCA000;
       color: black;
       border: none;
@@ -73,17 +65,22 @@
       cursor: pointer;
       transition: opacity 0.2s;
       font-size: 1em;
+      width: 100%;
     }
-    button:hover {
+    button:hover:not(:disabled) {
       opacity: 0.9;
     }
-    button:active {
+    button:active:not(:disabled) {
       opacity: 0.8;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     .button-group {
       display: flex;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 15px;
     }
     .button-group button {
       flex: 1;
@@ -93,128 +90,120 @@
       border: 1px solid rgba(252,160,0,0.3);
       border-radius: 6px;
       padding: 15px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       font-size: 0.95em;
+    }
+    .info-label {
+      color: #a7b1bd;
+      font-size: 0.85em;
+      margin-bottom: 8px;
     }
     .amount {
       font-family: monospace;
       font-weight: 600;
       color: #FFE259;
-      font-size: 1.1em;
+      font-size: 1.8em;
     }
     .status {
-      font-size: 0.85em;
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 4px;
+      font-size: 0.95em;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
       text-align: center;
+      display: none;
+    }
+    .status.show {
+      display: block;
     }
     .status.success {
       background: rgba(100, 200, 100, 0.2);
       color: #64c864;
+      border: 1px solid rgba(100, 200, 100, 0.4);
     }
     .status.error {
       background: rgba(200, 100, 100, 0.2);
-      color: #c86464;
+      color: #ff6b6b;
+      border: 1px solid rgba(200, 100, 100, 0.4);
     }
     .status.loading {
       background: rgba(100, 150, 200, 0.2);
       color: #6496c8;
+      border: 1px solid rgba(100, 150, 200, 0.4);
     }
-    .preview {
-      background: rgba(0,0,0,0.5);
-      border-radius: 6px;
-      padding: 20px;
-      text-align: center;
-      margin-top: 15px;
-    }
-    .preview-label {
-      font-size: 0.85em;
+    .help {
+      font-size: 0.8em;
       color: #a7b1bd;
-      margin-bottom: 10px;
+      margin-top: 8px;
+      line-height: 1.4;
     }
-    .preview-amount {
-      font-size: 2.5em;
-      font-weight: 900;
-      color: #FFE259;
-      font-family: monospace;
-      margin-bottom: 5px;
+    .help a {
+      color: #FCA000;
+      text-decoration: none;
     }
-    .widget-container {
-      background: rgba(0,0,0,0.3);
-      border-radius: 6px;
-      padding: 15px;
-      height: 250px;
-      overflow-y: auto;
-      margin-top: 15px;
-      font-size: 0.9em;
-    }
-    iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-      border-radius: 6px;
-      background: rgba(0,0,0,0.2);
-    }
-    .no-token {
-      color: #c86464;
-      font-size: 0.85em;
-      margin-top: 10px;
+    .help a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>🐾 Gestionnaire Cagnotte CDC2025</h1>
+  <h1>Gestionnaire Cagnotte CDC2025</h1>
 
   <div class="container">
-    <!-- Panel Contrôle -->
     <div class="panel">
-      <h2>⚙️ Contrôle</h2>
-
       <div class="field">
         <label>Token GitHub personnel</label>
         <input type="password" id="ghToken" placeholder="ghp_..." title="Ton token GitHub personnel">
-        <small style="color: #a7b1bd; font-size: 0.8em; display: block; margin-top: 5px;">
-          📝 Génère un token sur <a href="https://github.com/settings/tokens" target="_blank" style="color: #FCA000;">github.com/settings/tokens</a>
-        </small>
+        <div class="help">
+          📝 Crée un token sur <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a><br>
+          Scopes: <code>repo</code> (full control of private repositories)
+        </div>
       </div>
 
       <div class="info-box">
-        <strong>Montant brut (Streamlabs):</strong>
-        <div class="amount" id="brutAmount">Chargement...</div>
+        <div class="info-label">Montants actuels</div>
+        <div style="margin-top: 10px;">
+          <div style="margin-bottom: 12px;">
+            <div style="color: #a7b1bd; font-size: 0.85em; margin-bottom: 5px;">Streamlabs (lecture seule)</div>
+            <div class="amount" id="streamlabsAmount">- €</div>
+            <small style="color: #a7b1bd;">Verifie sur https://streamlabs.com</small>
+          </div>
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; margin-top: 10px;">
+            <div style="color: #a7b1bd; font-size: 0.85em; margin-bottom: 5px;">Ajouts bonus (manager)</div>
+            <div class="amount" id="ajoutsAmount">0 €</div>
+            <small style="color: #a7b1bd;">T-shirts, cash, etc.</small>
+          </div>
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; margin-top: 10px;">
+            <div style="color: #a7b1bd; font-size: 0.85em; margin-bottom: 5px;">Total affiché sur widgets</div>
+            <div class="amount" id="totalAmount">- €</div>
+            <small style="color: #a7b1bd;">Ce que voient les createurs</small>
+          </div>
+        </div>
       </div>
 
       <div class="field">
-        <label>Ajouter/retirer (€)</label>
-        <input type="number" id="ajoutInput" placeholder="ex: 150.50" step="0.01" value="0">
+        <label>Ajouter/retirer un montant (€)</label>
+        <input type="number" id="ajoutInput" placeholder="ex: 50.00" step="0.01" min="0">
       </div>
 
       <div class="button-group">
-        <button onclick="addAmount()">+ Ajouter</button>
-        <button onclick="removeAmount()">- Retirer</button>
+        <button id="btnAdd" onclick="addAmount()">✓ Ajouter</button>
+        <button id="btnRemove" onclick="removeAmount()">✗ Retirer</button>
       </div>
 
-      <button style="width: 100%; margin-top: 10px;" onclick="saveToGit()">💾 Sauvegarder sur Git</button>
-      <button style="width: 100%; margin-top: 10px;" onclick="reloadConfig()">🔄 Recharger</button>
+      <button id="btnSave" style="margin-top: 15px;" onclick="saveToGit()">Sauvegarder sur GitHub</button>
 
-      <div id="status" class="status" style="display: none;"></div>
+      <div id="status" class="status"></div>
 
-      <div class="preview">
-        <div class="preview-label">Montant total affiché</div>
-        <div class="preview-amount" id="totalAmount">0,00 €</div>
-        <small style="color: #a7b1bd;">Brut + Ajouts</small>
+      <div class="help" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <strong>Comment ça marche:</strong>
+        <ol style="margin: 10px 0; padding-left: 20px;">
+          <li>Le montant Streamlabs se met à jour automatiquement</li>
+          <li>Tu ajoutes/retires des montants bonus (t-shirts, cash, etc.)</li>
+          <li>Clique "Sauvegarder sur GitHub"</li>
+          <li>Les widgets affichent: Streamlabs + Ajouts</li>
+          <li>Mise à jour visible en 1-5 secondes</li>
+        </ol>
       </div>
-    </div>
-
-    <!-- Panel Widgets -->
-    <div class="panel">
-      <h2>👁️ Aperçu des widgets</h2>
-
-      <h3 style="margin-top: 20px; color: #a7b1bd; font-size: 1em;">Complet (avec branding)</h3>
-      <iframe id="previewFull" src="about:blank"></iframe>
-
-      <h3 style="margin-top: 20px; color: #a7b1bd; font-size: 1em;">Simple (juste montant)</h3>
-      <iframe id="previewSimple" src="about:blank"></iframe>
     </div>
   </div>
 
@@ -224,90 +213,114 @@
     const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${CONFIG_FILE}`;
     const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
 
-    let config = { brut: 0, ajouts: 0 };
+    let configFromGit = null; // La vérité absolue = ce qu'on lit de GitHub
+    let streamlabsAmount = 0;
+    let streamlabsInputField = null; // Pour stocker la valeur saisie
 
     function showStatus(message, type = 'loading') {
       const el = document.getElementById('status');
       el.textContent = message;
-      el.className = `status ${type}`;
-      el.style.display = 'block';
-      if (type === 'success') {
-        setTimeout(() => { el.style.display = 'none'; }, 3000);
-      }
-    }
-
-    async function reloadConfig() {
-      showStatus('Chargement de la configuration...', 'loading');
-      try {
-        const response = await fetch(RAW_URL);
-        if (!response.ok) throw new Error('Impossible de charger le fichier');
-        config = await response.json();
-        updateDisplay();
-        showStatus('Configuration chargée ✓', 'success');
-      } catch (err) {
-        showStatus(`Erreur: ${err.message}`, 'error');
+      el.className = `status show ${type}`;
+      if (type !== 'loading') {
+        setTimeout(() => { el.classList.remove('show'); }, 4000);
       }
     }
 
     function updateDisplay() {
-      const brut = parseFloat(config.brut) || 0;
-      const ajouts = parseFloat(config.ajouts) || 0;
+      if (!configFromGit) {
+        document.getElementById('streamlabsAmount').textContent = '-';
+        document.getElementById('ajoutsAmount').textContent = '-';
+        document.getElementById('totalAmount').textContent = '-';
+        return;
+      }
+      
+      // Afficher Streamlabs (brut) - stocké dans le JSON
+      const brut = parseFloat(configFromGit.brut) || 0;
+      document.getElementById('streamlabsAmount').textContent = brut.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+      
+      // Afficher les ajouts
+      const ajouts = parseFloat(configFromGit.ajouts) || 0;
+      document.getElementById('ajoutsAmount').textContent = ajouts.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+      
+      // Afficher le total
       const total = brut + ajouts;
-
-      document.getElementById('brutAmount').textContent = brut.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
       document.getElementById('totalAmount').textContent = total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+    }
 
-      // Mise à jour des aperçus
-      document.getElementById('previewFull').src = `cdc_goal_widget.html?v=${Date.now()}`;
-      document.getElementById('previewSimple').src = `cdc_goal_widget_simple.html?v=${Date.now()}`;
+    async function reloadFromGit() {
+      try {
+        // Force refresh cache
+        const url = RAW_URL + '?t=' + Date.now() + '&_=' + Math.random();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Impossible de charger le fichier');
+        configFromGit = await response.json();
+        updateDisplay();
+        return true;
+      } catch (err) {
+        showStatus(`Erreur lecture: ${err.message}`, 'error');
+        return false;
+      }
     }
 
     function addAmount() {
       const input = document.getElementById('ajoutInput');
       const montant = parseFloat(input.value);
-      if (isNaN(montant) || montant === 0) {
-        showStatus('Rentre un montant valide', 'error');
+      if (isNaN(montant) || montant <= 0) {
+        showStatus('Entre un montant valide', 'error');
         return;
       }
-      config.ajouts = (parseFloat(config.ajouts) || 0) + montant;
+      if (!configFromGit) {
+        showStatus('Charge d\'abord les données', 'error');
+        return;
+      }
+      configFromGit.ajouts = (parseFloat(configFromGit.ajouts) || 0) + montant;
       updateDisplay();
       input.value = '0';
-      showStatus(`+${montant.toFixed(2)}€ ajouté ✓`, 'success');
     }
 
     function removeAmount() {
       const input = document.getElementById('ajoutInput');
       const montant = parseFloat(input.value);
-      if (isNaN(montant) || montant === 0) {
-        showStatus('Rentre un montant valide', 'error');
+      if (isNaN(montant) || montant <= 0) {
+        showStatus('Entre un montant valide', 'error');
         return;
       }
-      config.ajouts = Math.max(0, (parseFloat(config.ajouts) || 0) - montant);
+      if (!configFromGit) {
+        showStatus('Charge d\'abord les données', 'error');
+        return;
+      }
+      configFromGit.ajouts = Math.max(0, (parseFloat(configFromGit.ajouts) || 0) - montant);
       updateDisplay();
       input.value = '0';
-      showStatus(`-${montant.toFixed(2)}€ retiré ✓`, 'success');
     }
 
     async function saveToGit() {
       const token = document.getElementById('ghToken').value.trim();
       if (!token) {
-        showStatus('⚠️ Ajoute ton token GitHub pour sauvegarder', 'error');
+        showStatus('Ajoute ton token GitHub', 'error');
+        return;
+      }
+      if (!configFromGit) {
+        showStatus('Charge les données d\'abord', 'error');
         return;
       }
 
-      showStatus('Sauvegarde sur Git...', 'loading');
+      const btnSave = document.getElementById('btnSave');
+      btnSave.disabled = true;
+
+      showStatus('Sauvegarde en cours...', 'loading');
 
       try {
-        // Récupérer le SHA du fichier actuel
+        // Récupérer le SHA du fichier
         const getResponse = await fetch(API_URL, {
           headers: { 'Authorization': `token ${token}` }
         });
         if (!getResponse.ok) throw new Error('Impossible de récupérer le fichier');
         const fileData = await getResponse.json();
 
-        config.lastModified = new Date().toISOString();
+        configFromGit.lastModified = new Date().toISOString();
 
-        // Mettre à jour le fichier
+        // Sauvegarder
         const updateResponse = await fetch(API_URL, {
           method: 'PUT',
           headers: {
@@ -315,24 +328,37 @@
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            message: `🔄 Update cagnotte: brut=${config.brut}€, ajouts=${config.ajouts}€`,
-            content: btoa(JSON.stringify(config, null, 2)),
+            message: `Update cagnotte: ajouts=${configFromGit.ajouts}€`,
+            content: btoa(JSON.stringify(configFromGit, null, 2)),
             sha: fileData.sha
           })
         });
 
         if (!updateResponse.ok) throw new Error('Erreur lors de la sauvegarde');
-        showStatus('✓ Sauvegardé sur Git ! Les widgets vont se mettre à jour...', 'success');
+        showStatus('✓ Sauvegardé!', 'success');
         
-        // Recharger après 2 secondes
-        setTimeout(reloadConfig, 2000);
+        // Recharger après 1 seconde
+        setTimeout(async () => {
+          showStatus('Actualisation en cours...', 'loading');
+          await reloadFromGit();
+          showStatus('✓ Widgets en cours de mise à jour...', 'success');
+          btnSave.disabled = false;
+        }, 1000);
+
       } catch (err) {
         showStatus(`Erreur: ${err.message}`, 'error');
+        btnSave.disabled = false;
       }
     }
 
     // Charger au démarrage
-    reloadConfig();
+    (async () => {
+      showStatus('Chargement initial...', 'loading');
+      await reloadFromGit();
+      if (configFromGit) {
+        showStatus('✓ Prêt!', 'success');
+      }
+    })();
   </script>
 </body>
 </html>
