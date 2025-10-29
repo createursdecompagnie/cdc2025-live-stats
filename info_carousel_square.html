@@ -47,13 +47,20 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:transparent;color
     </div>
   </div>
 <script>
-// Scaling: design 600x600; use ?size= e.g., 480
+// Scaling: design 600x600; use ?size= e.g., 480 or ?scale=1 for no scaling
 function fit(){
   const target=600;
   const p=new URLSearchParams(location.search);
   const forced=parseInt(p.get('size')||'',10);
-  const cw=document.documentElement.clientWidth||window.innerWidth||target;
-  const s=(forced? (forced/target):(cw/target));
+  const forceScale=parseFloat(p.get('scale')||'');
+  let s=1; // Default scale to 1
+  if(!isNaN(forceScale)){
+    s=forceScale; // Explicit scale parameter
+  }else if(forced){
+    s=forced/target; // ?size parameter takes precedence
+  }else{
+    s=Math.max(1, (document.documentElement.clientWidth||window.innerWidth||target)/target); // Only scale UP if needed, min 1
+  }
   document.documentElement.style.setProperty('--scale', String(s));
   document.body.style.width=Math.round(target*s)+'px';
   document.body.style.height=Math.round(target*s)+'px';
