@@ -160,6 +160,7 @@ document.documentElement.style.setProperty('--fontScale', String(FONT_SCALE));
 const textColor = params.get('textColor') || '#f2f5f8';
 const accentColor = params.get('accentColor') || '#FCA000';
 const shadowIntensity = parseFloat(params.get('shadowIntensity')) || 0.3;
+const showCents = params.get('showCents') === 'true' || params.get('showCents') === '1';
 
 document.documentElement.style.setProperty('--text', textColor);
 document.documentElement.style.setProperty('--accent', accentColor);
@@ -192,9 +193,14 @@ const CFG = {
    UTILITY FUNCTION - CURRENCY FORMATTING
    ============================================================================
    Formats numbers as French currency (1234 → "1 234 €")
-   Uses French locale with space separator, no decimals
+   Uses French locale with space separator, centimes optional
    ============================================================================ */
-function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
+function fmt(n){ 
+  return new Intl.NumberFormat('fr-FR', {
+    minimumFractionDigits: showCents ? 2 : 0,
+    maximumFractionDigits: showCents ? 2 : 0
+  }).format(n) + ' €'; 
+}
 
 /* ============================================================================
    ANIMATION FLUIDE DU COMPTEUR
