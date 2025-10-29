@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestionnaire Cagnotte CDC2025</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0f14;
+      color: #f2f5f8;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .panel {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      color: #FCA000;
+      margin-top: 0;
+      grid-column: 1/-1;
+    }
+    h2 {
+      color: #FCA000;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+    .field {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-size: 0.9em;
+      color: #a7b1bd;
+      margin-bottom: 5px;
+    }
+    input[type="number"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: #f2f5f8;
+      font-size: 1em;
+      font-family: monospace;
+    }
+    input[type="number"]:focus, input[type="password"]:focus {
+      outline: none;
+      border-color: #FCA000;
+      background: rgba(0,0,0,0.5);
+    }
+    button {
+      padding: 10px 20px;
+      background: #FCA000;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-size: 1em;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    button:active {
+      opacity: 0.8;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .button-group button {
+      flex: 1;
+    }
+    .info-box {
+      background: rgba(252,160,0,0.1);
+      border: 1px solid rgba(252,160,0,0.3);
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      font-size: 0.95em;
+    }
+    .amount {
+      font-family: monospace;
+      font-weight: 600;
+      color: #FFE259;
+      font-size: 1.1em;
+    }
+    .status {
+      font-size: 0.85em;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .status.success {
+      background: rgba(100, 200, 100, 0.2);
+      color: #64c864;
+    }
+    .status.error {
+      background: rgba(200, 100, 100, 0.2);
+      color: #c86464;
+    }
+    .status.loading {
+      background: rgba(100, 150, 200, 0.2);
+      color: #6496c8;
+    }
+    .preview {
+      background: rgba(0,0,0,0.5);
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .preview-label {
+      font-size: 0.85em;
+      color: #a7b1bd;
+      margin-bottom: 10px;
+    }
+    .preview-amount {
+      font-size: 2.5em;
+      font-weight: 900;
+      color: #FFE259;
+      font-family: monospace;
+      margin-bottom: 5px;
+    }
+    .widget-container {
+      background: rgba(0,0,0,0.3);
+      border-radius: 6px;
+      padding: 15px;
+      height: 250px;
+      overflow-y: auto;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+    iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.2);
+    }
+    .no-token {
+      color: #c86464;
+      font-size: 0.85em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐾 Gestionnaire Cagnotte CDC2025</h1>
+
+  <div class="container">
+    <!-- Panel Contrôle -->
+    <div class="panel">
+      <h2>⚙️ Contrôle</h2>
+
+      <div class="field">
+        <label>Token GitHub personnel</label>
+        <input type="password" id="ghToken" placeholder="ghp_..." title="Ton token GitHub personnel">
+        <small style="color: #a7b1bd; font-size: 0.8em; display: block; margin-top: 5px;">
+          📝 Génère un token sur <a href="https://github.com/settings/tokens" target="_blank" style="color: #FCA000;">github.com/settings/tokens</a>
+        </small>
+      </div>
+
+      <div class="info-box">
+        <strong>Montant brut (Streamlabs):</strong>
+        <div class="amount" id="brutAmount">Chargement...</div>
+      </div>
+
+      <div class="field">
+        <label>Ajouter/retirer (€)</label>
+        <input type="number" id="ajoutInput" placeholder="ex: 150.50" step="0.01" value="0">
+      </div>
+
+      <div class="button-group">
+        <button onclick="addAmount()">+ Ajouter</button>
+        <button onclick="removeAmount()">- Retirer</button>
+      </div>
+
+      <button style="width: 100%; margin-top: 10px;" onclick="saveToGit()">💾 Sauvegarder sur Git</button>
+      <button style="width: 100%; margin-top: 10px;" onclick="reloadConfig()">🔄 Recharger</button>
+
+      <div id="status" class="status" style="display: none;"></div>
+
+      <div class="preview">
+        <div class="preview-label">Montant total affiché</div>
+        <div class="preview-amount" id="totalAmount">0,00 €</div>
+        <small style="color: #a7b1bd;">Brut + Ajouts</small>
+      </div>
+    </div>
+
+    <!-- Panel Widgets -->
+    <div class="panel">
+      <h2>👁️ Aperçu des widgets</h2>
+
+      <h3 style="margin-top: 20px; color: #a7b1bd; font-size: 1em;">Complet (avec branding)</h3>
+      <iframe id="previewFull" src="about:blank"></iframe>
+
+      <h3 style="margin-top: 20px; color: #a7b1bd; font-size: 1em;">Simple (juste montant)</h3>
+      <iframe id="previewSimple" src="about:blank"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const GITHUB_REPO = 'createursdecompagnie/cdc2025-live-stats';
+    const CONFIG_FILE = 'cagnotte_config.json';
+    const RAW_URL = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/${CONFIG_FILE}`;
+    const API_URL = `https://api.github.com/repos/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
+
+    let config = { brut: 0, ajouts: 0 };
+
+    function showStatus(message, type = 'loading') {
+      const el = document.getElementById('status');
+      el.textContent = message;
+      el.className = `status ${type}`;
+      el.style.display = 'block';
+      if (type === 'success') {
+        setTimeout(() => { el.style.display = 'none'; }, 3000);
+      }
+    }
+
+    async function reloadConfig() {
+      showStatus('Chargement de la configuration...', 'loading');
+      try {
+        const response = await fetch(RAW_URL);
+        if (!response.ok) throw new Error('Impossible de charger le fichier');
+        config = await response.json();
+        updateDisplay();
+        showStatus('Configuration chargée ✓', 'success');
+      } catch (err) {
+        showStatus(`Erreur: ${err.message}`, 'error');
+      }
+    }
+
+    function updateDisplay() {
+      const brut = parseFloat(config.brut) || 0;
+      const ajouts = parseFloat(config.ajouts) || 0;
+      const total = brut + ajouts;
+
+      document.getElementById('brutAmount').textContent = brut.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+      document.getElementById('totalAmount').textContent = total.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+
+      // Mise à jour des aperçus
+      document.getElementById('previewFull').src = `cdc_goal_widget.html?v=${Date.now()}`;
+      document.getElementById('previewSimple').src = `cdc_goal_widget_simple.html?v=${Date.now()}`;
+    }
+
+    function addAmount() {
+      const input = document.getElementById('ajoutInput');
+      const montant = parseFloat(input.value);
+      if (isNaN(montant) || montant === 0) {
+        showStatus('Rentre un montant valide', 'error');
+        return;
+      }
+      config.ajouts = (parseFloat(config.ajouts) || 0) + montant;
+      updateDisplay();
+      input.value = '0';
+      showStatus(`+${montant.toFixed(2)}€ ajouté ✓`, 'success');
+    }
+
+    function removeAmount() {
+      const input = document.getElementById('ajoutInput');
+      const montant = parseFloat(input.value);
+      if (isNaN(montant) || montant === 0) {
+        showStatus('Rentre un montant valide', 'error');
+        return;
+      }
+      config.ajouts = Math.max(0, (parseFloat(config.ajouts) || 0) - montant);
+      updateDisplay();
+      input.value = '0';
+      showStatus(`-${montant.toFixed(2)}€ retiré ✓`, 'success');
+    }
+
+    async function saveToGit() {
+      const token = document.getElementById('ghToken').value.trim();
+      if (!token) {
+        showStatus('⚠️ Ajoute ton token GitHub pour sauvegarder', 'error');
+        return;
+      }
+
+      showStatus('Sauvegarde sur Git...', 'loading');
+
+      try {
+        // Récupérer le SHA du fichier actuel
+        const getResponse = await fetch(API_URL, {
+          headers: { 'Authorization': `token ${token}` }
+        });
+        if (!getResponse.ok) throw new Error('Impossible de récupérer le fichier');
+        const fileData = await getResponse.json();
+
+        config.lastModified = new Date().toISOString();
+
+        // Mettre à jour le fichier
+        const updateResponse = await fetch(API_URL, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `🔄 Update cagnotte: brut=${config.brut}€, ajouts=${config.ajouts}€`,
+            content: btoa(JSON.stringify(config, null, 2)),
+            sha: fileData.sha
+          })
+        });
+
+        if (!updateResponse.ok) throw new Error('Erreur lors de la sauvegarde');
+        showStatus('✓ Sauvegardé sur Git ! Les widgets vont se mettre à jour...', 'success');
+        
+        // Recharger après 2 secondes
+        setTimeout(reloadConfig, 2000);
+      } catch (err) {
+        showStatus(`Erreur: ${err.message}`, 'error');
+      }
+    }
+
+    // Charger au démarrage
+    reloadConfig();
+  </script>
+</body>
+</html>
