@@ -466,21 +466,29 @@ const CLOCK_INTERVAL_MS = CFG.showSeconds ? 1000 : 10000;
 // Apply font scale to CSS variable
 try { document.documentElement.style.setProperty('--fs', String(CFG.fontScale)); } catch(e) { /* noop */ }
 
-// Apply personalization colors to CSS variables
-try {
-  document.documentElement.style.setProperty('--text', CFG.textColor);
-  document.documentElement.style.setProperty('--muted', CFG.mutedColor);
-  document.documentElement.style.setProperty('--accent', CFG.accentColor);
-  
-  // Update background opacity dynamically for light/dark themes
-  const bgOpacityValue = CFG.bgOpacity;
-  const cardOpacityValue = CFG.cardOpacity;
-  const root = document.documentElement;
-  
-  // Build new rgba values with custom opacity
-  root.style.setProperty('--glass', `rgba(0,0,0,${cardOpacityValue})`);
-  root.style.setProperty('--card', `rgba(0,0,0,${cardOpacityValue})`);
-} catch(e) { /* noop */ }
+// Apply personalization colors to CSS variables - will be applied AFTER theme
+function applyPersonalizationColors() {
+  try {
+    document.documentElement.style.setProperty('--text', CFG.textColor);
+    document.documentElement.style.setProperty('--muted', CFG.mutedColor);
+    document.documentElement.style.setProperty('--accent', CFG.accentColor);
+    
+    // Update background opacity dynamically
+    const bgOpacityValue = CFG.bgOpacity;
+    const root = document.documentElement;
+    
+    // For light theme, keep light backgrounds. For dark theme, use dark backgrounds
+    // But respect the custom opacity
+    const isLightTheme = document.documentElement.classList.contains('theme-light');
+    if (isLightTheme) {
+      root.style.setProperty('--glass', `rgba(255,255,255,${bgOpacityValue})`);
+      root.style.setProperty('--card', `rgba(255,255,255,${bgOpacityValue})`);
+    } else {
+      root.style.setProperty('--glass', `rgba(0,0,0,${bgOpacityValue})`);
+      root.style.setProperty('--card', `rgba(0,0,0,${bgOpacityValue})`);
+    }
+  } catch(e) { /* noop */ }
+}
 
 // Image de la boutique (t-shirts) :
 // - Par défaut, on prend l'image locale du dossier IMAGES (utile en local / hébergement perso)
@@ -857,8 +865,9 @@ updateClock();
 updateStats();
 updatePersonalGoal();
 
-// Apply URL-driven UI options
+// Apply URL-driven UI options (ORDER MATTERS: theme first, then colors override)
 applyTheme();
+applyPersonalizationColors(); // Apply colors AFTER theme
 applyHide();
 applyLang();
 
