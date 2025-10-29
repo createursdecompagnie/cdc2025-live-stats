@@ -61,6 +61,7 @@ const params = new URLSearchParams(window.location.search);
 const textColor = params.get('textColor') || '#ffffff';
 const accentColor = params.get('accentColor') || '#FCA000';
 const shadowIntensity = parseFloat(params.get('shadowIntensity')) || 0.4;
+const showCents = params.get('showCents') === 'true' || params.get('showCents') === '1';
 
 // Apply custom colors
 document.documentElement.style.setProperty('--text', textColor);
@@ -103,8 +104,8 @@ function animateCounter(newValue) {
     const formatted = new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      minimumFractionDigits: showCents ? 2 : 0,
+      maximumFractionDigits: showCents ? 2 : 0
     }).format(currentDisplayValue);
     
     document.getElementById('globalAmount').textContent = formatted;
