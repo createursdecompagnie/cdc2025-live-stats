@@ -364,6 +364,11 @@
       border-radius: 6px;
       background: rgba(0, 0, 0, 0.3);
     }
+
+    /* Taller iframes for info widgets */
+    .preview-item iframe[data-type="info"] {
+      height: 375px; /* 150px * 2.5 */
+    }
   </style>
 </head>
 <body>
@@ -805,26 +810,39 @@
           params.append('accentColor', accentColor);
           params.append('bgOpacity', bgOpacity);
           
-          // Add hide parameter based on visibility checkboxes
-          const hiddenSections = [];
-          if (!document.getElementById('showPersonal')?.checked) hiddenSections.push('personal');
-          if (!document.getElementById('showBranding')?.checked) hiddenSections.push('branding');
-          if (!document.getElementById('showStats')?.checked) hiddenSections.push('stats');
-          if (!document.getElementById('showInfo')?.checked) hiddenSections.push('info');
-          
-          if (hiddenSections.length > 0) {
-            params.append('hide', hiddenSections.join(','));
+          // Add hide parameter based on visibility checkboxes (only for main info_widget)
+          if (currentOverlay.file.includes('info_widget.html')) {
+            const hiddenSections = [];
+            if (!document.getElementById('showPersonal')?.checked) hiddenSections.push('personal');
+            if (!document.getElementById('showBranding')?.checked) hiddenSections.push('branding');
+            if (!document.getElementById('showStats')?.checked) hiddenSections.push('stats');
+            if (!document.getElementById('showInfo')?.checked) hiddenSections.push('info');
+            
+            if (hiddenSections.length > 0) {
+              params.append('hide', hiddenSections.join(','));
+            }
           }
+        } else if (currentOverlay.file.includes('info_carousel')) {
+          params.append('theme', theme || 'light');
+          params.append('textColor', textColor);
+          params.append('accentColor', accentColor);
+          params.append('bgOpacity', bgOpacity);
         }
 
         const url = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
+        
+        // Determine iframe type for styling
+        let iframeType = 'default';
+        if (currentOverlay.file.includes('info_widget') || currentOverlay.file.includes('info_carousel')) {
+          iframeType = 'info';
+        }
 
         const item = document.createElement('div');
         item.className = 'preview-item';
         item.innerHTML = `
           <h4>${currentOverlay.label}</h4>
           <p>${currentOverlay.desc}</p>
-          <iframe src="${url}"></iframe>
+          <iframe src="${url}" data-type="${iframeType}"></iframe>
         `;
         container.appendChild(item);
       } else {
