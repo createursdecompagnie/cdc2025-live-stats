@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDC2025 - Générateur de Lien Overlay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Outfit', -apple-system, system-ui;
+      background: linear-gradient(135deg, #0b0f14 0%, #1a1f2e 100%);
+      color: #f2f5f8;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #FCA000;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 0 0 20px rgba(252, 160, 0, 0.3);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 1200px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel h2 {
+      color: #FCA000;
+      margin-bottom: 20px;
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .overlay-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .overlay-btn {
+      padding: 12px;
+      background: rgba(252, 160, 0, 0.1);
+      border: 2px solid rgba(252, 160, 0, 0.3);
+      color: #FCA000;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      font-size: 0.9em;
+      word-break: break-word;
+    }
+
+    .overlay-btn:hover {
+      background: rgba(252, 160, 0, 0.2);
+    }
+
+    .overlay-btn.active {
+      background: rgba(252, 160, 0, 0.4);
+      border-color: #FCA000;
+      box-shadow: 0 0 15px rgba(252, 160, 0, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #a7b1bd;
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+
+    .color-input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .color-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .color-input-wrapper label {
+      margin-bottom: 0;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FCA000;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(252, 160, 0, 0.5);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FCA000;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(252, 160, 0, 0.5);
+    }
+
+    .intensity-value {
+      text-align: center;
+      color: #FCA000;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+
+    .checkbox-item label {
+      margin-bottom: 0;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .preset-btn {
+      padding: 8px 12px;
+      background: rgba(100, 200, 100, 0.2);
+      border: 1px solid rgba(100, 200, 100, 0.3);
+      color: #64c864;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85em;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: rgba(100, 200, 100, 0.3);
+      border-color: rgba(100, 200, 100, 0.7);
+    }
+
+    .link-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(252, 160, 0, 0.1);
+      border: 1px solid rgba(252, 160, 0, 0.3);
+      border-radius: 8px;
+    }
+
+    .link-section h3 {
+      color: #FCA000;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .generated-link {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75em;
+      word-break: break-all;
+      color: #FFE259;
+      max-height: 150px;
+      overflow-y: auto;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: #FCA000;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-size: 1em;
+      font-family: 'Outfit', -apple-system, system-ui;
+      flex: 1;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    .copy-feedback {
+      text-align: center;
+      color: #64c864;
+      font-weight: 600;
+      font-size: 0.9em;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .info-box {
+      background: rgba(100, 150, 200, 0.1);
+      border: 1px solid rgba(100, 150, 200, 0.3);
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 0.9em;
+      line-height: 1.5;
+      color: #a7b1bd;
+    }
+
+    .preview-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .preview-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .preview-item {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .preview-item h4 {
+      color: #FCA000;
+      margin-bottom: 10px;
+      font-size: 0.95em;
+    }
+
+    iframe {
+      width: 100%;
+      height: 150px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .overlay-info {
+      background: rgba(100, 200, 100, 0.1);
+      border: 1px solid rgba(100, 200, 100, 0.3);
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #64c864;
+    }
+
+    .overlay-info strong {
+      color: #ffffff;
+    }
+
+    .params-list {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 0.85em;
+      font-family: monospace;
+      color: #FFE259;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔗 Générateur de Lien CDC2025</h1>
+
+  <div class="container">
+    <div class="main-grid">
+      <!-- Configuration Panel -->
+      <div class="panel">
+        <h2>⚙️ Configuration</h2>
+
+        <div class="form-group">
+          <label style="font-weight: 600; color: #FCA000;">Sélectionne une overlay</label>
+          <div class="overlay-grid" id="overlayGrid"></div>
+        </div>
+
+        <div id="overlayOptions">
+          <!-- Options dynamiques selon l'overlay -->
+        </div>
+
+        <div class="presets">
+          <h3 style="color: #a7b1bd; font-size: 0.9em; margin-bottom: 8px;">Présets rapides:</h3>
+          <div class="preset-buttons">
+            <button class="preset-btn" onclick="applyPreset('default')">🎨 Défaut</button>
+            <button class="preset-btn" onclick="applyPreset('dark')">🌑 Dark</button>
+            <button class="preset-btn" onclick="applyPreset('neon')">⚡ Neon</button>
+            <button class="preset-btn" onclick="applyPreset('pastel')">🌸 Pastel</button>
+          </div>
+        </div>
+
+        <label style="font-weight: 600; color: #FCA000; margin-top: 20px;">Couleurs</label>
+        <div class="color-input-group">
+          <div class="color-input-wrapper">
+            <label>Couleur du texte</label>
+            <input type="color" id="textColor" value="#ffffff" onchange="updatePreview()">
+          </div>
+          <div class="color-input-wrapper">
+            <label>Couleur accent</label>
+            <input type="color" id="accentColor" value="#FCA000" onchange="updatePreview()">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label>Intensité de l'ombre</label>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="range" id="shadowIntensity" min="0" max="1" step="0.1" value="0.4" onchange="updatePreview()">
+            <span class="intensity-value" id="shadowValue">0.4</span>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" id="showCents" onchange="updatePreview()">
+            <label for="showCents">Afficher les centimes (0.50€)</label>
+          </div>
+        </div>
+
+        <div class="link-section">
+          <h3>📋 Lien généré</h3>
+          <div class="generated-link" id="generatedLink">https://createursdecompagnie.github.io/cdc2025-live-stats/</div>
+          <div class="button-group">
+            <button onclick="copyLink()">📋 Copier</button>
+            <button onclick="openInNewTab()" style="background: rgba(100, 150, 200, 0.5);">🔗 Ouvrir</button>
+          </div>
+          <div class="copy-feedback" id="copyFeedback">✓ Copié!</div>
+        </div>
+
+        <div class="overlay-info" id="overlayInfo" style="display:none;"></div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="panel">
+        <h2>👁️ Aperçu</h2>
+        
+        <div id="previewContainer">
+          <div class="preview-section">
+            <div class="preview-item">
+              <h4>Widget Simple</h4>
+              <iframe id="previewSimple" src=""></iframe>
+            </div>
+
+            <div class="preview-item">
+              <h4>Widget Complet</h4>
+              <iframe id="previewFull" src=""></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top: 30px;">
+          <strong>🎬 Comment l'utiliser:</strong><br>
+          1. Sélectionne l'overlay<br>
+          2. Configure les couleurs<br>
+          3. Copie le lien<br>
+          4. Colle dans OBS (source navigateur)<br>
+          5. Résolution: 1920x1080+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GITHUB_URL = 'https://createursdecompagnie.github.io/cdc2025-live-stats';
+    
+    // All overlays on GitHub
+    const overlays = {
+      'cdc_goal_widget_simple.html': {
+        label: 'Cagnotte Simple',
+        description: 'Affiche juste le montant',
+        supportColors: true,
+        supportCents: true,
+        showPreview: true
+      },
+      'cdc_goal_widget.html': {
+        label: 'Cagnotte Complet',
+        description: 'Avec CDC2025 branding',
+        supportColors: true,
+        supportCents: true,
+        showPreview: true
+      },
+      'info_widget.html': {
+        label: 'Info Widget',
+        description: 'Infos événement',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'donation_bar.html': {
+        label: 'Barre Donation',
+        description: 'Progression donations',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'Widget_Bar.html': {
+        label: 'Widget Bar',
+        description: 'Barre personnalisée',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'Widget_Bar_Vertical.html': {
+        label: 'Widget Bar Vertical',
+        description: 'Barre verticale',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'full_cam.html': {
+        label: 'Caméra Pleine',
+        description: 'Affichage caméra complet',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'cam_game_big.html': {
+        label: 'Cam + Jeu Grand',
+        description: 'Grand affichage mixte',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'cam_game_small.html': {
+        label: 'Cam + Jeu Petit',
+        description: 'Petit affichage mixte',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'info_widget_vertical.html': {
+        label: 'Info Vertical',
+        description: 'Infos en vertical',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'stats_vertical.html': {
+        label: 'Stats Vertical',
+        description: 'Stats verticales',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      },
+      'fond_overlay.html': {
+        label: 'Fond Overlay',
+        description: 'Fond d\'écran',
+        supportColors: false,
+        supportCents: false,
+        showPreview: false
+      }
+    };
+
+    const presets = {
+      default: {
+        textColor: '#ffffff',
+        accentColor: '#FCA000',
+        shadowIntensity: 0.4
+      },
+      dark: {
+        textColor: '#e0e0e0',
+        accentColor: '#ff6b00',
+        shadowIntensity: 0.6
+      },
+      neon: {
+        textColor: '#00ffff',
+        accentColor: '#ff00ff',
+        shadowIntensity: 0.8
+      },
+      pastel: {
+        textColor: '#fff9e6',
+        accentColor: '#ff69b4',
+        shadowIntensity: 0.3
+      }
+    };
+
+    let currentOverlay = null;
+
+    function initOverlayGrid() {
+      const grid = document.getElementById('overlayGrid');
+      Object.entries(overlays).forEach(([filename, info]) => {
+        const btn = document.createElement('button');
+        btn.className = 'overlay-btn';
+        btn.textContent = info.label;
+        btn.onclick = () => selectOverlay(filename, info);
+        grid.appendChild(btn);
+      });
+      // Select first by default
+      selectOverlay(Object.keys(overlays)[0], Object.values(overlays)[0]);
+    }
+
+    function selectOverlay(filename, info) {
+      currentOverlay = { filename, ...info };
+      
+      // Update active button
+      document.querySelectorAll('.overlay-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', Object.keys(overlays)[idx] === filename);
+      });
+
+      // Update options panel
+      updateOptionsPanel();
+      updatePreview();
+      updateOverlayInfo();
+    }
+
+    function updateOptionsPanel() {
+      const options = document.getElementById('overlayOptions');
+      const colorGroup = document.querySelector('.color-input-group').parentElement;
+      const shadowGroup = document.getElementById('shadowIntensity').parentElement.parentElement;
+      const checkboxGroup = document.querySelector('.checkbox-group');
+
+      if (currentOverlay.supportColors) {
+        colorGroup.style.display = 'block';
+        shadowGroup.style.display = 'block';
+      } else {
+        colorGroup.style.display = 'none';
+        shadowGroup.style.display = 'none';
+      }
+
+      if (currentOverlay.supportCents) {
+        checkboxGroup.style.display = 'block';
+      } else {
+        checkboxGroup.style.display = 'none';
+      }
+    }
+
+    function updateOverlayInfo() {
+      const info = document.getElementById('overlayInfo');
+      info.innerHTML = `
+        <strong>${currentOverlay.label}</strong><br>
+        ${currentOverlay.description}
+        <div class="params-list" id="paramsList"></div>
+      `;
+      info.style.display = 'block';
+    }
+
+    function applyPreset(presetName) {
+      const preset = presets[presetName];
+      if (preset) {
+        document.getElementById('textColor').value = preset.textColor;
+        document.getElementById('accentColor').value = preset.accentColor;
+        document.getElementById('shadowIntensity').value = preset.shadowIntensity;
+        updatePreview();
+      }
+    }
+
+    function updatePreview() {
+      const textColor = document.getElementById('textColor').value;
+      const accentColor = document.getElementById('accentColor').value;
+      const shadowIntensity = document.getElementById('shadowIntensity').value;
+      const showCents = document.getElementById('showCents').checked;
+
+      document.getElementById('shadowValue').textContent = shadowIntensity;
+
+      const params = new URLSearchParams();
+      if (currentOverlay.supportColors) {
+        params.append('textColor', textColor);
+        params.append('accentColor', accentColor);
+        params.append('shadowIntensity', shadowIntensity);
+      }
+      if (currentOverlay.supportCents && showCents) {
+        params.append('showCents', 'true');
+      }
+
+      const fullUrl = `${GITHUB_URL}/${currentOverlay.filename}${params.toString() ? '?' + params.toString() : ''}`;
+      document.getElementById('generatedLink').textContent = fullUrl;
+
+      // Update previews for cagnotte widgets
+      if (currentOverlay.showPreview) {
+        const previewParams = new URLSearchParams();
+        previewParams.append('textColor', textColor);
+        previewParams.append('accentColor', accentColor);
+        previewParams.append('shadowIntensity', shadowIntensity);
+        if (showCents) previewParams.append('showCents', 'true');
+
+        document.getElementById('previewSimple').src = `${GITHUB_URL}/cdc_goal_widget_simple.html?${previewParams.toString()}`;
+        document.getElementById('previewFull').src = `${GITHUB_URL}/cdc_goal_widget.html?${previewParams.toString()}`;
+      }
+
+      // Update params list
+      const paramsList = document.getElementById('paramsList');
+      if (paramsList) {
+        const paramsArray = Array.from(params.entries());
+        if (paramsArray.length === 0) {
+          paramsList.textContent = 'Aucun paramètre';
+        } else {
+          paramsList.textContent = paramsArray.map(([k, v]) => `${k}=${v}`).join('\n');
+        }
+      }
+    }
+
+    function copyLink() {
+      const link = document.getElementById('generatedLink').textContent;
+      navigator.clipboard.writeText(link).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.style.display = 'block';
+        setTimeout(() => {
+          feedback.style.display = 'none';
+        }, 2000);
+      }).catch(err => {
+        alert('Erreur: ' + err);
+      });
+    }
+
+    function openInNewTab() {
+      const link = document.getElementById('generatedLink').textContent;
+      window.open(link, '_blank');
+    }
+
+    window.addEventListener('load', () => {
+      initOverlayGrid();
+    });
+  </script>
+
+</body>
+</html>
