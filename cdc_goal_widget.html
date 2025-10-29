@@ -84,6 +84,8 @@ html, body {
   font-weight: 900;
   color: var(--text);
   text-shadow: 0 0.2vh 1vh rgba(252,160,0,0.2);
+  min-width: 300px;
+  text-align: center;
 }
 </style>
 </head>
@@ -179,7 +181,53 @@ const CFG = {
 function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
 
 /* ============================================================================
-   MAIN FUNCTION - UPDATE GLOBAL GOAL (AJOUTS MANAGER ONLY)
+   ANIMATION FLUIDE DU COMPTEUR
+   ============================================================================ */
+
+let currentDisplayValue = 0;
+let targetValue = 0;
+let animationFrameId = null;
+
+function animateCounter(newValue) {
+  targetValue = newValue;
+  
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  
+  const startValue = currentDisplayValue;
+  const startTime = Date.now();
+  const duration = 1500; // 1500ms animation
+  
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing: ease-out (decelerate)
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    
+    currentDisplayValue = startValue + (newValue - startValue) * easeProgress;
+    
+    const formatted = new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(currentDisplayValue);
+    
+    document.getElementById('globalAmount').textContent = formatted;
+    
+    if (progress < 1) {
+      animationFrameId = requestAnimationFrame(animate);
+    } else {
+      currentDisplayValue = newValue;
+    }
+  }
+  
+  animate();
+}
+
+/* ============================================================================
    ============================================================================
    Affiche juste les ajouts du manager (plus de fetch Streamlabs - CORS bloqué)
    
@@ -196,7 +244,11 @@ async function updateGlobalGoal() {
     
     // Ajouter bonus URL si présent
     const totalAmount = ajouts + CFG.bonusAmount;
-    document.getElementById('globalAmount').textContent = fmt(totalAmount);
+    
+    // Si la valeur a changé, animer
+    if (Math.abs(totalAmount - currentDisplayValue) > 0.01) {
+      animateCounter(totalAmount);
+    }
   } catch(e) {
     console.warn('Global goal update failed:', e);
   }
@@ -207,7 +259,14 @@ async function updateGlobalGoal() {
    ============================================================================ */
 
 // Init on page load
-updateGlobalGoal();
+updateGlobalGoal().then(() => {
+  // Initialiser currentDisplayValue avec la valeur reçue
+  // pour éviter une animation au premier chargement
+  const element = document.getElementById('globalAmount');
+  const text = element.textContent;
+  const amount = parseFloat(text.replace(/[^\d,.-]/g, '').replace(',', '.'));
+  currentDisplayValue = amount;
+});
 
 // Update every 1 second to stay in sync
 setInterval(updateGlobalGoal, 1000);
