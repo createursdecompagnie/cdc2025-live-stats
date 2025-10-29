@@ -26,8 +26,8 @@
 /* Theme overrides: add class `theme-light` or `theme-dark` on <html> to override variables */
 .theme-light {
   --bg: #ffffff;
-  --card: rgba(255,255,255,0.06);
-  --glass: rgba(255,255,255,0.04);
+  --card: rgba(255,255,255,var(--bg-opacity, 0.06));
+  --glass: rgba(255,255,255,var(--bg-opacity, 0.04));
   --text: #0b2230;
   --muted: #5b6b75;
   --accent: #FCA000;
@@ -41,8 +41,8 @@
 
 .theme-dark {
   --bg: #050608;
-  --card: rgba(0,0,0,0.5);
-  --glass: rgba(0,0,0,0.55);
+  --card: rgba(0,0,0,var(--bg-opacity, 0.5));
+  --glass: rgba(0,0,0,var(--bg-opacity, 0.55));
   --text: #f2f5f8;
   --muted: #96a0aa;
 }
@@ -473,20 +473,12 @@ function applyPersonalizationColors() {
     document.documentElement.style.setProperty('--muted', CFG.mutedColor);
     document.documentElement.style.setProperty('--accent', CFG.accentColor);
     
-    // Update background opacity dynamically
-    const bgOpacityValue = CFG.bgOpacity;
-    const root = document.documentElement;
+    // Update background opacity dynamically via CSS variable
+    // The CSS now uses var(--bg-opacity) in its rgba calculations
+    const bgOpacityValue = CFG.bgOpacity || 0.5;
+    document.documentElement.style.setProperty('--bg-opacity', bgOpacityValue);
     
-    // For light theme, keep light backgrounds. For dark theme, use dark backgrounds
-    // But respect the custom opacity
-    const isLightTheme = document.documentElement.classList.contains('theme-light');
-    if (isLightTheme) {
-      root.style.setProperty('--glass', `rgba(255,255,255,${bgOpacityValue})`);
-      root.style.setProperty('--card', `rgba(255,255,255,${bgOpacityValue})`);
-    } else {
-      root.style.setProperty('--glass', `rgba(0,0,0,${bgOpacityValue})`);
-      root.style.setProperty('--card', `rgba(0,0,0,${bgOpacityValue})`);
-    }
+    console.log('[applyPersonalizationColors] bgOpacity=' + bgOpacityValue);
   } catch(e) { /* noop */ }
 }
 
