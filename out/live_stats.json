@@ -228,8 +228,8 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 186
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "51966081",
@@ -361,7 +361,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 14
     },
     {
       "id": "922542142",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 198,
+    "live_count": 1,
+    "total_viewers": 14,
     "total_members": 37
   }
 }
