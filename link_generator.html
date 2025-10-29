@@ -791,6 +791,17 @@
           params.append('textColor', textColor);
           params.append('accentColor', accentColor);
           params.append('bgOpacity', bgOpacity);
+          
+          // Add hide parameter based on visibility checkboxes
+          const hiddenSections = [];
+          if (!document.getElementById('showPersonal')?.checked) hiddenSections.push('personal');
+          if (!document.getElementById('showBranding')?.checked) hiddenSections.push('branding');
+          if (!document.getElementById('showStats')?.checked) hiddenSections.push('stats');
+          if (!document.getElementById('showInfo')?.checked) hiddenSections.push('info');
+          
+          if (hiddenSections.length > 0) {
+            params.append('hide', hiddenSections.join(','));
+          }
         }
 
         const url = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
