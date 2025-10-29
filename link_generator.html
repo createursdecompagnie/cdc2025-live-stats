@@ -435,6 +435,29 @@
             </div>
           </div>
 
+          <!-- Visibility Options (for Info widgets) -->
+          <div id="visibilityOptions" style="display: none; margin-top: 20px;">
+            <label style="color: #FCA000; font-weight: 600;">Sections visibles</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="showPersonal" checked onchange="updatePreview()">
+                <label for="showPersonal">Objectif personnel</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="showBranding" checked onchange="updatePreview()">
+                <label for="showBranding">Branding</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="showStats" checked onchange="updatePreview()">
+                <label for="showStats">Statistiques</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="showInfo" checked onchange="updatePreview()">
+                <label for="showInfo">Carousel Infos</label>
+              </div>
+            </div>
+          </div>
+
           <div class="checkbox-group" id="centsOption" style="display:none; margin-top: 15px;">
             <div class="checkbox-item">
               <input type="checkbox" id="showCents" onchange="updatePreview()">
@@ -614,6 +637,7 @@
       const colorOpts = document.getElementById('colorOptions');
       const shadowOpts = document.getElementById('shadowOptions');
       const opacityOpts = document.getElementById('opacityOptions');
+      const visibilityOpts = document.getElementById('visibilityOptions');
 
       // Cagnotte: Show colors + shadow + cents option
       if (currentOverlay.file.includes('cdc_goal_widget')) {
@@ -631,9 +655,10 @@
         if (shadowOpts) shadowOpts.style.display = 'block';
         if (opacityOpts) opacityOpts.style.display = 'none';
         if (themeOpts) themeOpts.style.display = 'none';
+        if (visibilityOpts) visibilityOpts.style.display = 'none';
         if (centsOpt) centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
       }
-      // Info widgets: Show themes + colors + opacity
+      // Info widgets: Show themes + colors + opacity + visibility
       else if (currentOverlay.file.includes('info_widget')) {
         customOpts.style.display = 'block';
         presetBtns.style.display = 'none';
@@ -641,6 +666,7 @@
         if (colorOpts) colorOpts.style.display = 'block';
         if (shadowOpts) shadowOpts.style.display = 'none';
         if (opacityOpts) opacityOpts.style.display = 'block';
+        if (visibilityOpts) visibilityOpts.style.display = 'block';
         if (centsOpt) centsOpt.style.display = 'none';
         
         // Initialize theme buttons
@@ -725,6 +751,17 @@
         params.append('textColor', textColor);
         params.append('accentColor', accentColor);
         params.append('bgOpacity', bgOpacity);
+        
+        // Add hide parameter based on visibility checkboxes
+        const hiddenSections = [];
+        if (!document.getElementById('showPersonal')?.checked) hiddenSections.push('personal');
+        if (!document.getElementById('showBranding')?.checked) hiddenSections.push('branding');
+        if (!document.getElementById('showStats')?.checked) hiddenSections.push('stats');
+        if (!document.getElementById('showInfo')?.checked) hiddenSections.push('info');
+        
+        if (hiddenSections.length > 0) {
+          params.append('hide', hiddenSections.join(','));
+        }
       }
 
       const fullUrl = `${GITHUB_URL}/${currentOverlay.file}${params.toString() ? '?' + params.toString() : ''}`;
