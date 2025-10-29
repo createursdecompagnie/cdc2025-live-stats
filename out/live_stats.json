@@ -41,8 +41,8 @@
         "display_name": "soKyutie",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 12
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "158945723",
@@ -409,8 +409,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 12,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 37
   }
 }
