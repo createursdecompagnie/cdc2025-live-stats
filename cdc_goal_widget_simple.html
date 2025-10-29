@@ -49,51 +49,22 @@ html, body {
 <div class="amount" id="globalAmount">0 €</div>
 
 <script>
-// Version minimale : affiche juste le montant (Streamlabs + Ajouts manager)
+// Version minimale : affiche juste les ajouts (pas de Streamlabs - CORS bloqué)
 async function updateGlobalGoal() {
   try {
-    // 1. Récupérer le montant brut de Streamlabs
-    let brutAmount = 0;
-    try {
-      const res = await fetch('https://streamlabs.com/widgets/streamlabs-charity-donation-goal?token=03311CF526D2843D8B1C');
-      const html = await res.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const scriptTags = doc.querySelectorAll('script');
-      
-      for(const script of scriptTags) {
-        const content = script.textContent;
-        const amountMatch = content.match(/(?:current_amount|raised|amount)["']?\s*:\s*(\d+(?:\.\d+)?)/i);
-        if(amountMatch) {
-          brutAmount = parseFloat(amountMatch[1]);
-          break;
-        }
-      }
-    } catch (e) {
-      console.warn('Streamlabs fetch failed:', e);
-    }
-
-    // 2. Récupérer les ajouts du manager (GitHub)
-    let ajouts = 0;
-    try {
-      const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
-      if (configResponse.ok) {
-        const config = await configResponse.json();
-        ajouts = parseFloat(config.ajouts) || 0;
-      }
-    } catch (e) {
-      console.warn('GitHub config fetch failed:', e);
-    }
-
-    // 3. Calculer le total et afficher
-    const total = Math.floor(brutAmount) + ajouts;
+    // Récupérer les ajouts du manager (GitHub)
+    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
+    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+    
+    const config = await configResponse.json();
+    const ajouts = parseFloat(config.ajouts) || 0;
     
     const formatted = new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(total);
+    }).format(ajouts);
     
     document.getElementById('globalAmount').textContent = formatted;
   } catch (err) {
@@ -104,7 +75,7 @@ async function updateGlobalGoal() {
 
 // Initial load et updates
 updateGlobalGoal();
-setInterval(updateGlobalGoal, 3000); // Mise à jour toutes les 3 secondes
+setInterval(updateGlobalGoal, 2000); // Mise à jour toutes les 2 secondes (plus rapide sans Streamlabs)
 </script>
 
 </body>
