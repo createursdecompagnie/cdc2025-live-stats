@@ -670,15 +670,16 @@
         if (visibilityOpts) visibilityOpts.style.display = 'none';
         if (centsOpt) centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
       }
-      // Info widgets: Show themes + colors + opacity + visibility
-      else if (currentOverlay.file.includes('info_widget')) {
+      // Info widgets (standard, vertical) + Carousel: Show themes + colors + opacity + visibility
+      else if (currentOverlay.file.includes('info_widget') || currentOverlay.file.includes('info_carousel')) {
         customOpts.style.display = 'block';
         presetBtns.style.display = 'none';
         if (themeOpts) themeOpts.style.display = 'block';
         if (colorOpts) colorOpts.style.display = 'block';
         if (shadowOpts) shadowOpts.style.display = 'none';
         if (opacityOpts) opacityOpts.style.display = 'block';
-        if (visibilityOpts) visibilityOpts.style.display = 'block';
+        // Only show visibility toggles for main info_widget (not carousel or vertical)
+        if (visibilityOpts) visibilityOpts.style.display = currentOverlay.file.includes('info_widget.html') ? 'block' : 'none';
         if (centsOpt) centsOpt.style.display = 'none';
         
         // Initialize theme buttons
