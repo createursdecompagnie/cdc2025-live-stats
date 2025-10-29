@@ -35,6 +35,8 @@ html, body {
   font-family: monospace;
   letter-spacing: -2px;
   line-height: 1;
+  text-shadow: 0 0 20px rgba(252, 160, 0, 0.4), 0 0 40px rgba(252, 160, 0, 0.2);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
 @media (max-width: 400px) {
@@ -75,7 +77,7 @@ async function updateGlobalGoal() {
 
 // Initial load et updates
 updateGlobalGoal();
-setInterval(updateGlobalGoal, 2000); // Mise à jour toutes les 2 secondes (plus rapide sans Streamlabs)
+setInterval(updateGlobalGoal, 1000); // Mise à jour toutes les 1 seconde (refresh rapide)
 </script>
 
 </body>
