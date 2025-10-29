@@ -271,6 +271,9 @@ async function updateGlobalGoal() {
     // Si la valeur a changé, animer
     if (Math.abs(totalAmount - currentDisplayValue) > 0.01) {
       animateCounter(totalAmount);
+    } else if (currentDisplayValue === 0 && totalAmount === 0) {
+      // Force initial display even if both are 0
+      document.getElementById('globalAmount').textContent = fmt(0);
     }
   } catch(e) {
     console.warn('Global goal update failed:', e);
