@@ -209,6 +209,7 @@ function fmt(n){
 let currentDisplayValue = 0;
 let targetValue = 0;
 let animationFrameId = null;
+let SHOW_CENTS = showCents; // Copier dans une variable globale accessible
 
 function animateCounter(newValue) {
   targetValue = newValue;
@@ -233,8 +234,8 @@ function animateCounter(newValue) {
     const formatted = new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'EUR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      minimumFractionDigits: SHOW_CENTS ? 2 : 0,
+      maximumFractionDigits: SHOW_CENTS ? 2 : 0
     }).format(currentDisplayValue);
     
     document.getElementById('globalAmount').textContent = formatted;
