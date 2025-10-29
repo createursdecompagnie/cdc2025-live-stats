@@ -6,7 +6,7 @@
 <title>CDC2025 · Cagnotte Globale Simple</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: transparent;
@@ -31,12 +31,14 @@ html, body {
 .amount {
   font-size: clamp(2em, 8vw, 5em);
   font-weight: 900;
-  color: #FFE259;
-  font-family: monospace;
-  letter-spacing: -2px;
+  color: var(--text);
+  font-family: var(--font);
+  letter-spacing: -1px;
   line-height: 1;
   text-shadow: 0 0 20px rgba(252, 160, 0, 0.4), 0 0 40px rgba(252, 160, 0, 0.2);
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+  min-width: 200px;
+  text-align: center;
 }
 
 @media (max-width: 400px) {
@@ -51,33 +53,73 @@ html, body {
 <div class="amount" id="globalAmount">0 €</div>
 
 <script>
-// Version minimale : affiche juste les ajouts (pas de Streamlabs - CORS bloqué)
-async function updateGlobalGoal() {
-  try {
-    // Récupérer les ajouts du manager (GitHub)
-    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
-    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+// Animation fluide du compteur
+let currentDisplayValue = 0;
+let targetValue = 0;
+let animationFrameId = null;
+
+function animateCounter(newValue) {
+  targetValue = newValue;
+  
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  
+  const startValue = currentDisplayValue;
+  const startTime = Date.now();
+  const duration = 800; // 800ms animation
+  
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
     
-    const config = await configResponse.json();
-    const ajouts = parseFloat(config.ajouts) || 0;
+    // Easing: ease-out (decelerate)
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    
+    currentDisplayValue = startValue + (newValue - startValue) * easeProgress;
     
     const formatted = new Intl.NumberFormat('fr-FR', {
       style: 'currency',
       currency: 'EUR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(ajouts);
+    }).format(currentDisplayValue);
     
     document.getElementById('globalAmount').textContent = formatted;
+    
+    if (progress < 1) {
+      animationFrameId = requestAnimationFrame(animate);
+    } else {
+      currentDisplayValue = newValue;
+    }
+  }
+  
+  animate();
+}
+
+async function updateGlobalGoal() {
+  try {
+    // Récupérer les ajouts du manager (GitHub)
+    const t = Date.now();
+    const r = Math.random();
+    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + t + '&_=' + r + '&v=' + Math.floor(t/1000));
+    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+    
+    const config = await configResponse.json();
+    const ajouts = parseFloat(config.ajouts) || 0;
+    
+    // Si la valeur a changé, animer
+    if (Math.abs(ajouts - currentDisplayValue) > 0.01) {
+      animateCounter(ajouts);
+    }
   } catch (err) {
     console.warn('Failed to update:', err);
-    document.getElementById('globalAmount').textContent = '0 €';
   }
 }
 
 // Initial load et updates
 updateGlobalGoal();
-setInterval(updateGlobalGoal, 1000); // Mise à jour toutes les 1 seconde (refresh rapide)
+setInterval(updateGlobalGoal, 1000); // Mise à jour toutes les 1 seconde
 </script>
 
 </body>
