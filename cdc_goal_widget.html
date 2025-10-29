@@ -149,6 +149,22 @@ const FONT_SCALE = parseFloat(params.get('fontScale')) || 1;
 document.documentElement.style.setProperty('--fontScale', String(FONT_SCALE));
 
 /* ============================================================================
+  COLOR CUSTOMIZATION (URL PARAMS)
+  ============================================================================
+  - textColor: Text color (default: #f2f5f8)
+  - accentColor: Accent/badge color (default: #FCA000)
+  - shadowIntensity: Shadow glow intensity 0-1 (default: 0.3)
+  
+  Example: cdc_goal_widget.html?textColor=%23ffffff&accentColor=%23ff0000&shadowIntensity=0.5
+  ============================================================================ */
+const textColor = params.get('textColor') || '#f2f5f8';
+const accentColor = params.get('accentColor') || '#FCA000';
+const shadowIntensity = parseFloat(params.get('shadowIntensity')) || 0.3;
+
+document.documentElement.style.setProperty('--text', textColor);
+document.documentElement.style.setProperty('--accent', accentColor);
+
+/* ============================================================================
    CONFIGURATION - MANUAL BONUS AMOUNT
    ============================================================================
    Add offline donations (t-shirts, cash, etc.) here.
