@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDC2025 - Configurateur de Widget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Outfit', -apple-system, system-ui;
+      background: linear-gradient(135deg, #0b0f14 0%, #1a1f2e 100%);
+      color: #f2f5f8;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    h1 {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #FCA000;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 0 0 20px rgba(252, 160, 0, 0.3);
+    }
+
+    .panel {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel h2 {
+      color: #FCA000;
+      margin-bottom: 20px;
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #a7b1bd;
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+
+    .widget-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .widget-selector label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0;
+      cursor: pointer;
+      padding: 10px 15px;
+      background: rgba(252, 160, 0, 0.1);
+      border: 1px solid rgba(252, 160, 0, 0.3);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .widget-selector input[type="radio"] {
+      cursor: pointer;
+    }
+
+    .widget-selector label:has(input:checked) {
+      background: rgba(252, 160, 0, 0.3);
+      border-color: rgba(252, 160, 0, 0.7);
+    }
+
+    .color-input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .color-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .color-input-wrapper label {
+      margin-bottom: 0;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FCA000;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(252, 160, 0, 0.5);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FCA000;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(252, 160, 0, 0.5);
+    }
+
+    .intensity-value {
+      text-align: center;
+      color: #FCA000;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .preview-section {
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-frame {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .link-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(252, 160, 0, 0.1);
+      border: 1px solid rgba(252, 160, 0, 0.3);
+      border-radius: 8px;
+    }
+
+    .link-section h3 {
+      color: #FCA000;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .generated-link {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      word-break: break-all;
+      color: #FFE259;
+      max-height: 120px;
+      overflow-y: auto;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: #FCA000;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-size: 1em;
+      font-family: 'Outfit', -apple-system, system-ui;
+      flex: 1;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    .copy-feedback {
+      text-align: center;
+      color: #64c864;
+      font-weight: 600;
+      font-size: 0.9em;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .preset-btn {
+      padding: 8px 12px;
+      background: rgba(100, 200, 100, 0.2);
+      border: 1px solid rgba(100, 200, 100, 0.3);
+      color: #64c864;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85em;
+      transition: all 0.2s;
+    }
+
+    .preset-btn:hover {
+      background: rgba(100, 200, 100, 0.3);
+      border-color: rgba(100, 200, 100, 0.7);
+    }
+
+    .info-box {
+      background: rgba(100, 150, 200, 0.1);
+      border: 1px solid rgba(100, 150, 200, 0.3);
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 15px;
+      font-size: 0.9em;
+      line-height: 1.5;
+      color: #a7b1bd;
+    }
+
+    .presets {
+      margin-bottom: 20px;
+    }
+
+    .presets h3 {
+      color: #a7b1bd;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Configurateur CDC2025 Widget</h1>
+
+  <div class="container">
+    <!-- Configuration Panel -->
+    <div class="panel">
+      <h2>⚙️ Paramétrage</h2>
+
+      <div class="form-group">
+        <label>Type de widget</label>
+        <div class="widget-selector">
+          <label>
+            <input type="radio" name="widgetType" value="simple" checked onchange="updatePreview()">
+            Simple (montant seul)
+          </label>
+          <label>
+            <input type="radio" name="widgetType" value="full" onchange="updatePreview()">
+            Complet (avec CDC2025)
+          </label>
+        </div>
+      </div>
+
+      <div class="presets">
+        <h3>Présets rapides:</h3>
+        <div class="preset-buttons">
+          <button class="preset-btn" onclick="applyPreset('default')">🎨 Défaut</button>
+          <button class="preset-btn" onclick="applyPreset('dark')">🌑 Dark</button>
+          <button class="preset-btn" onclick="applyPreset('neon')">⚡ Neon</button>
+          <button class="preset-btn" onclick="applyPreset('pastel')">🌸 Pastel</button>
+        </div>
+      </div>
+
+      <label style="font-weight: 600; color: #FCA000;">Couleurs</label>
+      <div class="color-input-group">
+        <div class="color-input-wrapper">
+          <label>Couleur du texte</label>
+          <input type="color" id="textColor" value="#ffffff" onchange="updatePreview()">
+        </div>
+        <div class="color-input-wrapper">
+          <label>Couleur accent</label>
+          <input type="color" id="accentColor" value="#FCA000" onchange="updatePreview()">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Intensité de l'ombre</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <input type="range" id="shadowIntensity" min="0" max="1" step="0.1" value="0.4" onchange="updatePreview()">
+          <span class="intensity-value" id="shadowValue">0.4</span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>💡 Conseil:</strong> Ces paramètres vont être intégrés directement dans le lien. Tu peux le partager avec n'importe quel streamer!
+      </div>
+
+      <div class="link-section">
+        <h3>📋 Lien personnalisé</h3>
+        <div class="generated-link" id="generatedLink">https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget_simple.html</div>
+        <div class="button-group">
+          <button onclick="copyLink()">📋 Copier le lien</button>
+          <button onclick="openInNewTab()" style="background: rgba(100, 150, 200, 0.5);">🔗 Ouvrir</button>
+        </div>
+        <div class="copy-feedback" id="copyFeedback">✓ Copié dans le presse-papiers!</div>
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div class="panel">
+      <h2>👁️ Aperçu en direct</h2>
+      
+      <div class="preview-section">
+        <div style="margin-bottom: 15px;">
+          <label style="color: #a7b1bd; font-size: 0.9em;">Widget Simple</label>
+          <div class="preview-frame">
+            <iframe id="previewSimple" src=""></iframe>
+          </div>
+        </div>
+
+        <div>
+          <label style="color: #a7b1bd; font-size: 0.9em;">Widget Complet</label>
+          <div class="preview-frame">
+            <iframe id="previewFull" src=""></iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box" style="margin-top: 30px;">
+        <strong>🎬 Comment l'utiliser:</strong><br>
+        1. Crée une source navigateur dans OBS<br>
+        2. Colle le lien personnalisé<br>
+        3. Résolution: 1920x1080 ou plus<br>
+        4. Les couleurs se mettent à jour en direct!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GITHUB_URL = 'https://createursdecompagnie.github.io/cdc2025-live-stats';
+    
+    const presets = {
+      default: {
+        textColor: '#ffffff',
+        accentColor: '#FCA000',
+        shadowIntensity: 0.4
+      },
+      dark: {
+        textColor: '#e0e0e0',
+        accentColor: '#ff6b00',
+        shadowIntensity: 0.6
+      },
+      neon: {
+        textColor: '#00ffff',
+        accentColor: '#ff00ff',
+        shadowIntensity: 0.8
+      },
+      pastel: {
+        textColor: '#fff9e6',
+        accentColor: '#ff69b4',
+        shadowIntensity: 0.3
+      }
+    };
+
+    function applyPreset(presetName) {
+      const preset = presets[presetName];
+      if (preset) {
+        document.getElementById('textColor').value = preset.textColor;
+        document.getElementById('accentColor').value = preset.accentColor;
+        document.getElementById('shadowIntensity').value = preset.shadowIntensity;
+        updatePreview();
+      }
+    }
+
+    function updatePreview() {
+      const widgetType = document.querySelector('input[name="widgetType"]:checked').value;
+      const textColor = document.getElementById('textColor').value;
+      const accentColor = document.getElementById('accentColor').value;
+      const shadowIntensity = document.getElementById('shadowIntensity').value;
+
+      // Update shadow value display
+      document.getElementById('shadowValue').textContent = shadowIntensity;
+
+      // Build URLs
+      const params = new URLSearchParams();
+      params.append('textColor', textColor);
+      params.append('accentColor', accentColor);
+      params.append('shadowIntensity', shadowIntensity);
+
+      const simpleUrl = `${GITHUB_URL}/cdc_goal_widget_simple.html?${params.toString()}`;
+      const fullUrl = `${GITHUB_URL}/cdc_goal_widget.html?${params.toString()}`;
+
+      // Update iframes
+      document.getElementById('previewSimple').src = simpleUrl;
+      document.getElementById('previewFull').src = fullUrl;
+
+      // Update generated link
+      const activeUrl = widgetType === 'simple' ? simpleUrl : fullUrl;
+      document.getElementById('generatedLink').textContent = activeUrl;
+    }
+
+    function copyLink() {
+      const link = document.getElementById('generatedLink').textContent;
+      navigator.clipboard.writeText(link).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.style.display = 'block';
+        setTimeout(() => {
+          feedback.style.display = 'none';
+        }, 2000);
+      }).catch(err => {
+        alert('Erreur lors de la copie: ' + err);
+      });
+    }
+
+    function openInNewTab() {
+      const link = document.getElementById('generatedLink').textContent;
+      window.open(link, '_blank');
+    }
+
+    // Initialize on load
+    window.addEventListener('load', () => {
+      updatePreview();
+    });
+  </script>
+
+</body>
+</html>
