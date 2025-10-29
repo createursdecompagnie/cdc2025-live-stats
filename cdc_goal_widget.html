@@ -179,53 +179,23 @@ const CFG = {
 function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n) + ' €'; }
 
 /* ============================================================================
-   MAIN FUNCTION - UPDATE GLOBAL GOAL (STREAMLABS + AJOUTS MANAGER)
+   MAIN FUNCTION - UPDATE GLOBAL GOAL (AJOUTS MANAGER ONLY)
    ============================================================================
-   Fetches:
-   1. Montant brut de Streamlabs Charity widget
-   2. Ajouts manuels depuis le manager (GitHub JSON)
-   
-   Affiche: Streamlabs + Ajouts + Bonus URL
+   Affiche juste les ajouts du manager (plus de fetch Streamlabs - CORS bloqué)
    
    UPDATE FREQUENCY: Toutes les 3 secondes
    ============================================================================ */
 async function updateGlobalGoal() {
   try {
-    // 1. Récupérer le montant brut de Streamlabs
-    let brutAmount = 0;
-    try {
-      const res = await fetch('https://streamlabs.com/widgets/streamlabs-charity-donation-goal?token=03311CF526D2843D8B1C');
-      const html = await res.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const scriptTags = doc.querySelectorAll('script');
-      
-      for(const script of scriptTags) {
-        const content = script.textContent;
-        const amountMatch = content.match(/(?:current_amount|raised|amount)["']?\s*:\s*(\d+(?:\.\d+)?)/i);
-        if(amountMatch) {
-          brutAmount = parseFloat(amountMatch[1]);
-          break;
-        }
-      }
-    } catch(e) {
-      console.warn('Streamlabs fetch failed:', e);
-    }
-
-    // 2. Récupérer les ajouts du manager (GitHub)
-    let ajouts = 0;
-    try {
-      const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
-      if (configResponse.ok) {
-        const config = await configResponse.json();
-        ajouts = parseFloat(config.ajouts) || 0;
-      }
-    } catch(e) {
-      console.warn('GitHub config fetch failed:', e);
-    }
-
-    // 3. Calculer le total et afficher
-    const totalAmount = Math.floor(brutAmount) + ajouts + CFG.bonusAmount;
+    // Récupérer les ajouts du manager (GitHub)
+    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
+    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+    
+    const config = await configResponse.json();
+    const ajouts = parseFloat(config.ajouts) || 0;
+    
+    // Ajouter bonus URL si présent
+    const totalAmount = ajouts + CFG.bonusAmount;
     document.getElementById('globalAmount').textContent = fmt(totalAmount);
   } catch(e) {
     console.warn('Global goal update failed:', e);
