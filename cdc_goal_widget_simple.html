@@ -123,19 +123,21 @@ function animateCounter(newValue) {
 
 async function updateGlobalGoal() {
   try {
-    // Récupérer les ajouts du manager (GitHub)
+    // Récupérer la config depuis GitHub
     const t = Date.now();
     const r = Math.random();
     const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + t + '&_=' + r + '&v=' + Math.floor(t/1000));
     if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
     
     const config = await configResponse.json();
-    const ajouts = parseFloat(config.ajouts) || 0;
+    const brut = parseFloat(config.brut) || 0;      // Montant Streamlabs Charity
+    const ajouts = parseFloat(config.ajouts) || 0;  // Montants bonus (t-shirts, cash, etc.)
+    const totalAmount = brut + ajouts;              // Total = Streamlabs + Ajouts
     
     // Si la valeur a changé, animer
-    if (Math.abs(ajouts - currentDisplayValue) > 0.01) {
-      animateCounter(ajouts);
-    } else if (currentDisplayValue === 0 && ajouts === 0) {
+    if (Math.abs(totalAmount - currentDisplayValue) > 0.01) {
+      animateCounter(totalAmount);
+    } else if (currentDisplayValue === 0 && totalAmount === 0) {
       // Force initial display even if both are 0
       const formatted = new Intl.NumberFormat('fr-FR', {
         style: 'currency',
