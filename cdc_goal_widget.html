@@ -252,21 +252,22 @@ function animateCounter(newValue) {
 
 /* ============================================================================
    ============================================================================
-   Affiche juste les ajouts du manager (plus de fetch Streamlabs - CORS bloqué)
+   Affiche la somme de Streamlabs (brut) + ajouts du manager
    
    UPDATE FREQUENCY: Toutes les 3 secondes
    ============================================================================ */
 async function updateGlobalGoal() {
   try {
-    // Récupérer les ajouts du manager (GitHub)
+    // Récupérer la config depuis GitHub
     const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
     if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
     
     const config = await configResponse.json();
-    const ajouts = parseFloat(config.ajouts) || 0;
+    const brut = parseFloat(config.brut) || 0;      // Montant Streamlabs Charity
+    const ajouts = parseFloat(config.ajouts) || 0;  // Montants bonus (t-shirts, cash, etc.)
     
-    // Ajouter bonus URL si présent
-    const totalAmount = ajouts + CFG.bonusAmount;
+    // Total = Streamlabs + Ajouts + Bonus URL
+    const totalAmount = brut + ajouts + CFG.bonusAmount;
     
     // Si la valeur a changé, animer
     if (Math.abs(totalAmount - currentDisplayValue) > 0.01) {
