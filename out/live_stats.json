@@ -316,8 +316,8 @@
         "display_name": "Kibishiii_",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/1276b9a4-3170-4c9f-8369-13c631a82626-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 61
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "652413685",
@@ -420,8 +420,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 61,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 38
   }
 }
