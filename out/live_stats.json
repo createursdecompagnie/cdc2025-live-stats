@@ -96,7 +96,7 @@
         "display_name": "Buddakhiin",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
       },
-      "is_live": false,
+      "is_live": true,
       "viewer_count": 0
     },
     {
@@ -129,8 +129,8 @@
         "display_name": "MlleCkat",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 8
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "103569937",
@@ -421,7 +421,7 @@
   ],
   "stats": {
     "live_count": 2,
-    "total_viewers": 19,
+    "total_viewers": 11,
     "total_members": 38
   }
 }
