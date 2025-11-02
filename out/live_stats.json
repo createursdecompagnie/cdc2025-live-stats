@@ -283,8 +283,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 50
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -306,7 +306,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d1a9875-e6a7-4f2e-8a66-39cd4154f152-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 4
+      "viewer_count": 22
     },
     {
       "id": "529592842",
@@ -361,7 +361,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 7
+      "viewer_count": 12
     },
     {
       "id": "922542142",
@@ -420,8 +420,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 61,
+    "live_count": 2,
+    "total_viewers": 34,
     "total_members": 38
   }
 }
