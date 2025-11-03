@@ -163,7 +163,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3769cd50-9e78-43cf-80ae-44b4034c5bd4-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 19
+      "viewer_count": 22
     },
     {
       "id": "624201380",
@@ -382,8 +382,8 @@
         "display_name": "Faylhee",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 7
     },
     {
       "id": "458949785",
@@ -420,8 +420,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 68,
+    "live_count": 4,
+    "total_viewers": 78,
     "total_members": 38
   }
 }
