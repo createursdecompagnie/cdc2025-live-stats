@@ -283,8 +283,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 18
     },
     {
       "id": "538688273",
@@ -294,8 +294,8 @@
         "display_name": "Aurorexpress",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 15
     },
     {
       "id": "61642471",
@@ -420,8 +420,8 @@
     }
   ],
   "stats": {
-    "live_count": 0,
-    "total_viewers": 0,
+    "live_count": 2,
+    "total_viewers": 33,
     "total_members": 38
   }
 }
