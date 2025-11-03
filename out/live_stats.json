@@ -206,8 +206,8 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 183
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "515342263",
@@ -354,8 +354,8 @@
     }
   ],
   "stats": {
-    "live_count": 4,
-    "total_viewers": 202,
+    "live_count": 3,
+    "total_viewers": 19,
     "total_members": 32
   }
 }
