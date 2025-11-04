@@ -130,7 +130,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 6
+      "viewer_count": 5
     },
     {
       "id": "103569937",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 57
+      "viewer_count": 56
     },
     {
       "id": "538688273",
@@ -262,7 +262,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d1a9875-e6a7-4f2e-8a66-39cd4154f152-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 3
+      "viewer_count": 4
     },
     {
       "id": "652413685",
@@ -317,7 +317,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0ec4c1cf-6d27-496b-8770-a0b1646a7ad4-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 4
+      "viewer_count": 6
     },
     {
       "id": "768284594",
@@ -327,8 +327,8 @@
         "display_name": "Faylhee",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 13
     },
     {
       "id": "458949785",
@@ -354,8 +354,8 @@
     }
   ],
   "stats": {
-    "live_count": 4,
-    "total_viewers": 70,
+    "live_count": 5,
+    "total_viewers": 84,
     "total_members": 32
   }
 }
