@@ -53,7 +53,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94efb04f-b63e-4679-a6cb-f4906498268d-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 5
     },
     {
       "id": "71762061",
@@ -162,8 +162,8 @@
         "display_name": "Remi_Lemon",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0f386f16-70a9-4b49-8157-a1dc9f5c649e-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 2
     },
     {
       "id": "121477770",
@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 48
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -251,7 +251,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 28
+      "viewer_count": 34
     },
     {
       "id": "61642471",
@@ -328,7 +328,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 22
+      "viewer_count": 39
     },
     {
       "id": "458949785",
@@ -355,7 +355,7 @@
   ],
   "stats": {
     "live_count": 5,
-    "total_viewers": 119,
+    "total_viewers": 89,
     "total_members": 32
   }
 }
