@@ -108,13 +108,17 @@ function updateClock(){ document.getElementById('timer').textContent=formatCurre
 
 async function updateGlobalGoal(){
   try{
-    const res=await fetch(CFG.goalWidgetUrl+'?t='+Date.now());
-    const html=await res.text();
-    const parser=new DOMParser(); const doc=parser.parseFromString(html,'text/html');
-    const el=doc.getElementById('globalAmount');
-    if(el){ let txt=(el.textContent||'').trim().replace(/\s+/g,' ').trim(); if(!/[€]/.test(txt)) txt=txt+' €'; document.getElementById('global-amount').textContent=txt; }
-    else { document.getElementById('global-amount').textContent='0 €'; }
-  }catch(e){ console.warn('Global goal fetch failed:', e); document.getElementById('global-amount').textContent='0 €'; }
+    const configUrl='https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json';
+    const res=await fetch(configUrl+'?t='+Date.now());
+    if(!res.ok) throw new Error('Config fetch failed: '+res.status);
+    const config=await res.json();
+    const brut=parseFloat(config.brut)||0;
+    const ajouts=parseFloat(config.ajouts)||0;
+    const total=brut+ajouts;
+    const formatted=new Intl.NumberFormat('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2}).format(total)+' €';
+    document.getElementById('global-amount').textContent=formatted;
+    console.log('✅ Global goal updated:',{brut,ajouts,total});
+  }catch(e){console.warn('Global goal fetch failed:',e);document.getElementById('global-amount').textContent='0 €';}
 }
 
 async function updateStats(){
