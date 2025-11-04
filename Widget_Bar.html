@@ -264,32 +264,25 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Update global goal by fetching from cdc_goal_widget.html
+// Update global goal by fetching directly from cagnotte_config.json
 async function updateGlobalGoal() {
   try {
-    // Fetch the cdc_goal_widget.html page
-    const res = await fetch(CFG.goalWidgetUrl + '?t=' + Date.now());
-    const html = await res.text();
+    const configUrl = 'https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json';
+    const res = await fetch(configUrl + '?t=' + Date.now());
+    if (!res.ok) throw new Error('Config fetch failed: ' + res.status);
+    const config = await res.json();
     
-    // Parse the HTML to extract the displayed amount
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    const brut = parseFloat(config.brut) || 0;
+    const ajouts = parseFloat(config.ajouts) || 0;
+    const total = brut + ajouts;
     
-    // Find the element with id="globalAmount" (same as in cdc_goal_widget.html)
-    const globalAmountEl = doc.getElementById('globalAmount');
-    if (globalAmountEl) {
-      let amountText = (globalAmountEl.textContent || '').trim();
-      // Normalize whitespace
-      amountText = amountText.replace(/\s+/g, ' ').trim();
-      // If the widget already includes €, keep as-is; else append
-      if (!/[€]/.test(amountText)) {
-        amountText = amountText + ' €';
-      }
-      document.getElementById('global-amount').textContent = amountText;
-    } else {
-      console.warn('Could not find globalAmount element in widget');
-      document.getElementById('global-amount').textContent = '0 €';
-    }
+    const formatted = new Intl.NumberFormat('fr-FR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }).format(total) + ' €';
+    
+    document.getElementById('global-amount').textContent = formatted;
+    console.log('✅ Global goal updated:', { brut, ajouts, total, formatted });
   } catch (err) {
     console.warn('Global goal fetch failed:', err);
     document.getElementById('global-amount').textContent = '0 €';
