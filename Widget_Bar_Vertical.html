@@ -15,9 +15,6 @@
   --accent:#FCA000;
   --accent-2:#104E59;
   --accent-3:#EDD2BC;
-  --cagnotte-border:#FCA000;
-  --cagnotte-bg:rgba(252,160,0,0.1);
-  --cagnotte-border-color:rgba(252,160,0,0.2);
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --stage-scale: 1;
   --bar-bg: rgba(11,15,20,0.75);
@@ -48,9 +45,9 @@ html, body {
 .rainbow { background:linear-gradient(90deg,#FFE259,#FFA751); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .sep { width:100%; height:1px; background:rgba(255,255,255,0.08); margin: 4px 0; }
 
-.goal-global { width:100%; display:flex; flex-direction:column; align-items:center; gap:6px; padding: 8px 10px; background: var(--cagnotte-bg); border-radius:8px; border:1px solid var(--cagnotte-border-color); }
-.goal-label { font-weight:700; font-size: calc(11px * var(--fs)); text-transform:uppercase; color:var(--accent); letter-spacing:0.5px; text-align:center; white-space:nowrap; }
-.goal-amount { font-weight:800; font-size: calc(18px * var(--fs)); color:#fff; white-space:nowrap; }
+.goal-global { width:100%; display:flex; flex-direction:column; align-items:center; gap:6px; padding: 8px 10px; background: rgba(252,160,0,0.1); border-radius:8px; border:1px solid rgba(252,160,0,0.2); }
+.goal-label { font-weight:700; font-size: calc(11px * var(--fs)); text-transform:uppercase; color:var(--accent); letter-spacing:0.5px; text-align:center; }
+.goal-amount { font-weight:800; font-size: calc(18px * var(--fs)); color:#fff; }
 
 .goal-personal { width:100%; min-height: 36px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; color:var(--muted); font-size: calc(12px * var(--fs)); border-radius:8px; }
 
@@ -67,7 +64,7 @@ body { font-family:"Outfit", var(--font); }
 <body>
 <div class="stage">
   <div id="vbar" class="vbar">
-  <div class="logo"><span class="rainbow">#CDC2025</span></div>
+    <div class="logo"><span class="rainbow">#CDC2025</span></div>
     <div class="sep"></div>
     <div class="goal-global">
       <span class="goal-label">Cagnotte</span>
@@ -76,8 +73,8 @@ body { font-family:"Outfit", var(--font); }
     <div class="goal-personal"><!-- slot perso --></div>
     <div class="sep"></div>
     <div class="stats-compact">
-  <div class="stat-item"><span class="stat-icon">👥</span><span class="stat-value" id="viewers-count">0</span><span class="small" id="viewers-label">participants</span></div>
-  <div class="stat-item"><span class="stat-icon">🔴</span><span class="stat-value" id="live-count">0</span><span class="small" id="live-label">en ligne</span></div>
+      <div class="stat-item"><span class="stat-icon">👥</span><span class="stat-value" id="viewers-count">0</span></div>
+      <div class="stat-item"><span class="stat-icon">🔴</span><span class="stat-value" id="live-count">0</span></div>
       <div class="stat-item"><span class="stat-icon">⏱️</span><span class="stat-value" id="timer">00:00</span></div>
     </div>
     <div class="hashtag">#ProtectionAnimale</div>
@@ -88,64 +85,16 @@ function fitStage(){ const s=Math.min(window.innerWidth/1920, window.innerHeight
 const url=new URLSearchParams(window.location.search);
 const CFG={
   accent:url.get('accent')||null,
-  statsUrl:url.get('statsUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
+  statsUrl:url.get('statsUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/live_stats.json',
   goalWidgetUrl:url.get('goalWidgetUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html',
   updateInterval: parseInt(url.get('interval'))||30000,
   side: (url.get('side')||'left').toLowerCase(),
   barW: url.get('barW')||null,
-  showCagnotte: url.get('showCagnotte') !== 'false',
-  showStats: url.get('showStats') !== 'false',
-  showHashtag: url.get('showHashtag') !== 'false',
-  barOpacity: parseFloat(url.get('barOpacity')) || 0.75,
 };
 if (CFG.accent) document.documentElement.style.setProperty('--accent', CFG.accent);
 if (url.get('text')) document.documentElement.style.setProperty('--text', url.get('text'));
-if (url.get('muted')) {
-  document.documentElement.style.setProperty('--muted', url.get('muted'));
-  // Also use muted for cagnotte border color if not explicitly set
-  if (!url.get('cagnotteColor')) document.documentElement.style.setProperty('--cagnotte-border', url.get('muted'));
-}
-if (url.get('cagnotteColor')) {
-  const cagnotteColor = url.get('cagnotteColor');
-  document.documentElement.style.setProperty('--cagnotte-border', cagnotteColor);
-  
-  // Convert hex to rgba for background and border
-  let r, g, b;
-  if (cagnotteColor.startsWith('#')) {
-    const hex = cagnotteColor.substring(1);
-    r = parseInt(hex.substring(0, 2), 16);
-    g = parseInt(hex.substring(2, 4), 16);
-    b = parseInt(hex.substring(4, 6), 16);
-    document.documentElement.style.setProperty('--cagnotte-bg', `rgba(${r},${g},${b},0.1)`);
-    document.documentElement.style.setProperty('--cagnotte-border-color', `rgba(${r},${g},${b},0.2)`);
-  } else if (cagnotteColor.startsWith('rgba') || cagnotteColor.startsWith('rgb')) {
-    document.documentElement.style.setProperty('--cagnotte-bg', cagnotteColor);
-    document.documentElement.style.setProperty('--cagnotte-border-color', cagnotteColor);
-  }
-}
-if (url.get('barBg')) {
-  const barBg = url.get('barBg');
-  // Preserve barOpacity if custom barBg is set
-  if (!barBg.includes('rgba') && !barBg.includes('rgb')) {
-    // Convert hex to rgba with opacity
-    const opacity = CFG.barOpacity;
-    // Simple hex conversion - if it's a hex color
-    if (barBg.startsWith('#')) {
-      const hex = barBg.substring(1);
-      const r = parseInt(hex.substring(0, 2), 16);
-      const g = parseInt(hex.substring(2, 4), 16);
-      const b = parseInt(hex.substring(4, 6), 16);
-      document.documentElement.style.setProperty('--bar-bg', `rgba(${r},${g},${b},${opacity})`);
-    } else {
-      document.documentElement.style.setProperty('--bar-bg', barBg);
-    }
-  } else {
-    document.documentElement.style.setProperty('--bar-bg', barBg);
-  }
-} else if (CFG.barOpacity !== 0.75) {
-  // Apply custom opacity to default color
-  document.documentElement.style.setProperty('--bar-bg', `rgba(11,15,20,${CFG.barOpacity})`);
-}
+if (url.get('muted')) document.documentElement.style.setProperty('--muted', url.get('muted'));
+if (url.get('barBg')) document.documentElement.style.setProperty('--bar-bg', url.get('barBg'));
 const fsParam=parseFloat(url.get('fs')||url.get('fontScale')||url.get('fontsize')); if(!isNaN(fsParam)&&fsParam>0.25&&fsParam<=4){ document.documentElement.style.setProperty('--fs', String(fsParam));}
 if (CFG.barW) document.documentElement.style.setProperty('--bar-w', CFG.barW+(CFG.barW.endsWith('px')||CFG.barW.endsWith('%')?'':'px'));
 const hashtagParam=url.get('hashtag'); if (hashtagParam){ const el=document.querySelector('.hashtag'); if (el) el.textContent=hashtagParam; }
@@ -154,49 +103,40 @@ const logoParam=url.get('logo'); if (logoParam){ const span=document.querySelect
 const vbar=document.getElementById('vbar'); if (CFG.side==='right') vbar.classList.add('right'); else vbar.classList.remove('right');
 
 function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n); }
-function formatCurrentTime(){ const now=new Date(); return `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; }
 
-function applyVisibility(){
-  const cagnotteDiv=document.querySelector('.goal-global');
-  const statsDiv=document.querySelector('.stats-compact');
-  const hashtagDiv=document.querySelector('.hashtag');
-  if(cagnotteDiv) cagnotteDiv.style.display=CFG.showCagnotte?'flex':'none';
-  if(statsDiv) statsDiv.style.display=CFG.showStats?'flex':'none';
-  if(hashtagDiv) hashtagDiv.style.display=CFG.showHashtag?'block':'none';
+// Format current time (without seconds)
+function formatCurrentTime() {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 }
+
+// Update clock every second
+function updateClock() {
+  document.getElementById('timer').textContent = formatCurrentTime();
+}
+setInterval(updateClock, 1000);
+updateClock();
 
 async function updateGlobalGoal(){
   try{
-    const configUrl='https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json';
-    const res=await fetch(configUrl+'?t='+Date.now());
-    if(!res.ok) throw new Error('Config fetch failed: '+res.status);
-    const config=await res.json();
-    const brut=parseFloat(config.brut)||0;
-    const ajouts=parseFloat(config.ajouts)||0;
-    const total=brut+ajouts;
-    const formatted=new Intl.NumberFormat('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2}).format(total)+' €';
-    document.getElementById('global-amount').textContent=formatted;
-    console.log('✅ Global goal updated:',{brut,ajouts,total});
-  }catch(e){console.warn('Global goal fetch failed:',e);document.getElementById('global-amount').textContent='0 €';}
+    const res=await fetch(CFG.goalWidgetUrl+'?t='+Date.now());
+    const html=await res.text();
+    const parser=new DOMParser(); const doc=parser.parseFromString(html,'text/html');
+    const el=doc.getElementById('globalAmount');
+    if(el){ let txt=(el.textContent||'').trim().replace(/\s+/g,' ').trim(); if(!/[€]/.test(txt)) txt=txt+' €'; document.getElementById('global-amount').textContent=txt; }
+    else { document.getElementById('global-amount').textContent='0 €'; }
+  }catch(e){ console.warn('Global goal fetch failed:', e); document.getElementById('global-amount').textContent='0 €'; }
 }
 
 async function updateStats(){
   try{
     const res=await fetch(CFG.statsUrl+'?t='+Date.now()); const data=await res.json();
-    if(Array.isArray(data.members)){
-      const live=data.members.filter(m=>m.is_live).length;
-      const total=data.members.length;
-      const viewers=data.members.reduce((sum,m)=>sum+(m.viewer_count||0),0);
-      document.getElementById('viewers-count').textContent=fmt(viewers);
-      document.getElementById('live-count').textContent=`${live}/${total}`;
-    }else{
-      if(data.total_viewers!==undefined) document.getElementById('viewers-count').textContent=fmt(data.total_viewers);
-      if(data.live_count!==undefined) document.getElementById('live-count').textContent=fmt(data.live_count)+' Live';
-    }
+    if(data.total_viewers!==undefined) document.getElementById('viewers-count').textContent=fmt(data.total_viewers);
+    if(data.live_count!==undefined) document.getElementById('live-count').textContent=fmt(data.live_count)+' Live';
   }catch(e){ console.warn('Failed to update stats:', e); }
 }
 
-updateGlobalGoal(); updateStats(); applyVisibility(); setInterval(()=>{updateGlobalGoal(); updateStats();}, CFG.updateInterval);
+updateGlobalGoal(); updateStats(); setInterval(()=>{updateGlobalGoal(); updateStats();}, CFG.updateInterval);
 </script>
 </body>
 </html>
