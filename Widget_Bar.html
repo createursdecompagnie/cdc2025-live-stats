@@ -229,14 +229,41 @@ const CFG = {
   statsUrl: url.get('statsUrl') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
   goalWidgetUrl: url.get('goalWidgetUrl') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html',
   updateInterval: parseInt(url.get('interval')) || 30000, // 30 secondes par défaut
+  showCagnotte: url.get('showCagnotte') !== 'false',
+  showStats: url.get('showStats') !== 'false',
+  showHashtag: url.get('showHashtag') !== 'false',
+  barOpacity: parseFloat(url.get('barOpacity')) || 0.75,
 };
 if (CFG.accent) document.documentElement.style.setProperty('--accent', CFG.accent);
 // Color overrides
 if (url.get('text')) document.documentElement.style.setProperty('--text', url.get('text'));
+if (url.get('muted')) document.documentElement.style.setProperty('--muted', url.get('muted'));
 if (url.get('numbers')) document.documentElement.style.setProperty('--numbers', url.get('numbers'));
 if (url.get('logoGradientStart')) document.documentElement.style.setProperty('--logo-gradient-start', url.get('logoGradientStart'));
 if (url.get('logoGradientEnd')) document.documentElement.style.setProperty('--logo-gradient-end', url.get('logoGradientEnd'));
-if (url.get('barBg')) document.documentElement.style.setProperty('--bar-bg', url.get('barBg'));
+if (url.get('barBg')) {
+  const barBg = url.get('barBg');
+  // Preserve barOpacity if custom barBg is set
+  if (!barBg.includes('rgba') && !barBg.includes('rgb')) {
+    // Convert hex to rgba with opacity
+    const opacity = CFG.barOpacity;
+    // Simple hex conversion - if it's a hex color
+    if (barBg.startsWith('#')) {
+      const hex = barBg.substring(1);
+      const r = parseInt(hex.substring(0, 2), 16);
+      const g = parseInt(hex.substring(2, 4), 16);
+      const b = parseInt(hex.substring(4, 6), 16);
+      document.documentElement.style.setProperty('--bar-bg', `rgba(${r},${g},${b},${opacity})`);
+    } else {
+      document.documentElement.style.setProperty('--bar-bg', barBg);
+    }
+  } else {
+    document.documentElement.style.setProperty('--bar-bg', barBg);
+  }
+} else if (CFG.barOpacity !== 0.75) {
+  // Apply custom opacity to default color
+  document.documentElement.style.setProperty('--bar-bg', `rgba(11,15,20,${CFG.barOpacity})`);
+}
 // Font scale overrides
 const fsParam = parseFloat(url.get('fs') || url.get('fontScale') || url.get('fontsize'));
 if (!isNaN(fsParam) && fsParam > 0.25 && fsParam <= 4) {
@@ -256,6 +283,24 @@ if (logoParam) {
 
 // Format numbers
 function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n); }
+
+// Show/hide elements based on config
+function applyVisibility() {
+  const cagnotteDiv = document.querySelector('.goal-global');
+  const statsDiv = document.querySelector('.stats-compact');
+  const hashtagDiv = document.querySelector('.hashtag');
+  const seps = document.querySelectorAll('.taskbar-separator');
+  
+  if (cagnotteDiv) cagnotteDiv.style.display = CFG.showCagnotte ? 'flex' : 'none';
+  if (statsDiv) statsDiv.style.display = CFG.showStats ? 'flex' : 'none';
+  if (hashtagDiv) hashtagDiv.style.display = CFG.showHashtag ? 'block' : 'none';
+  
+  // Adjust separators visibility (hide if adjacent elements are hidden)
+  let visibleCount = 0;
+  if (CFG.showCagnotte) visibleCount++;
+  if (CFG.showStats) visibleCount++;
+  if (CFG.showHashtag) visibleCount++;
+}
 
 // Format current time (without seconds)
 function formatCurrentTime() {
@@ -323,6 +368,7 @@ async function updateStats() {
 // Initial update and set intervals
 updateGlobalGoal();
 updateStats();
+applyVisibility();
 setInterval(() => {
   updateGlobalGoal();
   updateStats();
