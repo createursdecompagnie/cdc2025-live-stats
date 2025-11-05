@@ -469,6 +469,41 @@
               <label for="showCents">Afficher les centimes (0.50€)</label>
             </div>
           </div>
+
+          <!-- Widget Creators Options -->
+          <div id="creatorsOptions" style="display: none; margin-top: 20px;">
+            <label style="color: #FCA000; font-weight: 600;">Personnalisation Créateurs</label>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur des contours EN DIRECT</label>
+              <input type="color" id="borderLive" value="#ff6961" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur des contours HORS LIVE</label>
+              <input type="color" id="borderOffline" value="#b0b0b0" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur du texte</label>
+              <input type="color" id="creatorsTextColor" value="#f2f5f8" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur accent (fondateur, pinned)</label>
+              <input type="color" id="creatorsAccentColor" value="#FCA000" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Label EN DIRECT (ex: "EN DIRECT")</label>
+              <input type="text" id="labelLive" placeholder="EN DIRECT" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Label HORS LIVE (ex: "HORS LIVE")</label>
+              <input type="text" id="labelOffline" placeholder="HORS LIVE" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" onchange="updatePreview()">
+            </div>
+          </div>
         </div>
 
         <!-- Link Section -->
@@ -557,6 +592,16 @@
             textColor: true,
             accentColor: true,
             bgOpacity: true
+          }
+        },
+        'widget-creators.html': {
+          label: 'Créateurs',
+          desc: 'Widget créateurs en direct',
+          supportColors: true,
+          supportCents: false,
+          showPreview: true,
+          customOptions: {
+            widgetCreators: true
           }
         }
       },
@@ -655,6 +700,7 @@
       const shadowOpts = document.getElementById('shadowOptions');
       const opacityOpts = document.getElementById('opacityOptions');
       const visibilityOpts = document.getElementById('visibilityOptions');
+      const creatorsOpts = document.getElementById('creatorsOptions');
 
       // Cagnotte: Show colors + shadow + cents option
       if (currentOverlay.file.includes('cdc_goal_widget')) {
@@ -674,6 +720,19 @@
         if (themeOpts) themeOpts.style.display = 'none';
         if (visibilityOpts) visibilityOpts.style.display = 'none';
         if (centsOpt) centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
+        if (creatorsOpts) creatorsOpts.style.display = 'none';
+      }
+      // Widget Creators: Show specific options
+      else if (currentOverlay.file.includes('widget-creators')) {
+        customOpts.style.display = 'block';
+        presetBtns.style.display = 'none';
+        if (themeOpts) themeOpts.style.display = 'none';
+        if (colorOpts) colorOpts.style.display = 'none';
+        if (shadowOpts) shadowOpts.style.display = 'none';
+        if (opacityOpts) opacityOpts.style.display = 'none';
+        if (visibilityOpts) visibilityOpts.style.display = 'none';
+        if (centsOpt) centsOpt.style.display = 'none';
+        if (creatorsOpts) creatorsOpts.style.display = 'block';
       }
       // Info widgets (standard, vertical) + Carousel: Show themes + colors + opacity + visibility
       else if (currentOverlay.file.includes('info_widget') || currentOverlay.file.includes('info_carousel')) {
@@ -686,6 +745,7 @@
         // Only show visibility toggles for main info_widget (not carousel or vertical)
         if (visibilityOpts) visibilityOpts.style.display = currentOverlay.file.includes('info_widget.html') ? 'block' : 'none';
         if (centsOpt) centsOpt.style.display = 'none';
+        if (creatorsOpts) creatorsOpts.style.display = 'none';
         
         // Initialize theme buttons
         const themeSelector = document.getElementById('themeSelector');
@@ -763,6 +823,22 @@
           params.append('showCents', 'true');
         }
       }
+      // Widget Creators parameters
+      else if (currentOverlay.file.includes('widget-creators')) {
+        const borderLive = document.getElementById('borderLive')?.value || '#ff6961';
+        const borderOffline = document.getElementById('borderOffline')?.value || '#b0b0b0';
+        const creatorsTextColor = document.getElementById('creatorsTextColor')?.value || '#f2f5f8';
+        const creatorsAccentColor = document.getElementById('creatorsAccentColor')?.value || '#FCA000';
+        const labelLiveVal = document.getElementById('labelLive')?.value || '';
+        const labelOfflineVal = document.getElementById('labelOffline')?.value || '';
+        
+        params.append('borderLive', borderLive);
+        params.append('borderOffline', borderOffline);
+        params.append('textColor', creatorsTextColor);
+        params.append('accent', creatorsAccentColor);
+        if (labelLiveVal) params.append('labelLive', labelLiveVal);
+        if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
+      }
       // Info parameters
       else if (currentOverlay.file.includes('info_widget')) {
         params.append('theme', theme);
@@ -804,6 +880,20 @@
           if (currentOverlay.supportCents && showCents) {
             params.append('showCents', 'true');
           }
+        } else if (currentOverlay.file.includes('widget-creators')) {
+          const borderLive = document.getElementById('borderLive')?.value || '#ff6961';
+          const borderOffline = document.getElementById('borderOffline')?.value || '#b0b0b0';
+          const creatorsTextColor = document.getElementById('creatorsTextColor')?.value || '#f2f5f8';
+          const creatorsAccentColor = document.getElementById('creatorsAccentColor')?.value || '#FCA000';
+          const labelLiveVal = document.getElementById('labelLive')?.value || '';
+          const labelOfflineVal = document.getElementById('labelOffline')?.value || '';
+          
+          params.append('borderLive', borderLive);
+          params.append('borderOffline', borderOffline);
+          params.append('textColor', creatorsTextColor);
+          params.append('accent', creatorsAccentColor);
+          if (labelLiveVal) params.append('labelLive', labelLiveVal);
+          if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
         } else if (currentOverlay.file.includes('info_widget')) {
           params.append('theme', theme || 'light');
           params.append('textColor', textColor);
