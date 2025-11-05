@@ -16,6 +16,8 @@
   --accent-2:#104E59;
   --accent-3:#EDD2BC;
   --cagnotte-border:#FCA000;
+  --cagnotte-bg:rgba(252,160,0,0.1);
+  --cagnotte-border-color:rgba(252,160,0,0.2);
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --stage-scale: 1;
   --bar-bg: rgba(11,15,20,0.75);
@@ -81,9 +83,9 @@ html, body {
   align-items: center;
   gap: 12px;
   padding: 8px 16px;
-  background: color-mix(in srgb, var(--cagnotte-border) 10%, transparent);
+  background: var(--cagnotte-bg);
   border-radius: 8px;
-  border: 1px solid color-mix(in srgb, var(--cagnotte-border) 20%, transparent);
+  border: 1px solid var(--cagnotte-border-color);
   flex-wrap: nowrap;
   min-width: min-content;
 }
@@ -243,7 +245,24 @@ if (url.get('muted')) {
   // Also use muted for cagnotte border color if not explicitly set
   if (!url.get('cagnotteColor')) document.documentElement.style.setProperty('--cagnotte-border', url.get('muted'));
 }
-if (url.get('cagnotteColor')) document.documentElement.style.setProperty('--cagnotte-border', url.get('cagnotteColor'));
+if (url.get('cagnotteColor')) {
+  const cagnotteColor = url.get('cagnotteColor');
+  document.documentElement.style.setProperty('--cagnotte-border', cagnotteColor);
+  
+  // Convert hex to rgba for background and border
+  let r, g, b;
+  if (cagnotteColor.startsWith('#')) {
+    const hex = cagnotteColor.substring(1);
+    r = parseInt(hex.substring(0, 2), 16);
+    g = parseInt(hex.substring(2, 4), 16);
+    b = parseInt(hex.substring(4, 6), 16);
+    document.documentElement.style.setProperty('--cagnotte-bg', `rgba(${r},${g},${b},0.1)`);
+    document.documentElement.style.setProperty('--cagnotte-border-color', `rgba(${r},${g},${b},0.2)`);
+  } else if (cagnotteColor.startsWith('rgba') || cagnotteColor.startsWith('rgb')) {
+    document.documentElement.style.setProperty('--cagnotte-bg', cagnotteColor);
+    document.documentElement.style.setProperty('--cagnotte-border-color', cagnotteColor);
+  }
+}
 if (url.get('numbers')) document.documentElement.style.setProperty('--numbers', url.get('numbers'));
 if (url.get('logoGradientStart')) document.documentElement.style.setProperty('--logo-gradient-start', url.get('logoGradientStart'));
 if (url.get('logoGradientEnd')) document.documentElement.style.setProperty('--logo-gradient-end', url.get('logoGradientEnd'));

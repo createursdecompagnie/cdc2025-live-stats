@@ -16,6 +16,8 @@
   --accent-2:#104E59;
   --accent-3:#EDD2BC;
   --cagnotte-border:#FCA000;
+  --cagnotte-bg:rgba(252,160,0,0.1);
+  --cagnotte-border-color:rgba(252,160,0,0.2);
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   --stage-scale: 1;
   --bar-bg: rgba(11,15,20,0.75);
@@ -46,7 +48,7 @@ html, body {
 .rainbow { background:linear-gradient(90deg,#FFE259,#FFA751); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .sep { width:100%; height:1px; background:rgba(255,255,255,0.08); margin: 4px 0; }
 
-.goal-global { width:100%; display:flex; flex-direction:column; align-items:center; gap:6px; padding: 8px 10px; background: color-mix(in srgb, var(--cagnotte-border) 10%, transparent); border-radius:8px; border:1px solid color-mix(in srgb, var(--cagnotte-border) 20%, transparent); }
+.goal-global { width:100%; display:flex; flex-direction:column; align-items:center; gap:6px; padding: 8px 10px; background: var(--cagnotte-bg); border-radius:8px; border:1px solid var(--cagnotte-border-color); }
 .goal-label { font-weight:700; font-size: calc(11px * var(--fs)); text-transform:uppercase; color:var(--accent); letter-spacing:0.5px; text-align:center; white-space:nowrap; }
 .goal-amount { font-weight:800; font-size: calc(18px * var(--fs)); color:#fff; white-space:nowrap; }
 
@@ -103,7 +105,24 @@ if (url.get('muted')) {
   // Also use muted for cagnotte border color if not explicitly set
   if (!url.get('cagnotteColor')) document.documentElement.style.setProperty('--cagnotte-border', url.get('muted'));
 }
-if (url.get('cagnotteColor')) document.documentElement.style.setProperty('--cagnotte-border', url.get('cagnotteColor'));
+if (url.get('cagnotteColor')) {
+  const cagnotteColor = url.get('cagnotteColor');
+  document.documentElement.style.setProperty('--cagnotte-border', cagnotteColor);
+  
+  // Convert hex to rgba for background and border
+  let r, g, b;
+  if (cagnotteColor.startsWith('#')) {
+    const hex = cagnotteColor.substring(1);
+    r = parseInt(hex.substring(0, 2), 16);
+    g = parseInt(hex.substring(2, 4), 16);
+    b = parseInt(hex.substring(4, 6), 16);
+    document.documentElement.style.setProperty('--cagnotte-bg', `rgba(${r},${g},${b},0.1)`);
+    document.documentElement.style.setProperty('--cagnotte-border-color', `rgba(${r},${g},${b},0.2)`);
+  } else if (cagnotteColor.startsWith('rgba') || cagnotteColor.startsWith('rgb')) {
+    document.documentElement.style.setProperty('--cagnotte-bg', cagnotteColor);
+    document.documentElement.style.setProperty('--cagnotte-border-color', cagnotteColor);
+  }
+}
 if (url.get('barBg')) {
   const barBg = url.get('barBg');
   // Preserve barOpacity if custom barBg is set
