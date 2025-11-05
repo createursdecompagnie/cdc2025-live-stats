@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widget Créateurs CDC2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: transparent;
+  --card:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.12);
+  --text:#f2f5f8;
+  --muted:#a7b1bd;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --accent-3:#EDD2BC;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(0,0,0,0.35);
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  --scale: 1;
+  --tile-w: 180px; /* largeur d'une tuile pour le calcul */
+
+  /* NEW theming vars (défauts équivalents à l'existant) */
+  --border-live:#ff6961;
+  --border-offline:rgba(255,255,255,0.18);
+  --tag-live:#ff6961;
+  --tag-muted:rgba(255,255,255,0.7);
+  --live-badge-from:#ff6961;
+  --live-badge-to:#ffa07a;
+  --tile-bg: rgba(255,255,255,0.06);
+}
+
+* { box-sizing:border-box; }
+html, body {
+  margin:0; padding:0;
+  width:100vw; height:100vh;
+  background: transparent;
+  color:var(--text);
+  font-family: "Outfit", var(--font);
+  overflow:hidden;
+}
+
+.widget-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  transform: scale(var(--scale));
+  transform-origin: top left;
+}
+
+.row-top { 
+  display:grid; 
+  grid-template-columns: 220px 1fr; 
+  gap:16px; 
+  align-items:stretch; 
+}
+.row-below {
+  display:grid;
+  grid-template-columns: 220px 1fr;
+  gap:16px;
+  align-items:stretch;
+  margin-top: 18px; /* espace pour ne pas masquer le bord du dessus avec le tag */
+}
+
+/* Laisser les items grid rétrécir dans leur colonne -> évite le débordement à droite */
+.row-top > .live-box,
+.row-below > .offline-box { min-width: 0; }
+
+.founder-box { 
+  border:2px solid var(--accent); 
+  border-radius:22px; 
+  padding:10px; 
+  background: var(--box-bg);
+  backdrop-filter: blur(10px);
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+}
+
+.live-box, .offline-box { 
+  position:relative; 
+  /* CHANGED: border color via CSS vars */
+  border-radius:22px; 
+  padding:10px; 
+  background: var(--box-bg);
+  backdrop-filter: blur(10px);
+  border:2px solid var(--border-live);
+}
+.offline-box { 
+  /* ...existing code... */
+  margin: 0;
+  /* CHANGED: offline specific border */
+  border-color: var(--border-offline);
+  grid-column: 1 / -1;
+}
+
+.section-tag { 
+  position:absolute; 
+  top:-12px; 
+  left:14px; 
+  padding:4px 10px; 
+  border-radius:999px; 
+  border:2px solid currentColor; 
+  background: var(--tag-bg); 
+  font-weight:900; 
+  font-size:12px; 
+  letter-spacing:.3px; 
+}
+.section-tag.live { color: var(--tag-live); }
+.section-tag.muted { color: var(--tag-muted); }
+
+.tile { 
+  position:relative; 
+  padding:12px; 
+  border-radius:16px; 
+  border:1px solid rgba(255,255,255,0.12); 
+  background: var(--tile-bg);
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:flex-start; 
+  aspect-ratio: 1 / 1; 
+}
+.tile.pinned { outline:2px solid var(--accent); }
+.tile.offline { filter: grayscale(100%); opacity:0.6; }
+
+.tile .avatar { 
+  width:72px; 
+  height:72px; 
+  border-radius:50%; 
+  background:#0004 center/cover no-repeat; 
+  border:1px solid rgba(255,255,255,0.12); 
+  box-shadow: var(--shadow); 
+}
+.tile .name { 
+  margin-top:10px; 
+  font-weight:800; 
+  text-align:center; 
+  font-size: 14px;
+  line-height: 1.2;
+}
+.tile .meta { 
+  font-size:12px; 
+  color:var(--muted); 
+  margin-top:4px; 
+  text-align:center;
+}
+.tile .live-badge { 
+  position:absolute; 
+  top:10px; right:10px; 
+  background:linear-gradient(90deg, var(--live-badge-from), var(--live-badge-to)); 
+  color:#121212; 
+  font-weight:900; 
+  padding:4px 8px; 
+  border-radius:999px; 
+  font-size:12px; 
+}
+.tile .founder { 
+  margin-top:6px; 
+  font-size:12px; 
+  font-weight:700; 
+  color:#f6d181; 
+  letter-spacing:.2px; 
+  text-align:center;
+}
+.tile .contact { 
+  margin-top:4px; 
+  font-size:11px; 
+  font-weight:600; 
+  color:var(--muted); 
+  font-style:italic; 
+  text-align:center;
+}
+
+.carousel { 
+  position:relative; 
+  overflow:hidden; 
+  border-radius:16px; 
+  border:1px solid rgba(255,255,255,0.12); 
+  background: rgba(255,255,255,0.04); 
+}
+.carousel .track { 
+  display:flex; 
+  gap:10px; 
+  padding:10px;
+  will-change: transform;
+}
+.online-carousel .track.animated { 
+  animation: marqueeOnline 45s linear infinite; 
+}
+.offline-carousel .track.animated { 
+  animation: marqueeOffline 60s linear infinite; 
+}
+.carousel .track.no-anim { 
+  animation: none !important; 
+}
+.carousel .tile { 
+  min-width: var(--tile-w);
+  flex-shrink: 0;
+}
+
+@keyframes marqueeOnline { 
+  0% { transform: translateX(0); } 
+  100% { transform: translateX(-50%); } 
+}
+@keyframes marqueeOffline { 
+  0% { transform: translateX(0); } 
+  100% { transform: translateX(-50%); } 
+}
+
+.small { 
+  font-size:14px; 
+  color:var(--muted); 
+  padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Exemples de paramètres (commenté) :
+  
+  BASIQUE :
+  ?pin=misternooton
+  
+  AVEC FOND PERSONNALISÉ :
+  ?bgColor=%23000000&bgOpacity=0.9
+  ?bgColor=%231a1a2e&bgOpacity=0.85&tagBgColor=%23000000&tagBgOpacity=1
+  
+  FOND SEMI-TRANSPARENT :
+  ?bgColor=%230b0f14&bgOpacity=0.5&tagBgColor=%230b0f14&tagBgOpacity=0.7
+  
+  FOND COLORÉ :
+  ?bgColor=%23104E59&bgOpacity=0.8&tagBgColor=%23104E59&tagBgOpacity=0.9
+  
+  AVEC SCALE :
+  ?scale=0.8&bgColor=%230b0f14&bgOpacity=0.85
+  ?scale=1.2&bgColor=%23000000&bgOpacity=0.9
+  
+  COMPLET :
+  ?pin=misternooton&bgColor=%230b0f14&bgOpacity=0.85&tagBgColor=%230b0f14&tagBgOpacity=1&scale=1&interval=30000
+  
+  TEST FORCE LIVE :
+  ?pin=misternooton&forcePinLive=1&bgColor=%23000000&bgOpacity=0.9
+  
+  SOURCE PERSONNALISÉE :
+  ?source=https://votre-url.json&pin=username&bgColor=%231a1a2e&bgOpacity=0.8&scale=0.9
+-->
+
+<div class="widget-container">
+  <div class="row-top">
+    <div class="founder-box">
+      <div id="pinned-creator"></div>
+    </div>
+    <div class="live-box">
+      <div class="carousel online-carousel" aria-label="En direct">
+        <div class="track" id="online-track"></div>
+      </div>
+      <div class="section-tag live">EN DIRECT</div>
+    </div>
+  </div>
+
+  <div class="row-below">
+    <div class="offline-box">
+      <div class="carousel offline-carousel" aria-label="Hors ligne">
+        <div class="track" id="offline-track"></div>
+      </div>
+      <div class="section-tag muted">HORS LIVE</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const url = new URLSearchParams(location.search);
+  const SOURCE = url.get('source') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json';
+  const PIN = (url.get('pin') || 'misternooton').toLowerCase();
+  const FORCE_PIN_LIVE = (url.get('forcePinLive') || '0') === '1';
+  const INTERVAL = Math.max(20_000, Number(url.get('interval')||30000));
+  
+  // Paramètres de personnalisation du fond
+  // --- NEW: largeur tuile configurable + export en CSS var ---
+  const TILE_W = Math.max(100, Number(url.get('tileW') || '180'));
+  document.documentElement.style.setProperty('--tile-w', TILE_W + 'px');
+
+  // Appliquer les couleurs personnalisées
+  function hexToRgba(hex, alpha) {
+    const cleanHex = hex ? (hex.startsWith('#') ? hex : '#' + hex) : null;
+    if (!cleanHex) return '';
+    const r = parseInt(cleanHex.slice(1, 3), 16);
+    const g = parseInt(cleanHex.slice(3, 5), 16);
+    const b = parseInt(cleanHex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+  function setVar(k, v){ if (v!=null && v!=='') document.documentElement.style.setProperty(k, v); }
+  function setHexVar(k, v){ if (!v) return; const c = v.startsWith('#') ? v : '#'+v; setVar(k, c); }
+
+  // Déjà existants (fond boîtes / tags / scale)
+  const BG_COLOR = url.get('bgColor') || '#0b0f14';
+  const BG_OPACITY = Math.min(1, Math.max(0, Number(url.get('bgOpacity') || '0.85')));
+  const TAG_BG_COLOR = url.get('tagBgColor') || '#0b0f14';
+  const TAG_BG_OPACITY = Math.min(1, Math.max(0, Number(url.get('tagBgOpacity') || '1')));
+  const SCALE = Math.max(0.1, Math.min(2, Number(url.get('scale') || '1')));
+
+  const boxBg = hexToRgba(BG_COLOR, BG_OPACITY);
+  const tagBg = hexToRgba(TAG_BG_COLOR, TAG_BG_OPACITY);
+  setVar('--box-bg', boxBg);
+  setVar('--tag-bg', tagBg);
+  setVar('--scale', SCALE);
+
+  // NEW: couleurs thémables via URL
+  setHexVar('--accent', url.get('accent'));               // bord fondateur + pinned
+  setHexVar('--text', url.get('textColor'));              // texte général
+  setHexVar('--muted', url.get('mutedColor'));            // sous-texte
+  setHexVar('--border-live', url.get('borderLive'));      // contour bloc EN DIRECT
+  setHexVar('--border-offline', url.get('borderOffline')); // contour bloc HORS LIVE
+  setHexVar('--tag-live', url.get('tagLive'));            // couleur tag EN DIRECT
+  setHexVar('--tag-muted', url.get('tagMuted'));          // couleur tag HORS LIVE
+  setHexVar('--live-badge-from', url.get('liveBadgeFrom'));// badge LIVE dégradé (from)
+  setHexVar('--live-badge-to', url.get('liveBadgeTo'));    // badge LIVE dégradé (to)
+
+  // NEW: fond des tuiles (couleur + opacité)
+  const tileBgColor = url.get('tileBgColor');
+  const tileBgOpacity = Number(url.get('tileBgOpacity'));
+  if (tileBgColor){
+    const alpha = Number.isFinite(tileBgOpacity) ? Math.min(1, Math.max(0, tileBgOpacity)) : 0.06;
+    setVar('--tile-bg', hexToRgba(tileBgColor, alpha));
+  }
+
+  // NEW: labels personnalisables
+  const labelLive = url.get('labelLive');
+  const labelOffline = url.get('labelOffline');
+
+  // Log des paramètres pour debug
+  console.log('Widget Config:', {
+    pin: PIN,
+    bgColor: BG_COLOR,
+    bgOpacity: BG_OPACITY,
+    tagBgColor: TAG_BG_COLOR,
+    tagBgOpacity: TAG_BG_OPACITY,
+    scale: SCALE,
+    interval: INTERVAL,
+    forcePinLive: FORCE_PIN_LIVE,
+    accent: url.get('accent'),
+    textColor: url.get('textColor'),
+    mutedColor: url.get('mutedColor'),
+    borderLive: url.get('borderLive'),
+    borderOffline: url.get('borderOffline'),
+    tagLive: url.get('tagLive'),
+    tagMuted: url.get('tagMuted'),
+    liveBadgeFrom: url.get('liveBadgeFrom'),
+    liveBadgeTo: url.get('liveBadgeTo'),
+    tileBgColor, tileBgOpacity,
+    labelLive, labelOffline
+  });
+  
+  const elPinned = document.getElementById('pinned-creator');
+  const elOnlineTrack = document.getElementById('online-track');
+  const elOfflineTrack = document.getElementById('offline-track');
+
+  // --- NEW: mémorisation des listes pour recalcul ---
+  let lastLive = [];
+  let lastOffline = [];
+
+  function fmt(n){ return new Intl.NumberFormat('fr-FR').format(Number(n)||0); }
+  function isLive(m){
+    try{ 
+      const data = m.user_data || m.twitch || m;
+      return !!(m.is_live || m.live || data.is_live || data.live || (m.stream && m.stream.type==='live')); 
+    }
+    catch(e){ return false }
+  }
+  function viewers(m){ 
+    const data = m.user_data || m.twitch || m;
+    return Number((m.viewer_count ?? m.viewers ?? data.viewer_count ?? data.viewers ?? 0)) || 0; 
+  }
+  function loginOf(m){ 
+    const data = m.user_data || m.twitch || m;
+    return (data.login || m.login || m.name || m.username || '').toLowerCase(); 
+  }
+  function displayNameOf(m){ 
+    const data = m.user_data || m.twitch || m;
+    return (data.display_name || data.displayName || m.display_name || m.name || data.login || m.login || 'Créateur'); 
+  }
+  function avatarOf(m){ 
+    const data = m.user_data || m.twitch || m; // FIX: m_user_data -> m.user_data
+    return (data.profile_image_url || m.profile_image_url || m.avatar || ''); 
+  }
+  function streamTitleOf(m){ 
+    return (m.stream_title || m.streamTitle || (m.stream && m.stream.title) || m.game_name || m.category || ''); 
+  }
+
+  function h(tag, attrs={}, children=[]) {
+    const el = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs||{})){
+      if (k === 'class') el.className = v;
+      else if (k === 'style') el.setAttribute('style', v);
+      else el.setAttribute(k, v);
+    }
+    for (const c of (Array.isArray(children)?children:[children])){
+      if (c==null) continue;
+      if (typeof c === 'string') el.appendChild(document.createTextNode(c));
+      else el.appendChild(c);
+    }
+    return el;
+  }
+
+  function renderTile(m, pinned=false){
+    const live = isLive(m);
+    const name = displayNameOf(m);
+    const avatar = avatarOf(m);
+    const v = viewers(m);
+    const title = streamTitleOf(m);
+    const classes = ['tile'];
+    if (pinned) classes.push('pinned');
+    classes.push(live ? 'live' : 'offline');
+    const root = h('div', {class: classes.join(' ')});
+    if (live) root.appendChild(h('div', {class:'live-badge'}, 'LIVE'));
+    root.appendChild(h('div', {class:'avatar', style: avatar?`background-image:url(${avatar})`:''}));
+    root.appendChild(h('div', {class:'name'}, name));
+    root.appendChild(h('div', {class:'meta'}, live ? `${fmt(v)} viewers` : 'Hors ligne'));
+    if (live && title) {
+      const shortTitle = title.length > 30 ? title.substring(0, 30) + '...' : title;
+      root.appendChild(h('div', {class:'meta'}, shortTitle));
+    }
+    if (pinned) {
+      root.appendChild(h('div', {class:'founder'}, 'Fondateur CDC'));
+      root.appendChild(h('div', {class:'contact'}, 'Questions ? Contactez-moi'));
+    }
+    return root;
+  }
+
+  async function fetchMembers(){
+    const r = await fetch(SOURCE, {cache:'no-store'});
+    if (!r.ok) throw new Error('HTTP '+r.status);
+    return await r.json();
+  }
+
+  async function refresh(){
+    try{
+      const data = await fetchMembers();
+      const arr = Array.isArray(data) ? data : (data.members || data.items || []);
+      
+      // Deduplicate by login - correction pour éviter les doublons
+      const seen = new Set();
+      const uniq = [];
+      for (const m of arr){
+        const login = loginOf(m);
+        if (!login) continue; // Ignorer les entrées sans login
+        if (!seen.has(login)) { 
+          seen.add(login); 
+          uniq.push(m); 
+        }
+      }
+      
+      console.log(`Total membres: ${arr.length}, Uniques: ${uniq.length}`);
+      
+      let pinned = uniq.find(m=>loginOf(m)===PIN);
+      if (!pinned){
+        pinned = { login: PIN, display_name: PIN };
+        uniq.unshift(pinned);
+      }
+      if (FORCE_PIN_LIVE){ pinned.is_live = true; pinned.viewer_count = pinned.viewer_count||128; }
+
+      // Dédoublonnage + tri
+      const others = uniq.filter(m=>loginOf(m)!==PIN);
+      const liveOthers = others.filter(isLive).sort((a,b)=>viewers(b)-viewers(a));
+      const offlineOthers = others.filter(m=>!isLive(m)).sort((a,b)=>displayNameOf(a).localeCompare(displayNameOf(b)));
+
+      // Sécurité dédoublonnage live
+      const liveMap = new Map();
+      for (const m of liveOthers) { const k = loginOf(m); if (k && !liveMap.has(k)) liveMap.set(k, m); }
+      const liveUnique = Array.from(liveMap.values());
+
+      // Mémoriser les listes
+      lastLive = liveUnique;
+      lastOffline = offlineOthers;
+
+      console.log(`Live: ${liveOthers.length}, Offline: ${offlineOthers.length}`);
+
+      if (elPinned){
+        elPinned.innerHTML = '';
+        elPinned.appendChild(renderTile(pinned, true));
+      }
+
+      // NEW: calcul par formule (tileW * (count + 1 pour le fondateur en haut))
+      function populateTrack(trackEl, items, carouselName, includePinnedInRow){
+        trackEl.innerHTML = '';
+        trackEl.classList.remove('no-anim', 'animated');
+        // Forcer un reflow pour réinitialiser l'animation
+        void trackEl.offsetWidth;
+
+        if (items.length === 0){
+          trackEl.appendChild(h('div', {class:'small'}, 'Aucun élément'));
+          trackEl.classList.add('no-anim');
+          return;
+        }
+
+        // Calcul "théorique"
+        const containerWidth = trackEl.parentElement.getBoundingClientRect().width;
+        const countForCalc = items.length + (includePinnedInRow ? 1 : 0);
+        const requiredWidth = countForCalc * TILE_W;
+        const needsScroll = requiredWidth > (containerWidth + 1); // petite tolérance
+
+        // Rendu (toujours tous les items, duplication seulement si scroll)
+        const nodes = items.map(m=>renderTile(m));
+        for (const n of nodes) trackEl.appendChild(n);
+
+        if (needsScroll){
+          // Dupliquer une fois pour boucle continue
+          for (const n of nodes) trackEl.appendChild(n.cloneNode(true));
+          // Forcer reflow puis activer l'anim
+          void trackEl.offsetWidth;
+          trackEl.classList.add('animated');
+        } else {
+          trackEl.classList.add('no-anim');
+        }
+
+        // Debug optionnel
+        console.log(`${carouselName} -> needsScroll=${needsScroll} (count=${countForCalc}, tileW=${TILE_W}, req=${requiredWidth}, avail=${containerWidth})`);
+      }
+
+      if (elOnlineTrack){
+        if (lastLive.length === 0){
+          elOnlineTrack.innerHTML = '';
+          elOnlineTrack.classList.add('no-anim');
+          elOnlineTrack.appendChild(h('div', {class:'small'}, 'Personne en direct pour le moment'));
+        } else {
+          populateTrack(elOnlineTrack, lastLive, 'Online', true); // includePinnedInRow = true
+        }
+      }
+
+      if (elOfflineTrack){
+        if (lastOffline.length === 0){
+          elOfflineTrack.innerHTML = '';
+          elOfflineTrack.classList.add('no-anim');
+          elOfflineTrack.appendChild(h('div', {class:'small'}, 'Personne hors ligne actuellement'));
+        } else {
+          populateTrack(elOfflineTrack, lastOffline, 'Offline', false); // includePinnedInRow = false
+        }
+      }
+
+      // Recalcule automatique au redimensionnement
+      attachResizeRecalc();
+    }catch(e){
+      console.warn('widget fetch error', e);
+      // Fallback: afficher le fondateur et des messages d'erreur
+      try {
+        if (elPinned) {
+          elPinned.innerHTML = '';
+          elPinned.appendChild(renderTile({ login: PIN, display_name: PIN, is_live: FORCE_PIN_LIVE }, true));
+        }
+        if (elOnlineTrack) {
+          elOnlineTrack.innerHTML = '';
+          elOnlineTrack.classList.add('no-anim');
+          elOnlineTrack.appendChild(h('div', {class:'small'}, 'Erreur de chargement des lives'));
+        }
+        if (elOfflineTrack) {
+          elOfflineTrack.innerHTML = '';
+          elOfflineTrack.classList.add('no-anim');
+          elOfflineTrack.appendChild(h('div', {class:'small'}, 'Erreur de chargement des hors live'));
+        }
+      } catch (e2) {
+        console.warn('fallback render error', e2);
+      }
+    }
+  }
+
+  // NEW: ResizeObserver pour relancer le calcul sans refetch
+  let roAttached = false;
+  function attachResizeRecalc(){
+    if (roAttached) return;
+    const ro = new ResizeObserver(()=>{
+      if (elOnlineTrack && lastLive.length){
+        // Re-populate sans refetch
+        const parent = elOnlineTrack.parentElement;
+        if (parent) {
+          elOnlineTrack.innerHTML = '';
+          elOnlineTrack.classList.remove('no-anim','animated');
+          void elOnlineTrack.offsetWidth;
+        }
+        const populateTrack = (trackEl, items, carouselName, includePinnedInRow)=>{
+          trackEl.innerHTML = '';
+          trackEl.classList.remove('no-anim', 'animated');
+          void trackEl.offsetWidth;
+          const containerWidth = trackEl.parentElement.getBoundingClientRect().width;
+          const countForCalc = items.length + (includePinnedInRow ? 1 : 0);
+          const requiredWidth = countForCalc * TILE_W;
+          const needsScroll = requiredWidth > (containerWidth + 1);
+          const nodes = items.map(m=>renderTile(m));
+          for (const n of nodes) trackEl.appendChild(n);
+          if (needsScroll){ for (const n of nodes) trackEl.appendChild(n.cloneNode(true)); trackEl.classList.add('animated'); }
+          else { trackEl.classList.add('no-anim'); }
+        };
+        populateTrack(elOnlineTrack, lastLive, 'Online', true);
+      }
+      if (elOfflineTrack && lastOffline.length){
+        elOfflineTrack.innerHTML = '';
+        elOfflineTrack.classList.remove('no-anim','animated');
+        void elOfflineTrack.offsetWidth;
+        const populateTrack = (trackEl, items, carouselName, includePinnedInRow)=>{
+          trackEl.innerHTML = '';
+          trackEl.classList.remove('no-anim', 'animated');
+          void trackEl.offsetWidth;
+          const containerWidth = trackEl.parentElement.getBoundingClientRect().width;
+          const countForCalc = items.length + (includePinnedInRow ? 1 : 0);
+          const requiredWidth = countForCalc * TILE_W;
+          const needsScroll = requiredWidth > (containerWidth + 1);
+          const nodes = items.map(m=>renderTile(m));
+          for (const n of nodes) trackEl.appendChild(n);
+          if (needsScroll){ for (const n of nodes) trackEl.appendChild(n.cloneNode(true)); trackEl.classList.add('animated'); }
+          else { trackEl.classList.add('no-anim'); }
+        };
+        populateTrack(elOfflineTrack, lastOffline, 'Offline', false);
+      }
+    });
+    const watchEls = document.querySelectorAll('.online-carousel, .offline-carousel, .widget-container');
+    watchEls.forEach(el=>ro.observe(el));
+    roAttached = true;
+  }
+
+  // NEW: Appliquer les labels personnalisés au démarrage
+  requestAnimationFrame(()=>{
+    if (labelLive) {
+      const tagLive = document.querySelector('.section-tag.live');
+      if (tagLive) tagLive.textContent = labelLive;
+    }
+    if (labelOffline) {
+      const tagOffline = document.querySelector('.section-tag.muted');
+      if (tagOffline) tagOffline.textContent = labelOffline;
+    }
+  });
+
+  refresh();
+  setInterval(refresh, INTERVAL);
+})();
+</script>
+
+</body>
+</html>
