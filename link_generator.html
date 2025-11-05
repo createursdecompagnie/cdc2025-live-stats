@@ -617,9 +617,79 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Link Section -->
+          <!-- Donation Bar Options -->
+          <div id="donationOptions" style="display: none; margin-top: 20px;">
+            <label style="color: #FCA000; font-weight: 600;">Personnalisation Barre Donation</label>
+            
+            <!-- Donation Themes -->
+            <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px;">
+              <button class="preset-btn" onclick="applyDonationTheme('default')" style="background: rgba(252,160,0,0.2); border: 2px solid rgba(252,160,0,0.5);">🟡 Default</button>
+              <button class="preset-btn" onclick="applyDonationTheme('dark')" style="background: rgba(255,107,0,0.2); border: 2px solid rgba(255,107,0,0.5);">🌙 Dark</button>
+              <button class="preset-btn" onclick="applyDonationTheme('neon')" style="background: rgba(255,0,255,0.2); border: 2px solid rgba(255,0,255,0.5);">⚡ Neon</button>
+              <button class="preset-btn" onclick="applyDonationTheme('pastel')" style="background: rgba(255,105,180,0.2); border: 2px solid rgba(255,105,180,0.5);">🌸 Pastel</button>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du texte</label>
+              <input type="color" id="donationTextColor" value="#f2f5f8" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du texte ternes (muted)</label>
+              <input type="color" id="donationMutedColor" value="#a7b1bd" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur d'accent</label>
+              <input type="color" id="donationAccentColor" value="#FCA000" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur de fond de la barre</label>
+              <input type="color" id="donationBarBg" value="#0b0f14" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Opacité du fond</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="donationBarOpacity" min="0" max="1" step="0.1" value="0.75" onchange="updatePreview()">
+                <span class="intensity-value" id="donationBarOpacityValue">0.75</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Flou (blur) de la barre</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="donationBarBlur" min="0" max="20" step="1" value="8" onchange="updatePreview()">
+                <span class="intensity-value" id="donationBarBlurValue">8px</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Rayon des coins (border-radius)</label>
+              <input type="text" id="donationBarRadius" placeholder="0px" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" value="0px" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du fond cagnotte</label>
+              <input type="color" id="donationGoalBg" value="#fca000" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Taille de la police</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="donationFontScale" min="0.5" max="2" step="0.1" value="1" onchange="updatePreview()">
+                <span class="intensity-value" id="donationFontScaleValue">1</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Texte personnalisé</label>
+              <input type="text" id="donationCustomText" placeholder="Ex: Donation Bar" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" onchange="updatePreview()">
+            </div>
+          </div>
+        </div>
         <div class="link-section">
           <h3>📋 Lien généré</h3>
           <div class="generated-link" id="generatedLink">Sélectionne une overlay...</div>
@@ -724,7 +794,8 @@
           desc: 'Progression',
           supportColors: false,
           supportCents: false,
-          showPreview: true
+          showPreview: true,
+          customOptions: { donationBar: true }
         },
         'Widget_Bar.html': {
           label: 'Bar Horizontal',
@@ -813,6 +884,57 @@
         creatorsBorderOffline: '#e6d7f0',
         creatorsText: '#fff9e6',
         creatorsAccent: '#ff69b4'
+      }
+    };
+
+    const donationPresets = {
+      default: {
+        text: '#f2f5f8',
+        muted: '#a7b1bd',
+        accent: '#FCA000',
+        barBg: '#0b0f14',
+        barOpacity: 0.75,
+        barBlur: '8px',
+        barRadius: '0px',
+        goalBg: 'rgba(252,160,0,0.1)',
+        goalBorder: 'rgba(252,160,0,0.2)',
+        fs: 1
+      },
+      dark: {
+        text: '#d0d0d0',
+        muted: '#888888',
+        accent: '#ff6b00',
+        barBg: '#1a1a1a',
+        barOpacity: 0.85,
+        barBlur: '12px',
+        barRadius: '0px',
+        goalBg: 'rgba(255,107,0,0.1)',
+        goalBorder: 'rgba(255,107,0,0.2)',
+        fs: 1
+      },
+      neon: {
+        text: '#00ffff',
+        muted: '#ff00ff',
+        accent: '#ffff00',
+        barBg: '#0a0a1a',
+        barOpacity: 0.9,
+        barBlur: '15px',
+        barRadius: '8px',
+        goalBg: 'rgba(255,0,255,0.15)',
+        goalBorder: 'rgba(0,255,255,0.3)',
+        fs: 1
+      },
+      pastel: {
+        text: '#fff9e6',
+        muted: '#e6d7f0',
+        accent: '#ff69b4',
+        barBg: '#f5f0fa',
+        barOpacity: 0.7,
+        barBlur: '10px',
+        barRadius: '12px',
+        goalBg: 'rgba(255,105,180,0.1)',
+        goalBorder: 'rgba(255,105,180,0.2)',
+        fs: 1
       }
     };
 
@@ -928,6 +1050,23 @@
         if (centsOpt) centsOpt.style.display = 'none';
         if (creatorsOpts) creatorsOpts.style.display = 'none';
         if (barOpts) barOpts.style.display = 'block';
+        const donationOpts = document.getElementById('donationOptions');
+        if (donationOpts) donationOpts.style.display = 'none';
+      }
+      // Donation Bar: Show donation-specific options
+      else if (currentOverlay.file.includes('donation_bar')) {
+        customOpts.style.display = 'block';
+        presetBtns.style.display = 'none';
+        if (themeOpts) themeOpts.style.display = 'none';
+        if (colorOpts) colorOpts.style.display = 'none';
+        if (shadowOpts) shadowOpts.style.display = 'none';
+        if (opacityOpts) opacityOpts.style.display = 'none';
+        if (visibilityOpts) visibilityOpts.style.display = 'none';
+        if (centsOpt) centsOpt.style.display = 'none';
+        if (creatorsOpts) creatorsOpts.style.display = 'none';
+        if (barOpts) barOpts.style.display = 'none';
+        const donationOpts = document.getElementById('donationOptions');
+        if (donationOpts) donationOpts.style.display = 'block';
       }
       // Info widgets (standard, vertical) + Carousel: Show themes + colors + opacity + visibility
       else if (currentOverlay.file.includes('info_widget') || currentOverlay.file.includes('info_carousel')) {
@@ -986,6 +1125,23 @@
       document.getElementById('borderOffline').value = p.creatorsBorderOffline;
       document.getElementById('creatorsTextColor').value = p.creatorsText;
       document.getElementById('creatorsAccentColor').value = p.creatorsAccent;
+      updatePreview();
+    }
+
+    function applyDonationTheme(name) {
+      const p = donationPresets[name];
+      if (!p) return;
+      document.getElementById('donationTextColor').value = p.text;
+      document.getElementById('donationMutedColor').value = p.muted;
+      document.getElementById('donationAccentColor').value = p.accent;
+      document.getElementById('donationBarBg').value = p.barBg;
+      document.getElementById('donationBarOpacity').value = p.barOpacity;
+      document.getElementById('donationBarOpacityValue').textContent = p.barOpacity;
+      document.getElementById('donationBarBlur').value = p.barBlur.replace('px', '');
+      document.getElementById('donationBarBlurValue').textContent = p.barBlur;
+      document.getElementById('donationBarRadius').value = p.barRadius;
+      document.getElementById('donationFontScale').value = p.fs;
+      document.getElementById('donationFontScaleValue').textContent = p.fs;
       updatePreview();
     }
 
@@ -1104,6 +1260,38 @@
         if (showStats !== 'true') params.append('showStats', 'false');
         if (showHashtag !== 'true') params.append('showHashtag', 'false');
       }
+      // Donation Bar parameters
+      else if (currentOverlay.file.includes('donation_bar')) {
+        const donationText = document.getElementById('donationTextColor')?.value || '#f2f5f8';
+        const donationMuted = document.getElementById('donationMutedColor')?.value || '#a7b1bd';
+        const donationAccent = document.getElementById('donationAccentColor')?.value || '#FCA000';
+        const donationBarBg = document.getElementById('donationBarBg')?.value || '#0b0f14';
+        const donationOpacity = document.getElementById('donationBarOpacity')?.value || '0.75';
+        const donationBlur = document.getElementById('donationBarBlur')?.value || '8';
+        const donationRadius = document.getElementById('donationBarRadius')?.value || '0px';
+        const donationGoalBg = document.getElementById('donationGoalBg')?.value || '#fca000';
+        const donationFontScale = document.getElementById('donationFontScale')?.value || '1';
+        const donationCustomText = document.getElementById('donationCustomText')?.value || '';
+        
+        // Update display values
+        const opacityDisplay = document.getElementById('donationBarOpacityValue');
+        if (opacityDisplay) opacityDisplay.textContent = donationOpacity;
+        const blurDisplay = document.getElementById('donationBarBlurValue');
+        if (blurDisplay) blurDisplay.textContent = donationBlur + 'px';
+        const fsDisplay = document.getElementById('donationFontScaleValue');
+        if (fsDisplay) fsDisplay.textContent = donationFontScale;
+        
+        params.append('text', donationText);
+        params.append('muted', donationMuted);
+        params.append('accent', donationAccent);
+        params.append('barBg', donationBarBg);
+        params.append('barBorder', 'rgba(255,255,255,0.06)');
+        params.append('barBlur', donationBlur + 'px');
+        params.append('barRadius', donationRadius);
+        params.append('goalBg', donationGoalBg);
+        params.append('fs', donationFontScale);
+        if (donationCustomText) params.append('customText', donationCustomText);
+      }
       else if (currentOverlay.file.includes('info_widget')) {
         params.append('theme', theme);
         params.append('textColor', textColor);
@@ -1192,6 +1380,26 @@
           if (showCagnotte !== 'true') params.append('showCagnotte', 'false');
           if (showStats !== 'true') params.append('showStats', 'false');
           if (showHashtag !== 'true') params.append('showHashtag', 'false');
+        } else if (currentOverlay.file.includes('donation_bar')) {
+          const donationText = document.getElementById('donationTextColor')?.value || '#f2f5f8';
+          const donationMuted = document.getElementById('donationMutedColor')?.value || '#a7b1bd';
+          const donationAccent = document.getElementById('donationAccentColor')?.value || '#FCA000';
+          const donationBarBg = document.getElementById('donationBarBg')?.value || '#0b0f14';
+          const donationOpacity = document.getElementById('donationBarOpacity')?.value || '0.75';
+          const donationBlur = document.getElementById('donationBarBlur')?.value || '8';
+          const donationRadius = document.getElementById('donationBarRadius')?.value || '0px';
+          const donationGoalBg = document.getElementById('donationGoalBg')?.value || '#fca000';
+          const donationFontScale = document.getElementById('donationFontScale')?.value || '1';
+          
+          params.append('text', donationText);
+          params.append('muted', donationMuted);
+          params.append('accent', donationAccent);
+          params.append('barBg', donationBarBg);
+          params.append('barBorder', 'rgba(255,255,255,0.06)');
+          params.append('barBlur', donationBlur + 'px');
+          params.append('barRadius', donationRadius);
+          params.append('goalBg', donationGoalBg);
+          params.append('fs', donationFontScale);
         } else if (currentOverlay.file.includes('info_widget')) {
           params.append('theme', theme || 'light');
           params.append('textColor', textColor);
@@ -1253,6 +1461,30 @@
       const link = document.getElementById('generatedLink').textContent;
       window.open(link, '_blank');
     }
+
+    // Add listeners for donation sliders to update display values
+    document.addEventListener('DOMContentLoaded', () => {
+      const donationOpacitySlider = document.getElementById('donationBarOpacity');
+      if (donationOpacitySlider) {
+        donationOpacitySlider.addEventListener('input', (e) => {
+          document.getElementById('donationBarOpacityValue').textContent = e.target.value;
+        });
+      }
+      
+      const donationBlurSlider = document.getElementById('donationBarBlur');
+      if (donationBlurSlider) {
+        donationBlurSlider.addEventListener('input', (e) => {
+          document.getElementById('donationBarBlurValue').textContent = e.target.value + 'px';
+        });
+      }
+      
+      const donationFontSlider = document.getElementById('donationFontScale');
+      if (donationFontSlider) {
+        donationFontSlider.addEventListener('input', (e) => {
+          document.getElementById('donationFontScaleValue').textContent = e.target.value;
+        });
+      }
+    });
 
     window.addEventListener('load', initCategorySelector);
   </script>

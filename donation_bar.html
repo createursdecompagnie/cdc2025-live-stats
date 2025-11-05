@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC2025 · Barre de dons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --text:#f2f5f8;
+  --muted:#a7b1bd;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --accent-3:#EDD2BC;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  --stage-scale: 1;
+  --bar-bg: rgba(11,15,20,0.75);
+  --bar-border: rgba(255,255,255,0.06);
+  --fs: 1;
+  --goal-bg: rgba(252,160,0,0.1);
+  --goal-border: rgba(252,160,0,0.2);
+  --bar-blur: 8px;
+  --bar-radius: 0px;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { 
+  width:100vw; height:100vh; 
+  background: transparent;
+  color:var(--text);
+  font-family:var(--font);
+  overflow:hidden;
+}
+
+/* Fixed 1920x1080 stage scaled to fit viewport */
+.stage {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 1920px; height: 1080px;
+  transform: translate(-50%, -50%) scale(var(--stage-scale));
+  transform-origin: center center;
+}
+
+/* Bottom taskbar - barre d'infos horizontale complète */
+.taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--bar-bg);
+  backdrop-filter: blur(var(--bar-blur));
+  border-top: 1px solid var(--bar-border);
+  border-radius: var(--bar-radius);
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  gap: 30px;
+  z-index: 10;
+  font-size: calc(14px * var(--fs));
+}
+
+.taskbar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.taskbar-separator {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+/* Cagnotte globale */
+.goal-global {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--goal-bg);
+  border-radius: 8px;
+  border: 1px solid var(--goal-border);
+}
+
+.goal-label {
+  font-weight: 700;
+  font-size: calc(12px * var(--fs));
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+}
+
+.goal-amount {
+  font-weight: 800;
+  font-size: calc(18px * var(--fs));
+  color: #fff;
+}
+
+/* Cagnotte perso (vide, prête pour contenu) */
+.goal-personal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: transparent;
+  border-radius: 8px;
+  border: 0;
+  min-width: 200px;
+  color: var(--muted);
+  font-size: calc(13px * var(--fs));
+}
+
+/* Stats compactes */
+.stats-compact {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: calc(13px * var(--fs));
+}
+
+.stat-icon {
+  font-size: calc(16px * var(--fs));
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Hashtag */
+.hashtag {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: calc(15px * var(--fs));
+  margin-left: 20px;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: calc(18px * var(--fs));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rainbow {
+  background: linear-gradient(90deg, #FFE259, #FFA751);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body { font-family: "Outfit", var(--font); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <!-- Barre d'infos horizontale complète -->
+  <div class="taskbar">
+    <!-- Logo CDC -->
+    <div class="taskbar-item logo">
+      🐾 <span class="rainbow">#CDC2025</span>
+    </div>
+    
+    <div class="taskbar-separator"></div>
+    
+    <!-- Cagnotte globale -->
+    <div class="goal-global">
+      <span class="goal-label">Cagnotte globale</span>
+      <span class="goal-amount" id="global-amount">0 €</span>
+    </div>
+    
+    <div class="taskbar-separator"></div>
+    
+    <!-- Cagnotte perso (vide pour l'instant) -->
+    <div class="goal-personal">
+      <!-- Vide, prêt pour contenu personnalisé -->
+    </div>
+    
+    <div class="taskbar-separator"></div>
+    
+    <!-- Stats compactes -->
+    <div class="stats-compact">
+      <div class="stat-item">
+        <span class="stat-icon">👥</span>
+        <span class="stat-value" id="viewers-count">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🔴</span>
+        <span class="stat-value" id="live-count">0 Live</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">⏱️</span>
+        <span class="stat-value" id="timer">00:00</span>
+      </div>
+    </div>
+    
+    <!-- Hashtag à droite -->
+    <div class="hashtag">
+      #ProtectionAnimale
+    </div>
+  </div>
+</div>
+
+<script>
+// Fit 1920x1080 stage to viewport
+function fitStage(){
+  const s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+  document.documentElement.style.setProperty('--stage-scale', s);
+}
+window.addEventListener('resize', fitStage);
+fitStage();
+
+// URL params
+const url = new URLSearchParams(window.location.search);
+const CFG = {
+  accent: url.get('accent') || null,
+  statsUrl: url.get('statsUrl') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/live_stats.json',
+  goalWidgetUrl: url.get('goalWidgetUrl') || 'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html',
+  updateInterval: parseInt(url.get('interval')) || 30000, // 30 secondes par défaut
+};
+if (CFG.accent) document.documentElement.style.setProperty('--accent', CFG.accent);
+// Color overrides
+if (url.get('text')) document.documentElement.style.setProperty('--text', url.get('text'));
+if (url.get('muted')) document.documentElement.style.setProperty('--muted', url.get('muted'));
+if (url.get('barBg')) document.documentElement.style.setProperty('--bar-bg', url.get('barBg'));
+if (url.get('barBorder')) document.documentElement.style.setProperty('--bar-border', url.get('barBorder'));
+if (url.get('goalBg')) document.documentElement.style.setProperty('--goal-bg', url.get('goalBg'));
+if (url.get('goalBorder')) document.documentElement.style.setProperty('--goal-border', url.get('goalBorder'));
+// Blur and radius
+if (url.get('barBlur')) document.documentElement.style.setProperty('--bar-blur', url.get('barBlur'));
+if (url.get('barRadius')) document.documentElement.style.setProperty('--bar-radius', url.get('barRadius'));
+// Font scale overrides
+const fsParam = parseFloat(url.get('fs') || url.get('fontScale') || url.get('fontsize'));
+if (!isNaN(fsParam) && fsParam > 0.25 && fsParam <= 4) {
+  document.documentElement.style.setProperty('--fs', String(fsParam));
+}
+// Content overrides
+const hashtagParam = url.get('hashtag');
+if (hashtagParam) {
+  const el = document.querySelector('.hashtag');
+  if (el) el.textContent = hashtagParam;
+}
+const logoParam = url.get('logo');
+if (logoParam) {
+  const span = document.querySelector('.logo .rainbow');
+  if (span) span.textContent = logoParam;
+}
+
+// Format numbers
+function fmt(n){ return new Intl.NumberFormat('fr-FR').format(n); }
+
+// Format current time (without seconds)
+function formatCurrentTime() {
+  const now = new Date();
+  return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+}
+
+// Update clock every second
+function updateClock() {
+  document.getElementById('timer').textContent = formatCurrentTime();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Update global goal by fetching from cdc_goal_widget.html
+async function updateGlobalGoal() {
+  try {
+    // Fetch the cdc_goal_widget.html page
+    const res = await fetch(CFG.goalWidgetUrl + '?t=' + Date.now());
+    const html = await res.text();
+    
+    // Parse the HTML to extract the displayed amount
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Find the element with id="globalAmount" (same as in cdc_goal_widget.html)
+    const globalAmountEl = doc.getElementById('globalAmount');
+    if (globalAmountEl) {
+      let amountText = (globalAmountEl.textContent || '').trim();
+      // Normalize whitespace
+      amountText = amountText.replace(/\s+/g, ' ').trim();
+      // If the widget already includes €, keep as-is; else append
+      if (!/[€]/.test(amountText)) {
+        amountText = amountText + ' €';
+      }
+      document.getElementById('global-amount').textContent = amountText;
+    } else {
+      console.warn('Could not find globalAmount element in widget');
+      document.getElementById('global-amount').textContent = '0 €';
+    }
+  } catch (err) {
+    console.warn('Global goal fetch failed:', err);
+    document.getElementById('global-amount').textContent = '0 €';
+  }
+}
+
+async function updateStats() {
+  try {
+    const response = await fetch(CFG.statsUrl + '?t=' + Date.now());
+    const data = await response.json();
+    
+    // Update viewers count (total)
+    if (data.total_viewers !== undefined) {
+      document.getElementById('viewers-count').textContent = fmt(data.total_viewers);
+    }
+    
+    // Update live count
+    if (data.live_count !== undefined) {
+      document.getElementById('live-count').textContent = `${data.live_count} Live`;
+    }
+    
+  } catch (err) {
+    console.warn('Failed to update stats:', err);
+  }
+}
+
+// Initial update and set intervals
+updateGlobalGoal();
+updateStats();
+setInterval(() => {
+  updateGlobalGoal();
+  updateStats();
+}, CFG.updateInterval);
+</script>
+</body>
+</html>
