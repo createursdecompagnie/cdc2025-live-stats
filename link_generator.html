@@ -503,6 +503,32 @@
               <label>Label HORS LIVE (ex: "HORS LIVE")</label>
               <input type="text" id="labelOffline" placeholder="HORS LIVE" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" onchange="updatePreview()">
             </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du fond</label>
+              <input type="color" id="bgColor" value="#0b0f14" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Opacité du fond</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="bgOpacityCreators" min="0" max="1" step="0.1" value="0.85" onchange="updatePreview()">
+                <span class="intensity-value" id="bgOpacityCreatorsValue">0.85</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du fond des tags</label>
+              <input type="color" id="tagBgColor" value="#0b0f14" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Opacité du fond des tags</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="tagBgOpacity" min="0" max="1" step="0.1" value="1" onchange="updatePreview()">
+                <span class="intensity-value" id="tagBgOpacityValue">1</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -831,11 +857,25 @@
         const creatorsAccentColor = document.getElementById('creatorsAccentColor')?.value || '#FCA000';
         const labelLiveVal = document.getElementById('labelLive')?.value || '';
         const labelOfflineVal = document.getElementById('labelOffline')?.value || '';
+        const bgColorVal = document.getElementById('bgColor')?.value || '#0b0f14';
+        const bgOpacityVal = document.getElementById('bgOpacityCreators')?.value || '0.85';
+        const tagBgColorVal = document.getElementById('tagBgColor')?.value || '#0b0f14';
+        const tagBgOpacityVal = document.getElementById('tagBgOpacity')?.value || '1';
+        
+        // Mettre à jour les valeurs affichées
+        const bgOpacityDisplay = document.getElementById('bgOpacityCreatorsValue');
+        if (bgOpacityDisplay) bgOpacityDisplay.textContent = bgOpacityVal;
+        const tagBgOpacityDisplay = document.getElementById('tagBgOpacityValue');
+        if (tagBgOpacityDisplay) tagBgOpacityDisplay.textContent = tagBgOpacityVal;
         
         params.append('borderLive', borderLive);
         params.append('borderOffline', borderOffline);
         params.append('textColor', creatorsTextColor);
         params.append('accent', creatorsAccentColor);
+        params.append('bgColor', bgColorVal);
+        params.append('bgOpacity', bgOpacityVal);
+        params.append('tagBgColor', tagBgColorVal);
+        params.append('tagBgOpacity', tagBgOpacityVal);
         if (labelLiveVal) params.append('labelLive', labelLiveVal);
         if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
       }
@@ -887,11 +927,19 @@
           const creatorsAccentColor = document.getElementById('creatorsAccentColor')?.value || '#FCA000';
           const labelLiveVal = document.getElementById('labelLive')?.value || '';
           const labelOfflineVal = document.getElementById('labelOffline')?.value || '';
+          const bgColorVal = document.getElementById('bgColor')?.value || '#0b0f14';
+          const bgOpacityVal = document.getElementById('bgOpacityCreators')?.value || '0.85';
+          const tagBgColorVal = document.getElementById('tagBgColor')?.value || '#0b0f14';
+          const tagBgOpacityVal = document.getElementById('tagBgOpacity')?.value || '1';
           
           params.append('borderLive', borderLive);
           params.append('borderOffline', borderOffline);
           params.append('textColor', creatorsTextColor);
           params.append('accent', creatorsAccentColor);
+          params.append('bgColor', bgColorVal);
+          params.append('bgOpacity', bgOpacityVal);
+          params.append('tagBgColor', tagBgColorVal);
+          params.append('tagBgOpacity', tagBgOpacityVal);
           if (labelLiveVal) params.append('labelLive', labelLiveVal);
           if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
         } else if (currentOverlay.file.includes('info_widget')) {
