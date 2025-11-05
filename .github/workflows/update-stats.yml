@@ -3,7 +3,7 @@ name: Update CDC2025 Live Stats
 on:
   # Exécute toutes les 5 minutes
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/60 * * * *'
   
   # Permet de lancer manuellement depuis l'interface GitHub
   workflow_dispatch:
