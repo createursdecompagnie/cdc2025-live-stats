@@ -20,6 +20,9 @@
   --bar-bg: rgba(11,15,20,0.75);
   --fs: 1;
   --bar-w: 160px;
+  --numbers: #ffffff;
+  --logo-gradient-start: #FFE259;
+  --logo-gradient-end: #FFA751;
 }
 
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -42,19 +45,19 @@ html, body {
 .vbar.right { left:auto; right:0; border-right:none; border-left:1px solid rgba(255,255,255,0.06); }
 
 .logo { font-weight:800; font-size: calc(18px * var(--fs)); display:flex; align-items:center; gap:6px; white-space:nowrap; }
-.rainbow { background:linear-gradient(90deg,#FFE259,#FFA751); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.rainbow { background:linear-gradient(90deg, var(--logo-gradient-start), var(--logo-gradient-end)); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .sep { width:100%; height:1px; background:rgba(255,255,255,0.08); margin: 4px 0; }
 
 .goal-global { width:100%; display:flex; flex-direction:column; align-items:center; gap:6px; padding: 8px 10px; background: rgba(252,160,0,0.1); border-radius:8px; border:1px solid rgba(252,160,0,0.2); }
 .goal-label { font-weight:700; font-size: calc(11px * var(--fs)); text-transform:uppercase; color:var(--accent); letter-spacing:0.5px; text-align:center; }
-.goal-amount { font-weight:800; font-size: calc(18px * var(--fs)); color:#fff; }
+.goal-amount { font-weight:800; font-size: calc(18px * var(--fs)); color:var(--numbers); }
 
 .goal-personal { width:100%; min-height: 36px; display:flex; align-items:center; justify-content:center; background:transparent; border:0; color:var(--muted); font-size: calc(12px * var(--fs)); border-radius:8px; }
 
 .stats-compact { width:100%; display:flex; flex-direction:column; align-items:center; gap:10px; margin-top:auto; }
 .stat-item { display:flex; align-items:center; gap:6px; font-size: calc(16px * var(--fs)); }
 .stat-icon { font-size: calc(18px * var(--fs)); }
-.stat-value { font-weight:700; color:#fff; }
+.stat-value { font-weight:700; color:var(--numbers); }
 
 .hashtag { color:var(--accent); font-weight:700; font-size: calc(13px * var(--fs)); text-align:center; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top: 8px; }
 
@@ -85,18 +88,24 @@ function fitStage(){ const s=Math.min(window.innerWidth/1920, window.innerHeight
 const url=new URLSearchParams(window.location.search);
 const CFG={
   accent:url.get('accent')||null,
-  statsUrl:url.get('statsUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/live_stats.json',
+  statsUrl:url.get('statsUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/out/live_stats.json',
   goalWidgetUrl:url.get('goalWidgetUrl')||'https://createursdecompagnie.github.io/cdc2025-live-stats/cdc_goal_widget.html',
   updateInterval: parseInt(url.get('interval'))||30000,
   side: (url.get('side')||'left').toLowerCase(),
   barW: url.get('barW')||null,
 };
 if (CFG.accent) document.documentElement.style.setProperty('--accent', CFG.accent);
+// Color overrides
 if (url.get('text')) document.documentElement.style.setProperty('--text', url.get('text'));
+if (url.get('numbers')) document.documentElement.style.setProperty('--numbers', url.get('numbers'));
 if (url.get('muted')) document.documentElement.style.setProperty('--muted', url.get('muted'));
+if (url.get('logoGradientStart')) document.documentElement.style.setProperty('--logo-gradient-start', url.get('logoGradientStart'));
+if (url.get('logoGradientEnd')) document.documentElement.style.setProperty('--logo-gradient-end', url.get('logoGradientEnd'));
 if (url.get('barBg')) document.documentElement.style.setProperty('--bar-bg', url.get('barBg'));
+// Font scale overrides
 const fsParam=parseFloat(url.get('fs')||url.get('fontScale')||url.get('fontsize')); if(!isNaN(fsParam)&&fsParam>0.25&&fsParam<=4){ document.documentElement.style.setProperty('--fs', String(fsParam));}
 if (CFG.barW) document.documentElement.style.setProperty('--bar-w', CFG.barW+(CFG.barW.endsWith('px')||CFG.barW.endsWith('%')?'':'px'));
+// Content overrides
 const hashtagParam=url.get('hashtag'); if (hashtagParam){ const el=document.querySelector('.hashtag'); if (el) el.textContent=hashtagParam; }
 const logoParam=url.get('logo'); if (logoParam){ const span=document.querySelector('.logo .rainbow'); if (span) span.textContent=logoParam; }
 // Side placement
@@ -117,26 +126,51 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-async function updateGlobalGoal(){
-  try{
-    const res=await fetch(CFG.goalWidgetUrl+'?t='+Date.now());
-    const html=await res.text();
-    const parser=new DOMParser(); const doc=parser.parseFromString(html,'text/html');
-    const el=doc.getElementById('globalAmount');
-    if(el){ let txt=(el.textContent||'').trim().replace(/\s+/g,' ').trim(); if(!/[€]/.test(txt)) txt=txt+' €'; document.getElementById('global-amount').textContent=txt; }
-    else { document.getElementById('global-amount').textContent='0 €'; }
-  }catch(e){ console.warn('Global goal fetch failed:', e); document.getElementById('global-amount').textContent='0 €'; }
+// Update global goal by fetching directly from cagnotte_config.json
+async function updateGlobalGoal() {
+  try {
+    const configUrl = 'https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json';
+    const res = await fetch(configUrl + '?t=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (data.amount !== undefined) {
+        const amount = fmt(data.amount) + ' €';
+        document.getElementById('global-amount').textContent = amount;
+      }
+    }
+  } catch (err) {
+    console.warn('Global goal fetch failed:', err);
+    document.getElementById('global-amount').textContent = '0 €';
+  }
 }
 
-async function updateStats(){
-  try{
-    const res=await fetch(CFG.statsUrl+'?t='+Date.now()); const data=await res.json();
-    if(data.total_viewers!==undefined) document.getElementById('viewers-count').textContent=fmt(data.total_viewers);
-    if(data.live_count!==undefined) document.getElementById('live-count').textContent=fmt(data.live_count)+' Live';
-  }catch(e){ console.warn('Failed to update stats:', e); }
+// Update stats from live_stats.json
+async function updateStats() {
+  try {
+    const res = await fetch(CFG.statsUrl + '?t=' + Date.now());
+    const data = await res.json();
+    
+    // Update viewers count
+    if (data.total_viewers !== undefined) {
+      document.getElementById('viewers-count').textContent = fmt(data.total_viewers);
+    }
+    
+    // Update live count - from members array
+    if (data.members && Array.isArray(data.members)) {
+      const liveCount = data.members.filter(m => m.is_live).length;
+      document.getElementById('live-count').textContent = fmt(liveCount) + ' Live';
+    }
+  } catch (err) {
+    console.warn('Failed to update stats:', err);
+  }
 }
 
-updateGlobalGoal(); updateStats(); setInterval(()=>{updateGlobalGoal(); updateStats();}, CFG.updateInterval);
+updateGlobalGoal();
+updateStats();
+setInterval(() => {
+  updateGlobalGoal();
+  updateStats();
+}, CFG.updateInterval);
 </script>
 </body>
 </html>
