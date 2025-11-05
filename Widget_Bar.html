@@ -83,6 +83,8 @@ html, body {
   background: rgba(252,160,0,0.1);
   border-radius: 8px;
   border: 1px solid rgba(252,160,0,0.2);
+  flex-wrap: nowrap;
+  min-width: min-content;
 }
 
 .goal-label {
@@ -91,12 +93,16 @@ html, body {
   text-transform: uppercase;
   color: var(--accent);
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .goal-amount {
   font-weight: 800;
   font-size: calc(18px * var(--fs));
   color: var(--numbers);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* Cagnotte perso (vide, prête pour contenu) */
