@@ -474,6 +474,14 @@
           <div id="creatorsOptions" style="display: none; margin-top: 20px;">
             <label style="color: #FCA000; font-weight: 600;">Personnalisation Créateurs</label>
             
+            <!-- Creators Themes -->
+            <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px;">
+              <button class="preset-btn" onclick="applyCreatorsTheme('default')" style="background: rgba(252,160,0,0.2); border: 2px solid rgba(252,160,0,0.5);">🟡 Default</button>
+              <button class="preset-btn" onclick="applyCreatorsTheme('dark')" style="background: rgba(255,107,0,0.2); border: 2px solid rgba(255,107,0,0.5);">🌙 Dark</button>
+              <button class="preset-btn" onclick="applyCreatorsTheme('neon')" style="background: rgba(255,0,255,0.2); border: 2px solid rgba(255,0,255,0.5);">⚡ Neon</button>
+              <button class="preset-btn" onclick="applyCreatorsTheme('pastel')" style="background: rgba(255,105,180,0.2); border: 2px solid rgba(255,105,180,0.5);">🌸 Pastel</button>
+            </div>
+            
             <div style="margin-top: 15px;">
               <label>Couleur des contours EN DIRECT</label>
               <input type="color" id="borderLive" value="#ff6961" onchange="updatePreview()">
@@ -527,6 +535,85 @@
               <div style="display: flex; gap: 10px; align-items: center;">
                 <input type="range" id="tagBgOpacity" min="0" max="1" step="0.1" value="1" onchange="updatePreview()">
                 <span class="intensity-value" id="tagBgOpacityValue">1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget Bar Options -->
+          <div id="barOptions" style="display: none; margin-top: 20px;">
+            <label style="color: #FCA000; font-weight: 600;">Personnalisation Barre</label>
+            
+            <!-- Bar Themes -->
+            <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px;">
+              <button class="preset-btn" onclick="applyBarTheme('default')" style="background: rgba(252,160,0,0.2); border: 2px solid rgba(252,160,0,0.5);">🟡 Default</button>
+              <button class="preset-btn" onclick="applyBarTheme('dark')" style="background: rgba(255,107,0,0.2); border: 2px solid rgba(255,107,0,0.5);">🌙 Dark</button>
+              <button class="preset-btn" onclick="applyBarTheme('neon')" style="background: rgba(255,0,255,0.2); border: 2px solid rgba(255,0,255,0.5);">⚡ Neon</button>
+              <button class="preset-btn" onclick="applyBarTheme('pastel')" style="background: rgba(255,105,180,0.2); border: 2px solid rgba(255,105,180,0.5);">🌸 Pastel</button>
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur du texte</label>
+              <input type="color" id="barTextColor" value="#f2f5f8" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur des chiffres</label>
+              <input type="color" id="barNumbersColor" value="#ffffff" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur d'accent (cagnotte)</label>
+              <input type="color" id="barAccentColor" value="#FCA000" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Couleur de fond</label>
+              <input type="color" id="barBgColor" value="#0b0f14" onchange="updatePreview()">
+            </div>
+            
+            <div style="margin-top: 15px;">
+              <label>Opacité de la barre</label>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="range" id="barOpacitySlider" min="0" max="1" step="0.1" value="0.75" onchange="updatePreview()">
+                <span class="intensity-value" id="barOpacityValue">0.75</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Dégradé logo - Début</label>
+              <input type="color" id="logoGradStart" value="#FFE259" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Dégradé logo - Fin</label>
+              <input type="color" id="logoGradEnd" value="#FFA751" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Couleur du contour cagnotte</label>
+              <input type="color" id="barCagnotteColor" value="#FCA000" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 15px;">
+              <label>Texte du hashtag</label>
+              <input type="text" id="barHashtag" placeholder="#ProtectionAnimale" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: #f2f5f8;" onchange="updatePreview()">
+            </div>
+
+            <div style="margin-top: 20px;">
+              <label style="color: #FCA000; font-weight: 600;">Éléments visibles</label>
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="barShowCagnotte" checked onchange="updatePreview()">
+                  <label for="barShowCagnotte">Cagnotte</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="barShowStats" checked onchange="updatePreview()">
+                  <label for="barShowStats">Stats (viewers/live)</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="barShowHashtag" checked onchange="updatePreview()">
+                  <label for="barShowHashtag">Hashtag</label>
+                </div>
               </div>
             </div>
           </div>
@@ -644,23 +731,89 @@
           desc: 'Barre standard',
           supportColors: false,
           supportCents: false,
-          showPreview: true
+          showPreview: true,
+          customOptions: { widgetBar: true }
         },
         'Widget_Bar_Vertical.html': {
           label: 'Bar Vertical',
           desc: 'Barre verticale',
           supportColors: false,
           supportCents: false,
-          showPreview: true
+          showPreview: true,
+          customOptions: { widgetBar: true }
         }
       }
     };
 
     const presets = {
-      default: { textColor: '#ffffff', accentColor: '#FCA000', shadowIntensity: 0.4 },
-      dark: { textColor: '#e0e0e0', accentColor: '#ff6b00', shadowIntensity: 0.6 },
-      neon: { textColor: '#00ffff', accentColor: '#ff00ff', shadowIntensity: 0.8 },
-      pastel: { textColor: '#fff9e6', accentColor: '#ff69b4', shadowIntensity: 0.3 }
+      default: { 
+        textColor: '#ffffff', 
+        accentColor: '#FCA000', 
+        shadowIntensity: 0.4,
+        borderColor: 'rgba(252,160,0,0.5)',
+        barText: '#f2f5f8',
+        barNumbers: '#ffffff',
+        barAccent: '#FCA000',
+        barBg: '#0b0f14',
+        barOpacity: 0.75,
+        logoGradStart: '#FFE259',
+        logoGradEnd: '#FFA751',
+        creatorsBorderLive: '#ff6961',
+        creatorsBorderOffline: '#b0b0b0',
+        creatorsText: '#f2f5f8',
+        creatorsAccent: '#FCA000'
+      },
+      dark: { 
+        textColor: '#e0e0e0', 
+        accentColor: '#ff6b00', 
+        shadowIntensity: 0.6,
+        borderColor: 'rgba(255,107,0,0.5)',
+        barText: '#d0d0d0',
+        barNumbers: '#ffffff',
+        barAccent: '#ff6b00',
+        barBg: '#1a1a1a',
+        barOpacity: 0.85,
+        logoGradStart: '#FF8C00',
+        logoGradEnd: '#FF6347',
+        creatorsBorderLive: '#ff4444',
+        creatorsBorderOffline: '#888888',
+        creatorsText: '#d0d0d0',
+        creatorsAccent: '#ff6b00'
+      },
+      neon: { 
+        textColor: '#00ffff', 
+        accentColor: '#ff00ff', 
+        shadowIntensity: 0.8,
+        borderColor: 'rgba(255,0,255,0.6)',
+        barText: '#00ffff',
+        barNumbers: '#ffff00',
+        barAccent: '#ff00ff',
+        barBg: '#0a0a1a',
+        barOpacity: 0.9,
+        logoGradStart: '#00FFFF',
+        logoGradEnd: '#FF00FF',
+        creatorsBorderLive: '#00ffff',
+        creatorsBorderOffline: '#ff00ff',
+        creatorsText: '#00ffff',
+        creatorsAccent: '#ffff00'
+      },
+      pastel: { 
+        textColor: '#fff9e6', 
+        accentColor: '#ff69b4', 
+        shadowIntensity: 0.3,
+        borderColor: 'rgba(255,105,180,0.4)',
+        barText: '#ffe6f0',
+        barNumbers: '#fff9e6',
+        barAccent: '#ff69b4',
+        barBg: '#f5f0fa',
+        barOpacity: 0.7,
+        logoGradStart: '#FFB6D9',
+        logoGradEnd: '#FFD1DC',
+        creatorsBorderLive: '#ffb3d9',
+        creatorsBorderOffline: '#e6d7f0',
+        creatorsText: '#fff9e6',
+        creatorsAccent: '#ff69b4'
+      }
     };
 
     let currentCategory = null;
@@ -727,6 +880,7 @@
       const opacityOpts = document.getElementById('opacityOptions');
       const visibilityOpts = document.getElementById('visibilityOptions');
       const creatorsOpts = document.getElementById('creatorsOptions');
+      const barOpts = document.getElementById('barOptions');
 
       // Cagnotte: Show colors + shadow + cents option
       if (currentOverlay.file.includes('cdc_goal_widget')) {
@@ -747,6 +901,7 @@
         if (visibilityOpts) visibilityOpts.style.display = 'none';
         if (centsOpt) centsOpt.style.display = currentOverlay.supportCents ? 'flex' : 'none';
         if (creatorsOpts) creatorsOpts.style.display = 'none';
+        if (barOpts) barOpts.style.display = 'none';
       }
       // Widget Creators: Show specific options
       else if (currentOverlay.file.includes('widget-creators')) {
@@ -759,6 +914,20 @@
         if (visibilityOpts) visibilityOpts.style.display = 'none';
         if (centsOpt) centsOpt.style.display = 'none';
         if (creatorsOpts) creatorsOpts.style.display = 'block';
+        if (barOpts) barOpts.style.display = 'none';
+      }
+      // Widget Bar: Show bar-specific options
+      else if (currentOverlay.file.includes('Widget_Bar')) {
+        customOpts.style.display = 'block';
+        presetBtns.style.display = 'none';
+        if (themeOpts) themeOpts.style.display = 'none';
+        if (colorOpts) colorOpts.style.display = 'none';
+        if (shadowOpts) shadowOpts.style.display = 'none';
+        if (opacityOpts) opacityOpts.style.display = 'none';
+        if (visibilityOpts) visibilityOpts.style.display = 'none';
+        if (centsOpt) centsOpt.style.display = 'none';
+        if (creatorsOpts) creatorsOpts.style.display = 'none';
+        if (barOpts) barOpts.style.display = 'block';
       }
       // Info widgets (standard, vertical) + Carousel: Show themes + colors + opacity + visibility
       else if (currentOverlay.file.includes('info_widget') || currentOverlay.file.includes('info_carousel')) {
@@ -772,6 +941,7 @@
         if (visibilityOpts) visibilityOpts.style.display = currentOverlay.file.includes('info_widget.html') ? 'block' : 'none';
         if (centsOpt) centsOpt.style.display = 'none';
         if (creatorsOpts) creatorsOpts.style.display = 'none';
+        if (barOpts) barOpts.style.display = 'none';
         
         // Initialize theme buttons
         const themeSelector = document.getElementById('themeSelector');
@@ -793,6 +963,29 @@
       document.getElementById('textColor').value = p.textColor;
       document.getElementById('accentColor').value = p.accentColor;
       document.getElementById('shadowIntensity').value = p.shadowIntensity;
+      updatePreview();
+    }
+
+    function applyBarTheme(name) {
+      const p = presets[name];
+      document.getElementById('barTextColor').value = p.barText;
+      document.getElementById('barNumbersColor').value = p.barNumbers;
+      document.getElementById('barAccentColor').value = p.barAccent;
+      document.getElementById('barCagnotteColor').value = p.barAccent;
+      document.getElementById('barBgColor').value = p.barBg;
+      document.getElementById('barOpacitySlider').value = p.barOpacity;
+      document.getElementById('barOpacityValue').textContent = p.barOpacity;
+      document.getElementById('logoGradStart').value = p.logoGradStart;
+      document.getElementById('logoGradEnd').value = p.logoGradEnd;
+      updatePreview();
+    }
+
+    function applyCreatorsTheme(name) {
+      const p = presets[name];
+      document.getElementById('borderLive').value = p.creatorsBorderLive;
+      document.getElementById('borderOffline').value = p.creatorsBorderOffline;
+      document.getElementById('creatorsTextColor').value = p.creatorsText;
+      document.getElementById('creatorsAccentColor').value = p.creatorsAccent;
       updatePreview();
     }
 
@@ -879,7 +1072,38 @@
         if (labelLiveVal) params.append('labelLive', labelLiveVal);
         if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
       }
-      // Info parameters
+      // Widget Bar parameters
+      else if (currentOverlay.file.includes('Widget_Bar')) {
+        const barTextColor = document.getElementById('barTextColor')?.value || '#f2f5f8';
+        const barNumbersColor = document.getElementById('barNumbersColor')?.value || '#ffffff';
+        const barAccentColor = document.getElementById('barAccentColor')?.value || '#FCA000';
+        const barBgColor = document.getElementById('barBgColor')?.value || '#0b0f14';
+        const barOpacity = document.getElementById('barOpacitySlider')?.value || '0.75';
+        const logoGradStart = document.getElementById('logoGradStart')?.value || '#FFE259';
+        const logoGradEnd = document.getElementById('logoGradEnd')?.value || '#FFA751';
+        const showCagnotte = document.getElementById('barShowCagnotte')?.checked !== false ? 'true' : 'false';
+        const showStats = document.getElementById('barShowStats')?.checked !== false ? 'true' : 'false';
+        const showHashtag = document.getElementById('barShowHashtag')?.checked !== false ? 'true' : 'false';
+        const barHashtagVal = document.getElementById('barHashtag')?.value || '#ProtectionAnimale';
+        const barCagnotteColorVal = document.getElementById('barCagnotteColor')?.value || '#FCA000';
+        
+        // Update display values
+        const barOpacityDisplay = document.getElementById('barOpacityValue');
+        if (barOpacityDisplay) barOpacityDisplay.textContent = barOpacity;
+        
+        params.append('text', barTextColor);
+        params.append('numbers', barNumbersColor);
+        params.append('accent', barAccentColor);
+        params.append('barBg', barBgColor);
+        params.append('barOpacity', barOpacity);
+        params.append('logoGradientStart', logoGradStart);
+        params.append('logoGradientEnd', logoGradEnd);
+        if (barHashtagVal) params.append('hashtag', barHashtagVal);
+        if (barCagnotteColorVal !== barAccentColor) params.append('cagnotteColor', barCagnotteColorVal);
+        if (showCagnotte !== 'true') params.append('showCagnotte', 'false');
+        if (showStats !== 'true') params.append('showStats', 'false');
+        if (showHashtag !== 'true') params.append('showHashtag', 'false');
+      }
       else if (currentOverlay.file.includes('info_widget')) {
         params.append('theme', theme);
         params.append('textColor', textColor);
@@ -942,6 +1166,32 @@
           params.append('tagBgOpacity', tagBgOpacityVal);
           if (labelLiveVal) params.append('labelLive', labelLiveVal);
           if (labelOfflineVal) params.append('labelOffline', labelOfflineVal);
+        } else if (currentOverlay.file.includes('Widget_Bar')) {
+          const barTextColor = document.getElementById('barTextColor')?.value || '#f2f5f8';
+          const barNumbersColor = document.getElementById('barNumbersColor')?.value || '#ffffff';
+          const barAccentColor = document.getElementById('barAccentColor')?.value || '#FCA000';
+          const barBgColor = document.getElementById('barBgColor')?.value || '#0b0f14';
+          const barOpacity = document.getElementById('barOpacitySlider')?.value || '0.75';
+          const logoGradStart = document.getElementById('logoGradStart')?.value || '#FFE259';
+          const logoGradEnd = document.getElementById('logoGradEnd')?.value || '#FFA751';
+          const showCagnotte = document.getElementById('barShowCagnotte')?.checked !== false ? 'true' : 'false';
+          const showStats = document.getElementById('barShowStats')?.checked !== false ? 'true' : 'false';
+          const showHashtag = document.getElementById('barShowHashtag')?.checked !== false ? 'true' : 'false';
+          const barHashtagVal = document.getElementById('barHashtag')?.value || '#ProtectionAnimale';
+          const barCagnotteColorVal = document.getElementById('barCagnotteColor')?.value || '#FCA000';
+          
+          params.append('text', barTextColor);
+          params.append('numbers', barNumbersColor);
+          params.append('accent', barAccentColor);
+          params.append('barBg', barBgColor);
+          params.append('barOpacity', barOpacity);
+          params.append('logoGradientStart', logoGradStart);
+          params.append('logoGradientEnd', logoGradEnd);
+          if (barHashtagVal) params.append('hashtag', barHashtagVal);
+          if (barCagnotteColorVal !== barAccentColor) params.append('cagnotteColor', barCagnotteColorVal);
+          if (showCagnotte !== 'true') params.append('showCagnotte', 'false');
+          if (showStats !== 'true') params.append('showStats', 'false');
+          if (showHashtag !== 'true') params.append('showHashtag', 'false');
         } else if (currentOverlay.file.includes('info_widget')) {
           params.append('theme', theme || 'light');
           params.append('textColor', textColor);
