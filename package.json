@@ -7,6 +7,9 @@
     "start": "node local-server.js",
     "server": "node local-server.js",
     "dev": "node local-server.js",
+    "sync": "node sync-streamlabs.js",
+    "sync:watch": "node sync-streamlabs.js --watch",
+    "sync:push": "node sync-streamlabs.js --push",
     "diagnostic": "node diagnostic.js",
     "check": "node diagnostic.js all",
     "check:local": "node diagnostic.js local",
@@ -24,10 +27,10 @@
   "author": "Créateurs de Compagnie",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
