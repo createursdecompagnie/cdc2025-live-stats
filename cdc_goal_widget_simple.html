@@ -123,13 +123,28 @@ function animateCounter(newValue) {
 
 async function updateGlobalGoal() {
   try {
-    // Récupérer la config depuis GitHub
-    const t = Date.now();
-    const r = Math.random();
-    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + t + '&_=' + r + '&v=' + Math.floor(t/1000));
-    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+    // ✅ ÉTAPE 1: Essayer le serveur local DABORD (rapide)
+    let config = null;
+    try {
+      const localResponse = await fetch('http://localhost:3000/cagnotte_config.json?t=' + Date.now());
+      if (localResponse.ok) {
+        config = await localResponse.json();
+        console.log('📍 Widget Simple: Données du serveur LOCAL');
+      }
+    } catch(localError) {
+      console.log('ℹ️ Serveur local non disponible, utilisation GitHub');
+    }
     
-    const config = await configResponse.json();
+    // ✅ ÉTAPE 2: Si pas de serveur local, utiliser GitHub
+    if (!config) {
+      const t = Date.now();
+      const r = Math.random();
+      const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + t + '&_=' + r + '&v=' + Math.floor(t/1000));
+      if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+      config = await configResponse.json();
+      console.log('📡 Widget Simple: Données de GitHub');
+    }
+    
     const brut = parseFloat(config.brut) || 0;      // Montant Streamlabs Charity
     const ajouts = parseFloat(config.ajouts) || 0;  // Montants bonus (t-shirts, cash, etc.)
     const totalAmount = brut + ajouts;              // Total = Streamlabs + Ajouts

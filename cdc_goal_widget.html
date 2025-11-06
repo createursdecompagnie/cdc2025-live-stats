@@ -254,15 +254,38 @@ function animateCounter(newValue) {
    ============================================================================
    Affiche la somme de Streamlabs (brut) + ajouts du manager
    
-   UPDATE FREQUENCY: Toutes les 3 secondes
+   PRIORITY:
+   1. Serveur local (localhost:3000) - Temps réel ⚡
+   2. GitHub Raw - Fallback si serveur down
+   
+   UPDATE FREQUENCY: Toutes les 1 seconde
    ============================================================================ */
 async function updateGlobalGoal() {
   try {
-    // Récupérer la config depuis GitHub
-    const configResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
-    if (!configResponse.ok) throw new Error('Fetch failed: ' + configResponse.status);
+    let config = null;
+    let fetchedFromLocal = false;
     
-    const config = await configResponse.json();
+    // ✅ ÉTAPE 1: Essayer le serveur local DABORD (rapide)
+    try {
+      const localResponse = await fetch('http://localhost:3000/cagnotte_config.json?t=' + Date.now());
+      if (localResponse.ok) {
+        config = await localResponse.json();
+        fetchedFromLocal = true;
+        console.log('📍 Données du serveur LOCAL', config);
+      }
+    } catch(localError) {
+      // Le serveur local n'est pas disponible, on essayera GitHub
+      console.log('ℹ️ Serveur local non disponible, utilisation GitHub');
+    }
+    
+    // ✅ ÉTAPE 2: Si pas de serveur local, utiliser GitHub
+    if (!config) {
+      const githubResponse = await fetch('https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
+      if (!githubResponse.ok) throw new Error('GitHub fetch failed: ' + githubResponse.status);
+      config = await githubResponse.json();
+      console.log('📡 Données de GitHub', config);
+    }
+    
     const brut = parseFloat(config.brut) || 0;      // Montant Streamlabs Charity
     const ajouts = parseFloat(config.ajouts) || 0;  // Montants bonus (t-shirts, cash, etc.)
     
@@ -277,7 +300,7 @@ async function updateGlobalGoal() {
       document.getElementById('globalAmount').textContent = fmt(0);
     }
   } catch(e) {
-    console.warn('Global goal update failed:', e);
+    console.warn('❌ Global goal update failed:', e);
   }
 }
 
