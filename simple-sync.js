@@ -37,7 +37,14 @@ function readStreamlabelAmount() {
       return 0;
     }
 
-    const content = fs.readFileSync(STREAMLABEL_FILE, 'utf8').trim();
+    let content = fs.readFileSync(STREAMLABEL_FILE, 'utf8').trim();
+    
+    // Nettoyer le format: enlever $, EUR, espaces, virgules
+    content = content
+      .replace(/[$€EUR]/g, '')  // Enlever symboles monétaires
+      .replace(/,/g, '.')        // Remplacer virgules par points
+      .trim();
+    
     const amount = parseFloat(content) || 0;
     
     console.log(`📊 Streamlabel: ${amount}€`);

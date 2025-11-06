@@ -61,7 +61,14 @@ function readStreamlabelAmount() {
     if (!fs.existsSync(STREAMLABEL_FILE)) {
       return 0;
     }
-    const content = fs.readFileSync(STREAMLABEL_FILE, 'utf8').trim();
+    let content = fs.readFileSync(STREAMLABEL_FILE, 'utf8').trim();
+    
+    // Nettoyer le format: enlever $, EUR, espaces, virgules
+    content = content
+      .replace(/[$€EUR]/g, '')  // Enlever symboles monétaires
+      .replace(/,/g, '.')        // Remplacer virgules par points
+      .trim();
+    
     return parseFloat(content) || 0;
   } catch (error) {
     console.error('❌ Erreur lecture Streamlabel:', error.message);
