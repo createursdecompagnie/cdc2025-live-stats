@@ -156,7 +156,7 @@ function animateCounter(newValue) {
   
   const startValue = currentDisplayValue;
   const startTime = Date.now();
-  const duration = 500; // Animation rapide (500ms)
+  const duration = 1500; // Animation lente (1.5 secondes)
   
   function animate() {
     const elapsed = Date.now() - startTime;
@@ -200,9 +200,9 @@ async function updateGlobalGoal() {
     
     let config = null;
     
-    // ✅ ÉTAPE 1: Essayer le serveur LOCAL
+    // ✅ ÉTAPE 1: Essayer le serveur LOCAL (Mac Mini)
     try {
-      const localResponse = await fetch('http://localhost:3000/cagnotte_config.json?t=' + Date.now(), {
+      const localResponse = await fetch('http://192.168.1.65:3000/cagnotte_config.json?t=' + Date.now(), {
         cache: 'no-store',  // TRÈS IMPORTANT: pas de cache!
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
