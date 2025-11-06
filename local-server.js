@@ -39,18 +39,24 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 const UPDATE_INTERVAL = 5000; // Mise à jour toutes les 5 secondes
+const SYNC_INTERVAL = 30000; // Sync Streamlabs toutes les 30 secondes
+const PUSH_INTERVAL = 300000; // Push GitHub toutes les 5 minutes
 
 // Cache pour les données
-let cagnotteCache = { brut: 0, ajouts: 0, lastModified: new Date().toISOString() };
+let cagnotteCache = { brut: 0, ajouts: 0, total: 0, lastModified: new Date().toISOString() };
 let statsCache = { members: [], total_viewers: 0, live_count: 0, lastModified: new Date().toISOString() };
+let lastPushTime = 0;
+let lastSyncTime = 0;
 
 // Chemins fichiers
 const cagnotteFile = path.join(__dirname, 'cagnotte_config.json');
 const statsFile = path.join(__dirname, 'out', 'live_stats.json');
+const syncScript = path.join(__dirname, 'sync-streamlabs.js');
 
 console.log('🚀 CDC2025 LOCAL SERVER');
 console.log('=' .repeat(60));
@@ -114,6 +120,74 @@ function updateStatsData() {
     }
   } catch (err) {
     console.error('❌ Erreur lecture stats:', err.message);
+  }
+}
+
+/**
+ * Synchronise les données Streamlabs Charity
+ * Exécute le script sync-streamlabs.js
+ */
+function syncStreamlabsData() {
+  try {
+    const now = Date.now();
+    // Vérifier qu'on n'a pas synchronisé depuis moins de 5 secondes
+    if (now - lastSyncTime < 5000) {
+      return;
+    }
+    
+    // Exécuter le script de sync
+    try {
+      // Utiliser require pour éviter les problèmes de processus
+      const syncModule = require('./sync-streamlabs.js');
+      // Le script s'exécute et met à jour cagnotte_config.json
+    } catch (err) {
+      console.warn('⚠️  Sync Streamlabs non disponible (sync-streamlabs.js)');
+    }
+    
+    // Recharger les données mises à jour
+    updateCagnotteData();
+    lastSyncTime = now;
+    
+  } catch (err) {
+    console.error('❌ Erreur sync Streamlabs:', err.message);
+  }
+}
+
+/**
+ * Push les changements vers GitHub
+ */
+function pushToGitHub() {
+  try {
+    const now = Date.now();
+    // Vérifier qu'on n'a pas pushed depuis moins de 1 minute
+    if (now - lastPushTime < 60000) {
+      return;
+    }
+    
+    // Vérifier s'il y a des changements
+    const status = execSync('git status --porcelain', { cwd: __dirname }).toString();
+    
+    if (!status.includes('cagnotte_config.json')) {
+      return; // Pas de changement
+    }
+    
+    console.log('📤 Préparation push GitHub...');
+    
+    // Stage
+    execSync(`git add "${cagnotteFile}"`, { cwd: __dirname, stdio: 'ignore' });
+    
+    // Commit
+    const message = `🔄 Auto-sync cagnotte: ${new Date().toLocaleString('fr-FR')}`;
+    execSync(`git commit -m "${message}"`, { cwd: __dirname, stdio: 'ignore' });
+    
+    // Push
+    execSync('git push origin main', { cwd: __dirname, stdio: 'ignore' });
+    
+    console.log('✅ Push GitHub réussi!');
+    lastPushTime = now;
+    
+  } catch (err) {
+    console.warn('⚠️  Erreur push GitHub (serveur local fonctionne quand même):', err.message);
   }
 }
 
@@ -293,11 +367,26 @@ app.listen(PORT, () => {
   updateCagnotteData();
   updateStatsData();
   
-  // Mise à jour périodique
+  // Mise à jour périodique des données locales (5 secondes)
   setInterval(() => {
     updateCagnotteData();
     updateStatsData();
   }, UPDATE_INTERVAL);
+  
+  // Synchronisation Streamlabs (30 secondes)
+  console.log('🔄 Sync Streamlabs activée (toutes les 30 secondes)');
+  setInterval(() => {
+    syncStreamlabsData();
+  }, SYNC_INTERVAL);
+  
+  // Push GitHub (5 minutes) - OPTIONNEL
+  // Décommenter pour activer
+  /*
+  console.log('📤 Push GitHub activé (toutes les 5 minutes)');
+  setInterval(() => {
+    pushToGitHub();
+  }, PUSH_INTERVAL);
+  */
 });
 
 // Gestion arrêt gracieux
