@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestionnaire Ajouts Perso - CDC2025</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0b0f14 0%, #1a1f2e 100%);
+      color: #f2f5f8;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #FCA000;
+      text-align: center;
+      margin: 0 0 30px 0;
+      font-size: 2em;
+    }
+    .card {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(252,160,0,0.2);
+      border-radius: 12px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 20px;
+    }
+    .status {
+      background: rgba(252,160,0,0.1);
+      border-left: 4px solid #FCA000;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .status-item:last-child {
+      border-bottom: none;
+    }
+    .status-label {
+      color: #a7b1bd;
+      font-size: 0.9em;
+    }
+    .status-value {
+      font-weight: 600;
+      font-family: monospace;
+      color: #FFE259;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #a7b1bd;
+      font-weight: 500;
+      font-size: 0.95em;
+    }
+    input[type="number"], textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: #f2f5f8;
+      font-size: 1em;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    input[type="number"]:focus, textarea:focus {
+      outline: none;
+      border-color: #FCA000;
+      background: rgba(0,0,0,0.5);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.2s;
+    }
+    .btn-save {
+      background: #FCA000;
+      color: black;
+    }
+    .btn-save:hover {
+      background: #FFB530;
+    }
+    .btn-reset {
+      background: rgba(255,100,100,0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(255,100,100,0.4);
+    }
+    .btn-reset:hover {
+      background: rgba(255,100,100,0.3);
+    }
+    .message {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 15px;
+      display: none;
+      text-align: center;
+      font-weight: 500;
+    }
+    .message.success {
+      background: rgba(100,200,100,0.2);
+      color: #64c864;
+      border: 1px solid rgba(100,200,100,0.4);
+      display: block;
+    }
+    .message.error {
+      background: rgba(200,100,100,0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(200,100,100,0.4);
+      display: block;
+    }
+    .info {
+      background: rgba(100,150,200,0.1);
+      border-left: 4px solid #6496c8;
+      padding: 12px;
+      border-radius: 6px;
+      color: #a7b1bd;
+      font-size: 0.9em;
+      line-height: 1.5;
+      margin-top: 20px;
+    }
+    .total-display {
+      font-size: 2em;
+      font-weight: 600;
+      color: #FFE259;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,226,89,0.1);
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 15px 0;
+    }
+    .breakdown-item {
+      background: rgba(0,0,0,0.2);
+      padding: 15px;
+      border-radius: 6px;
+      border-left: 3px solid #FCA000;
+    }
+    .breakdown-label {
+      color: #a7b1bd;
+      font-size: 0.85em;
+      margin-bottom: 5px;
+    }
+    .breakdown-value {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #FFE259;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Gestionnaire Cagnotte</h1>
+
+    <div class="card">
+      <h2 style="color: #FCA000; margin-top: 0;">État Actuel</h2>
+      
+      <div class="status" id="statusContainer">
+        <div style="text-align: center; padding: 20px; color: #a7b1bd;">
+          Chargement...
+        </div>
+      </div>
+
+      <div class="total-display" id="totalDisplay">
+        Chargement...
+      </div>
+
+      <div class="breakdown" id="breakdown"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="color: #FCA000; margin-top: 0;">Modifier les Ajouts Perso</h2>
+      
+      <form id="ajoutsForm">
+        <div class="form-group">
+          <label for="montantInput">Montant ajouté (€)</label>
+          <input 
+            type="number" 
+            id="montantInput" 
+            min="0" 
+            step="0.01" 
+            placeholder="Ex: 100"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="descriptionInput">Description (optionnel)</label>
+          <textarea 
+            id="descriptionInput" 
+            placeholder="Ex: T-shirts, dons directs, etc."
+          ></textarea>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn-save">💾 Enregistrer</button>
+          <button type="button" class="btn-reset" onclick="resetToZero()">↻ Réinitialiser à 0</button>
+        </div>
+
+        <div class="message" id="message"></div>
+      </form>
+
+      <div class="info">
+        <strong>💡 Comment ça marche:</strong><br>
+        • Le montant "Streamlabel" vient du fichier Streamlabels/total_charity_donation_amount.txt<br>
+        • Le montant "Ajouts perso" est ce que tu modifies ici<br>
+        • Le total combine les deux<br>
+        • Les données sont synchronisées en temps réel sur GitHub Pages
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Charger les données au démarrage
+    loadStatus();
+    setInterval(loadStatus, 5000); // Actualiser toutes les 5 secondes
+
+    async function loadStatus() {
+      try {
+        const response = await fetch('/cagnotte_config.json');
+        if (!response.ok) throw new Error('Erreur serveur');
+        const data = await response.json();
+
+        // Mettre à jour le statut
+        const statusHTML = `
+          <div class="status-item">
+            <span class="status-label">📡 Streamlabel (en direct)</span>
+            <span class="status-value">${data.brut}€</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">🎁 Ajouts perso</span>
+            <span class="status-value">${data.ajouts}€</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">🕐 Dernière mise à jour</span>
+            <span class="status-value">${new Date(data.lastModified).toLocaleTimeString('fr-FR')}</span>
+          </div>
+        `;
+        document.getElementById('statusContainer').innerHTML = statusHTML;
+
+        // Afficher le total
+        document.getElementById('totalDisplay').innerHTML = `${data.total}€`;
+
+        // Afficher la décomposition
+        const breakdownHTML = `
+          <div class="breakdown-item">
+            <div class="breakdown-label">📡 Streamlabel</div>
+            <div class="breakdown-value">${data.brut}€</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">➕ Ajouts</div>
+            <div class="breakdown-value">+${data.ajouts}€</div>
+          </div>
+        `;
+        document.getElementById('breakdown').innerHTML = breakdownHTML;
+
+        // Mettre à jour le formulaire
+        document.getElementById('montantInput').value = data.ajouts;
+
+      } catch (error) {
+        console.error('Erreur chargement:', error);
+        document.getElementById('statusContainer').innerHTML = `
+          <div style="color: #ff6b6b; padding: 20px;">
+            ❌ Erreur de connexion au serveur
+          </div>
+        `;
+      }
+    }
+
+    // Sauvegarder les ajouts
+    document.getElementById('ajoutsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const montant = parseFloat(document.getElementById('montantInput').value) || 0;
+      const description = document.getElementById('descriptionInput').value;
+
+      try {
+        const response = await fetch('/api/update-ajouts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ montant, description })
+        });
+
+        if (!response.ok) throw new Error('Erreur serveur');
+
+        showMessage('✅ Ajouts enregistrés!', 'success');
+        setTimeout(loadStatus, 500);
+      } catch (error) {
+        showMessage('❌ Erreur: ' + error.message, 'error');
+      }
+    });
+
+    async function resetToZero() {
+      if (confirm('Réinitialiser les ajouts à 0€?')) {
+        document.getElementById('montantInput').value = 0;
+        document.getElementById('ajoutsForm').dispatchEvent(new Event('submit'));
+      }
+    }
+
+    function showMessage(text, type) {
+      const msg = document.getElementById('message');
+      msg.textContent = text;
+      msg.className = 'message ' + type;
+      setTimeout(() => {
+        msg.className = 'message';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

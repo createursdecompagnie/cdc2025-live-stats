@@ -4,16 +4,14 @@
   "description": "CDC2025 Live Statistics & Donation Tracker - Local Server & Widgets",
   "main": "local-server.js",
   "scripts": {
-    "start": "node local-server.js",
-    "server": "node local-server.js",
-    "dev": "node local-server.js",
-    "sync": "node sync-streamlabs.js",
-    "sync:watch": "node sync-streamlabs.js --watch",
-    "sync:push": "node sync-streamlabs.js --push",
+    "start": "node streamlabel-server.js",
+    "server": "node streamlabel-server.js",
+    "sync": "node simple-sync.js",
+    "sync:watch": "node simple-sync.js --watch",
+    "push:auto": "node auto-push.js",
+    "push:watch": "node auto-push.js --watch",
     "diagnostic": "node diagnostic.js",
-    "check": "node diagnostic.js all",
-    "check:local": "node diagnostic.js local",
-    "check:github": "node diagnostic.js github"
+    "check": "node diagnostic.js all"
   },
   "keywords": [
     "cdc2025",

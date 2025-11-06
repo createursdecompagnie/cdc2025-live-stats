@@ -1,0 +1,11 @@
+{
+  "montant": 0,
+  "description": "Ajouts personnalisés: t-shirts, dons directs, etc.",
+  "historique": [
+    {
+      "date": "2025-11-06",
+      "montant": 0,
+      "raison": "Initialisation"
+    }
+  ]
+}
