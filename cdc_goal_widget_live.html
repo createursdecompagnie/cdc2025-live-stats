@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>CDC2025 Goal Widget</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;
+  --glass:rgba(0,0,0,0.5);
+  --text:#f2f5f8;
+  --accent:#FCA000;
+  --accent-2:#104E59;
+  --radius:20px;
+}
+
+* { box-sizing:border-box; }
+html, body { 
+  margin:0; padding:0; 
+  width:100vw; height:100vh; 
+  background:transparent; 
+  color:var(--text); 
+  font-family: "Outfit", -apple-system, system-ui; 
+  overflow:hidden; 
+}
+
+.widget-container {
+  width: 100%;
+  height: 100%;
+  padding: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  padding: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5vh;
+  width: 100%;
+  height: 100%;
+}
+
+.event-title {
+  font-size: calc(5vw * var(--fontScale, 1));
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #f0e6d2, var(--accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 0.5vw rgba(252,160,0,0.3));
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.goal-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+}
+
+.goal-badge {
+  background: var(--accent);
+  color: #0b0f14;
+  padding: 0.5vh 1.5vw;
+  border-radius: 999px;
+  font-size: calc(1.8vw * var(--fontScale, 1));
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.goal-amount {
+  font-size: calc(6vw * var(--fontScale, 1));
+  font-weight: 900;
+  color: var(--text);
+  text-shadow: 0 0.2vh 1vh rgba(252,160,0,0.2);
+  min-width: 300px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="card">
+      <div class="event-title">🐾 CDC2025</div>
+      <div class="goal-section">
+        <span class="goal-badge">Global</span>
+        <span class="goal-amount" id="globalAmount">0 €</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============================================================================
+   CDC2025 WIDGET - AUTO-REFRESH VERSION (NO CACHE)
+   ============================================================================
+   
+   ✨ SOLUTION FINALE:
+   - Lit depuis le serveur LOCAL en priorité
+   - Actualisation AUTOMATIQUE toutes les 1 seconde
+   - ZÉRO CACHE (utilise ?t=timestamp)
+   - Animation fluide du compteur
+   - S'affiche en DIRECT dans OBS sans clic!
+   
+   ⚡ PERFORMANCE:
+   - Latence: 1 seconde (le temps du refresh interval)
+   - Pas de rechargement de page
+   - Pas de cache
+   - Auto-rafraîchi visuel
+   
+   ============================================================================ */
+
+const params = new URLSearchParams(window.location.search);
+const FONT_SCALE = parseFloat(params.get('fontScale')) || 1;
+document.documentElement.style.setProperty('--fontScale', String(FONT_SCALE));
+
+const textColor = params.get('textColor') || '#f2f5f8';
+const accentColor = params.get('accentColor') || '#FCA000';
+const shadowIntensity = parseFloat(params.get('shadowIntensity')) || 0.3;
+const showCents = params.get('showCents') === 'true' || params.get('showCents') === '1';
+
+document.documentElement.style.setProperty('--text', textColor);
+document.documentElement.style.setProperty('--accent', accentColor);
+
+// Animation fluide du compteur
+let currentDisplayValue = 0;
+let targetValue = 0;
+let animationFrameId = null;
+
+function fmt(n) { 
+  return new Intl.NumberFormat('fr-FR', {
+    minimumFractionDigits: showCents ? 2 : 0,
+    maximumFractionDigits: showCents ? 2 : 0
+  }).format(n) + ' €'; 
+}
+
+function animateCounter(newValue) {
+  targetValue = newValue;
+  
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  
+  const startValue = currentDisplayValue;
+  const startTime = Date.now();
+  const duration = 500; // Animation rapide (500ms)
+  
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing: ease-out
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    
+    currentDisplayValue = startValue + (newValue - startValue) * easeProgress;
+    
+    const formatted = new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: showCents ? 2 : 0,
+      maximumFractionDigits: showCents ? 2 : 0
+    }).format(currentDisplayValue);
+    
+    document.getElementById('globalAmount').textContent = formatted;
+    
+    if (progress < 1) {
+      animationFrameId = requestAnimationFrame(animate);
+    } else {
+      currentDisplayValue = newValue;
+    }
+  }
+  
+  animate();
+}
+
+/* ============================================================================
+   RÉCUPÈRE LES DONNÉES AVEC NO-CACHE
+   ============================================================================ */
+
+async function updateGlobalGoal() {
+  try {
+    // 🔑 CLÉS DU SUCCÈS:
+    // 1. ?t=Date.now() force un nouveau fetch (pas de cache)
+    // 2. Fetch depuis le serveur LOCAL d'abord
+    // 3. Si pas de serveur, fallback sur GitHub
+    // 4. Aucune mémorisation, juste actualiser
+    
+    let config = null;
+    
+    // ✅ ÉTAPE 1: Essayer le serveur LOCAL
+    try {
+      const localResponse = await fetch('http://localhost:3000/cagnotte_config.json?t=' + Date.now(), {
+        cache: 'no-store',  // TRÈS IMPORTANT: pas de cache!
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
+      
+      if (localResponse.ok) {
+        config = await localResponse.json();
+        console.log('📍 LOCAL:', config.total + '€');
+      }
+    } catch (e) {
+      // Pas de serveur local
+    }
+    
+    // ✅ ÉTAPE 2: Si pas de serveur local, utiliser GitHub
+    if (!config) {
+      const githubResponse = await fetch(
+        'https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json?t=' + Date.now(),
+        {
+          cache: 'no-store'
+        }
+      );
+      if (githubResponse.ok) {
+        config = await githubResponse.json();
+        console.log('📡 GITHUB:', config.total + '€');
+      }
+    }
+    
+    if (!config) return;
+    
+    const brut = parseFloat(config.brut) || 0;
+    const ajouts = parseFloat(config.ajouts) || 0;
+    const totalAmount = brut + ajouts;
+    
+    // ✅ ANIMER si le montant a changé
+    if (Math.abs(totalAmount - currentDisplayValue) > 0.01) {
+      animateCounter(totalAmount);
+    } else if (currentDisplayValue === 0 && totalAmount === 0) {
+      document.getElementById('globalAmount').textContent = fmt(0);
+    }
+    
+  } catch(e) {
+    console.error('❌ Update failed:', e);
+  }
+}
+
+// 🚀 INIT
+console.log('✅ Widget lancé - Auto-refresh activé (toutes les 1 sec)');
+updateGlobalGoal();
+
+// ⚡ ACTUALISATION AUTOMATIQUE TOUTES LES 1 SECONDE
+// ZÉRO CACHE, ZÉRO INTERVENTION!
+const updateInterval = setInterval(updateGlobalGoal, 1000);
+
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => clearInterval(updateInterval));
+
+</script>
+</body>
+</html>
