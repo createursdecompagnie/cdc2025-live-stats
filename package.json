@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node streamlabel-server.js",
     "server": "node streamlabel-server.js",
+    "widget:auto": "node auto-update-widget.js",
     "sync": "node simple-sync.js",
     "sync:watch": "node simple-sync.js --watch",
     "push:auto": "node auto-push.js",
