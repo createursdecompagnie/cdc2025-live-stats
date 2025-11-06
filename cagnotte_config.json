@@ -1,18 +1,10 @@
 {
   "brut": 51,
-  "ajouts": 0,
-  "total": 51,
-  "lastModified": "2025-11-06T02:13:35.622Z",
+  "ajouts": 1050,
+  "total": 1101,
+  "lastModified": "2025-11-06T04:51:16.271Z",
   "sources": {
-    "streamlabel": {
-      "value": 51,
-      "file": "\\\\Legrandnas\\projets\\STREAM_CDC\\CDC2025\\DEV\\cdc2025-live-stats\\Streamlabels\\total_charity_donation_amount.txt",
-      "description": "Montant réel Streamlabel Charity"
-    },
-    "perso": {
-      "value": 0,
-      "file": "\\\\Legrandnas\\projets\\STREAM_CDC\\CDC2025\\DEV\\cdc2025-live-stats\\ajouts_perso.json",
-      "description": "Montant personnalisé ajouté"
-    }
+    "streamlabel": 51,
+    "perso": 1050
   }
 }
