@@ -9,7 +9,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6dd82db8-5497-4df5-ac3d-1da2d98406d5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 17
     },
     {
       "id": "40541580",
@@ -53,7 +53,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e76f43fd-8f41-47df-a3cf-a333d47d3bbc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 11
     },
     {
       "id": "71762061",
@@ -108,7 +108,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/40f68f8e-332d-4091-9a8f-a8e66e307082-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 1
+      "viewer_count": 2
     },
     {
       "id": "454434987",
@@ -141,7 +141,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e7b89bdd-14d3-4d34-8ac0-feb3e06d80e5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 1
     },
     {
       "id": "624201380",
@@ -184,8 +184,8 @@
         "display_name": "MidoGeek",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/265e18a5-20f0-45f9-badb-06ee7662de67-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 1
     },
     {
       "id": "118898203",
@@ -206,7 +206,7 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": false,
+      "is_live": true,
       "viewer_count": 0
     },
     {
@@ -229,7 +229,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 10
+      "viewer_count": 8
     },
     {
       "id": "205342156",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 33
+      "viewer_count": 36
     },
     {
       "id": "538688273",
@@ -250,8 +250,8 @@
         "display_name": "Aurorexpress",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 8
     },
     {
       "id": "61642471",
@@ -283,8 +283,8 @@
         "display_name": "Yunaleska",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 3
     },
     {
       "id": "405413203",
@@ -317,7 +317,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0ec4c1cf-6d27-496b-8770-a0b1646a7ad4-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 0
+      "viewer_count": 2
     },
     {
       "id": "768284594",
@@ -328,7 +328,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 11
+      "viewer_count": 19
     },
     {
       "id": "458949785",
@@ -338,8 +338,8 @@
         "display_name": "Hey_Lynn",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/7e0ee2fa-0ccb-422a-b5ba-cd3fa14c880a-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 6
     },
     {
       "id": "766279480",
@@ -361,12 +361,12 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 1
+      "viewer_count": 2
     }
   ],
   "stats": {
-    "live_count": 10,
-    "total_viewers": 85,
+    "live_count": 15,
+    "total_viewers": 117,
     "total_members": 33
   }
 }
