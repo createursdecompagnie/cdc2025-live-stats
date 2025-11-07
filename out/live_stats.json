@@ -9,7 +9,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6dd82db8-5497-4df5-ac3d-1da2d98406d5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 27
+      "viewer_count": 32
     },
     {
       "id": "40541580",
@@ -31,7 +31,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ec2c4640-a686-4d82-93d6-c6f47a79f49f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 1
     },
     {
       "id": "546766441",
@@ -53,7 +53,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e76f43fd-8f41-47df-a3cf-a333d47d3bbc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 4
+      "viewer_count": 5
     },
     {
       "id": "71762061",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 43
+      "viewer_count": 44
     },
     {
       "id": "538688273",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/7e0ee2fa-0ccb-422a-b5ba-cd3fa14c880a-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 19
+      "viewer_count": 38
     },
     {
       "id": "766279480",
@@ -366,7 +366,7 @@
   ],
   "stats": {
     "live_count": 17,
-    "total_viewers": 578,
+    "total_viewers": 603,
     "total_members": 33
   }
 }
