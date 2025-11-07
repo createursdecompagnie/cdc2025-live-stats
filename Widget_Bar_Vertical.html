@@ -129,15 +129,24 @@ updateClock();
 // Update global goal by fetching directly from cagnotte_config.json
 async function updateGlobalGoal() {
   try {
-    const configUrl = 'https://raw.githubusercontent.com/createursdecompagnie/cdc2025-live-stats/main/cagnotte_config.json';
+    // Prefer GitHub Pages copy (no CDN cache issues)
+    const configUrl = 'https://createursdecompagnie.github.io/cdc2025-live-stats/cagnotte_config.json';
     const res = await fetch(configUrl + '?t=' + Date.now());
-    if (res.ok) {
-      const data = await res.json();
-      if (data.amount !== undefined) {
-        const amount = fmt(data.amount) + ' €';
-        document.getElementById('global-amount').textContent = amount;
-      }
-    }
+    if (!res.ok) throw new Error('Config fetch failed: ' + res.status);
+    const config = await res.json();
+
+    const brut = parseFloat(config.brut) || 0;
+    const ajouts = parseFloat(config.ajouts) || 0;
+    const total = brut + ajouts;
+
+    const formatted = new Intl.NumberFormat('fr-FR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }).format(total) + ' €';
+
+    document.getElementById('global-amount').textContent = formatted;
+    // console.log for debugging
+    // console.log('✅ Global goal updated:', { brut, ajouts, total, formatted });
   } catch (err) {
     console.warn('Global goal fetch failed:', err);
     document.getElementById('global-amount').textContent = '0 €';
@@ -147,18 +156,23 @@ async function updateGlobalGoal() {
 // Update stats from live_stats.json
 async function updateStats() {
   try {
-    const res = await fetch(CFG.statsUrl + '?t=' + Date.now());
-    const data = await res.json();
-    
-    // Update viewers count
-    if (data.total_viewers !== undefined) {
-      document.getElementById('viewers-count').textContent = fmt(data.total_viewers);
-    }
-    
-    // Update live count - from members array
-    if (data.members && Array.isArray(data.members)) {
-      const liveCount = data.members.filter(m => m.is_live).length;
-      document.getElementById('live-count').textContent = fmt(liveCount) + ' Live';
+    const response = await fetch(CFG.statsUrl + '?t=' + Date.now());
+    const data = await response.json();
+    // If members array exists, use it for live/total and viewers
+    if (Array.isArray(data.members)) {
+      const live = data.members.filter(m => m.is_live).length;
+      const total = data.members.length;
+      const viewers = data.members.reduce((sum, m) => sum + (m.viewer_count || 0), 0);
+      document.getElementById('viewers-count').textContent = fmt(viewers);
+      document.getElementById('live-count').textContent = `${live}/${total}`;
+    } else {
+      // fallback to total_viewers/live_count if present
+      if (data.total_viewers !== undefined) {
+        document.getElementById('viewers-count').textContent = fmt(data.total_viewers);
+      }
+      if (data.live_count !== undefined) {
+        document.getElementById('live-count').textContent = `${data.live_count}`;
+      }
     }
   } catch (err) {
     console.warn('Failed to update stats:', err);
