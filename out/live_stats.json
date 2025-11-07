@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e76f43fd-8f41-47df-a3cf-a333d47d3bbc-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 2
     },
     {
       "id": "71762061",
@@ -97,7 +97,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 4
+      "viewer_count": 5
     },
     {
       "id": "95948501",
@@ -351,11 +351,22 @@
       },
       "is_live": false,
       "viewer_count": 0
+    },
+    {
+      "id": "88288188",
+      "user_data": {
+        "id": "88288188",
+        "login": "gamergentv",
+        "display_name": "GAMERGENtv",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
+      },
+      "is_live": true,
+      "viewer_count": 0
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 4,
-    "total_members": 32
+    "live_count": 3,
+    "total_viewers": 7,
+    "total_members": 33
   }
 }
