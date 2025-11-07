@@ -280,7 +280,7 @@ async function updateGlobalGoal() {
     
     // ✅ ÉTAPE 2: Si pas de serveur local, utiliser GitHub
     if (!config) {
-      const githubResponse = await fetch('https://cdn.jsdelivr.net/gh/createursdecompagnie/cdc2025-live-stats@main/cagnotte_config.json?t=' + Date.now() + '&_=' + Math.random());
+      const githubResponse = await fetch('https://createursdecompagnie.github.io/cdc2025-live-stats/cagnotte_config.json?t=' + Date.now());
       if (!githubResponse.ok) throw new Error('GitHub fetch failed: ' + githubResponse.status);
       config = await githubResponse.json();
       console.log('📡 Données de GitHub', config);
