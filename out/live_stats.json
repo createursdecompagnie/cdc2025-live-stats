@@ -9,7 +9,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6dd82db8-5497-4df5-ac3d-1da2d98406d5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 13
+      "viewer_count": 10
     },
     {
       "id": "40541580",
@@ -130,7 +130,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 11
+      "viewer_count": 8
     },
     {
       "id": "103569937",
@@ -141,7 +141,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e7b89bdd-14d3-4d34-8ac0-feb3e06d80e5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 3
+      "viewer_count": 1
     },
     {
       "id": "624201380",
@@ -152,7 +152,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 13
+      "viewer_count": 8
     },
     {
       "id": "658160635",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 275
+      "viewer_count": 285
     },
     {
       "id": "515342263",
@@ -229,7 +229,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 15
+      "viewer_count": 14
     },
     {
       "id": "205342156",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 37
+      "viewer_count": 35
     },
     {
       "id": "538688273",
@@ -251,7 +251,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 45
+      "viewer_count": 39
     },
     {
       "id": "61642471",
@@ -273,7 +273,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 21
+      "viewer_count": 23
     },
     {
       "id": "159857073",
@@ -284,7 +284,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 14
     },
     {
       "id": "405413203",
@@ -306,7 +306,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 13
+      "viewer_count": 11
     },
     {
       "id": "922542142",
@@ -317,7 +317,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0ec4c1cf-6d27-496b-8770-a0b1646a7ad4-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 13
     },
     {
       "id": "768284594",
@@ -328,7 +328,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 12
     },
     {
       "id": "458949785",
@@ -361,12 +361,12 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 1
     }
   ],
   "stats": {
     "live_count": 20,
-    "total_viewers": 514,
+    "total_viewers": 500,
     "total_members": 33
   }
 }
