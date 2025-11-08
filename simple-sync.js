@@ -38,16 +38,47 @@ function readStreamlabelAmount() {
     }
 
     let content = fs.readFileSync(STREAMLABEL_FILE, 'utf8').trim();
+    console.log(`📄 Contenu brut Streamlabel: "${content}"`);
     
-    // Nettoyer le format: enlever $, EUR, espaces, virgules
+    // Nettoyer: enlever $, EUR, espaces
     content = content
       .replace(/[$€EUR]/g, '')  // Enlever symboles monétaires
-      .replace(/,/g, '.')        // Remplacer virgules par points
       .trim();
     
-    const amount = parseFloat(content) || 0;
+    // ⚠️ PARSING INTELLIGENT DES NOMBRES
+    // Gérer: "5,159.55" (virgule=milliers, point=décimale)
+    //         "5.159,55" (point=milliers, virgule=décimale)
+    //         "5159.55" ou "5159,55"
     
-    console.log(`📊 Streamlabel: ${amount}€`);
+    const lastDot = content.lastIndexOf('.');
+    const lastComma = content.lastIndexOf(',');
+    
+    let parsed = 0;
+    
+    if (lastDot > lastComma) {
+      // Point est la décimale: "5,159.55" → enlever virgules
+      parsed = parseFloat(content.replace(/,/g, ''));
+      console.log(`   Format: 5,159.55 style (virgule=milliers) → ${parsed}`);
+    } else if (lastComma > lastDot) {
+      // Virgule est la décimale: "5.159,55" → remplacer
+      parsed = parseFloat(content.replace(/\./g, '').replace(',', '.'));
+      console.log(`   Format: 5.159,55 style (point=milliers) → ${parsed}`);
+    } else if (lastDot >= 0) {
+      // Seulement point
+      parsed = parseFloat(content);
+      console.log(`   Format: 5159.55 style → ${parsed}`);
+    } else if (lastComma >= 0) {
+      // Seulement virgule
+      parsed = parseFloat(content.replace(',', '.'));
+      console.log(`   Format: 5159,55 style → ${parsed}`);
+    } else {
+      // Seulement des chiffres
+      parsed = parseFloat(content);
+      console.log(`   Format: 5159 style → ${parsed}`);
+    }
+    
+    const amount = parsed || 0;
+    console.log(`📊 Streamlabel PARSED: ${amount}€`);
     return amount;
   } catch (error) {
     console.error('❌ Erreur lecture Streamlabel:', error.message);
@@ -114,8 +145,15 @@ function updateCagnotteConfig(streamlabAmount, ajoutsPerso) {
       newConfig.brut !== oldConfig.brut ||
       newConfig.ajouts !== oldConfig.ajouts;
 
-    // Sauvegarder
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf8');
+    // Sauvegarder - Utiliser fichier temporaire puis renommer pour éviter les locks NAS
+    const tempFile = CONFIG_FILE + '.tmp';
+    fs.writeFileSync(tempFile, JSON.stringify(newConfig, null, 2), 'utf8');
+    
+    // Renommer (atomique sur NAS)
+    if (fs.existsSync(CONFIG_FILE)) {
+      fs.unlinkSync(CONFIG_FILE);
+    }
+    fs.renameSync(tempFile, CONFIG_FILE);
 
     if (hasChanged) {
       console.log(`\n✨ CHANGEMENT DÉTECTÉ!`);

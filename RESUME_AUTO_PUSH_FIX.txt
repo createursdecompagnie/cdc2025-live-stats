@@ -1,0 +1,102 @@
+🔴 ERREUR BRANCHE MAC MINI - SOLUTION COMPLÈTE
+
+═══════════════════════════════════════════════════════════════════
+
+❌ PROBLÈME IDENTIFIÉ:
+   - Auto-push échoue sur Mac mini
+   - Message: "You are on another branch" ou "Not up-to-date"
+   - Le repo n'est pas synchronisé avec GitHub
+
+✅ CAUSE TROUVÉE:
+   - Le script ne faisait pas de `git fetch` avant le push
+   - Pas de vérification de branche
+   - Pas de `git pull` pour synchroniser
+
+═══════════════════════════════════════════════════════════════════
+
+🔧 SOLUTION APPLIQUÉE:
+
+1. auto-push-simple.js AMÉLIORÉ:
+   ✅ Vérifie qu'on est sur 'main'
+   ✅ git fetch origin (mettre à jour les infos)
+   ✅ Vérifie si local et remote divergent
+   ✅ Si divergence → git pull pour synchroniser
+   ✅ Puis commit + push en sécurité
+
+2. fix-git-repo.js CRÉÉ:
+   ✅ Synchronise complètement un repo cassé
+   ✅ Nettoie les changements orphelins
+   ✅ Configure le suivi de branche
+   ✅ Test complet du repo
+
+3. run-auto-push.sh AMÉLIORÉ:
+   ✅ Vérifie la branche avant de lancer
+   ✅ Lance fix-git-repo.js si besoin
+   ✅ Logs détaillés pour diagnostiquer
+
+═══════════════════════════════════════════════════════════════════
+
+📋 FICHIERS CRÉÉS:
+
+Scripts:
+  • auto-push-simple.js (amélioré)
+  • fix-git-repo.js (nouveau)
+  • run-auto-push.sh (amélioré)
+  • setup-git-mac.sh (existant)
+  • test-git-push.js (existant)
+
+Guides:
+  • SOLUTION_BRANCH_ERROR.md (solution rapide)
+  • QUICK_START.md (mise à jour)
+  • SOLUTION_FINALE.md (mise à jour)
+  • MAC_MINI_SETUP.md (existant)
+  • TROUBLESHOOT_MAC_PUSH.md (existant)
+
+═══════════════════════════════════════════════════════════════════
+
+🚀 UTILISATION SUR MAC MINI:
+
+PREMIÈRE FOIS (setup):
+  1. bash setup-git-mac.sh       # Configure SSH
+  2. node test-git-push.js       # Diagnostic
+  3. node fix-git-repo.js        # Synchroniser repo
+
+À CHAQUE REDÉMARRAGE:
+  bash run-auto-push.sh
+
+Ça affichera:
+  ✅ SSH GitHub: OK
+  ✅ Branche: main
+  ✅ Repo Git: Propre
+  🎬 DÉMARRAGE AUTO-PUSH
+
+═══════════════════════════════════════════════════════════════════
+
+📊 WORKFLOW AVANT/APRÈS:
+
+AVANT (❌ Bugué):
+  git add → git commit → git push
+  ❌ Erreur: "Not up-to-date"
+
+APRÈS (✅ Robuste):
+  Vérifier branche
+  ↓
+  git fetch (mettre à jour)
+  ↓
+  Si divergence → git pull
+  ↓
+  git add → git commit → git push
+  ✅ PUSH RÉUSSI
+
+═══════════════════════════════════════════════════════════════════
+
+🎯 RÉSUMÉ:
+
+L'auto-push sur Mac mini devrait maintenant fonctionner sans erreur
+de branche. Le script:
+- Vérifie que tout est à jour AVANT de pusher
+- Synchronise le repo si besoin
+- Logs détaillés pour voir ce qui se passe
+- Aucune limite de crédit (c'est du vrai git push)
+
+PROBLÈME RÉSOLU! 🎉
