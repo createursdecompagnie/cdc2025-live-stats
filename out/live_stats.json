@@ -9,7 +9,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6dd82db8-5497-4df5-ac3d-1da2d98406d5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 12
     },
     {
       "id": "40541580",
@@ -31,7 +31,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ec2c4640-a686-4d82-93d6-c6f47a79f49f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 4
+      "viewer_count": 2
     },
     {
       "id": "546766441",
@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 11
     },
     {
       "id": "158945723",
@@ -75,7 +75,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/60adb223-5950-4dcc-bde4-9d0fa0a541a9-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 7
+      "viewer_count": 3
     },
     {
       "id": "138566598",
@@ -97,7 +97,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 5
+      "viewer_count": 4
     },
     {
       "id": "95948501",
@@ -152,7 +152,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 3
+      "viewer_count": 7
     },
     {
       "id": "658160635",
@@ -174,7 +174,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e0a2cc5e-fda3-405c-a4ba-67d499f5b8a5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 3
+      "viewer_count": 4
     },
     {
       "id": "149299903",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 400
+      "viewer_count": 414
     },
     {
       "id": "515342263",
@@ -229,7 +229,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 14
+      "viewer_count": 13
     },
     {
       "id": "205342156",
@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 39
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -251,7 +251,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6b0a4b83-342c-413a-8505-3055b13c921b-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 40
+      "viewer_count": 37
     },
     {
       "id": "61642471",
@@ -273,7 +273,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 37
+      "viewer_count": 36
     },
     {
       "id": "159857073",
@@ -361,12 +361,12 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 0
+      "viewer_count": 1
     }
   ],
   "stats": {
-    "live_count": 16,
-    "total_viewers": 599,
+    "live_count": 15,
+    "total_viewers": 565,
     "total_members": 33
   }
 }
