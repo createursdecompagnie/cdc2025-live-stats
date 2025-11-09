@@ -9,7 +9,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6dd82db8-5497-4df5-ac3d-1da2d98406d5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 37
+      "viewer_count": 42
     },
     {
       "id": "40541580",
@@ -41,8 +41,8 @@
         "display_name": "soKyutie",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8e58be33-6b98-40b2-a972-51dee1aebfb1-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 11
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "158945723",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 48,
+    "live_count": 1,
+    "total_viewers": 42,
     "total_members": 33
   }
 }
