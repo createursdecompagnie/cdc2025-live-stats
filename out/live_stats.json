@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e76f43fd-8f41-47df-a3cf-a333d47d3bbc-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 8
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "71762061",
@@ -360,13 +360,13 @@
         "display_name": "GAMERGENtv",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 2
+      "is_live": false,
+      "viewer_count": 0
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 10,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 33
   }
 }
