@@ -96,8 +96,8 @@
         "display_name": "Buddakhiin",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/624f2e4b-2a78-47e5-aa3a-2f7dfb4b9a09-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 5
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "95948501",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 5,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 33
   }
 }
