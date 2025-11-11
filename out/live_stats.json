@@ -218,7 +218,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/beabc079-a200-48ad-b81b-d793e92b9f92-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 6
+      "viewer_count": 3
     },
     {
       "id": "487828823",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/94bd42ec-da61-4e85-bbdb-8771af097183-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 32
+      "viewer_count": 31
     },
     {
       "id": "538688273",
@@ -283,8 +283,8 @@
         "display_name": "Yunaleska",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 35
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "405413203",
@@ -328,7 +328,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/694c1d15-3cad-419a-a278-723f9d19c4cb-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 28
+      "viewer_count": 154
     },
     {
       "id": "458949785",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 5,
-    "total_viewers": 114,
+    "live_count": 4,
+    "total_viewers": 201,
     "total_members": 33
   }
 }
