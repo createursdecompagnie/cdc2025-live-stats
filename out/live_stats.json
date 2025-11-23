@@ -152,7 +152,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 15
+      "viewer_count": 19
     },
     {
       "id": "658160635",
@@ -316,8 +316,8 @@
         "display_name": "princesse_piche",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/0ec4c1cf-6d27-496b-8770-a0b1646a7ad4-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 12
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "768284594",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 37,
+    "live_count": 2,
+    "total_viewers": 29,
     "total_members": 33
   }
 }
