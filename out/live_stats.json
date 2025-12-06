@@ -151,8 +151,8 @@
         "display_name": "NX_Stormy",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 16
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "658160635",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 639
+      "viewer_count": 593
     },
     {
       "id": "515342263",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 659,
+    "live_count": 2,
+    "total_viewers": 597,
     "total_members": 33
   }
 }
