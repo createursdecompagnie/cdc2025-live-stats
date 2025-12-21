@@ -306,7 +306,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 13
+      "viewer_count": 9
     },
     {
       "id": "922542142",
@@ -366,7 +366,7 @@
   ],
   "stats": {
     "live_count": 1,
-    "total_viewers": 13,
+    "total_viewers": 9,
     "total_members": 33
   }
 }
