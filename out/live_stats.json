@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6f9014b7-d8c7-4856-9787-fecd84201a72-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 5
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "71762061",
@@ -173,8 +173,8 @@
         "display_name": "ExyTV",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e0a2cc5e-fda3-405c-a4ba-67d499f5b8a5-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 2
     },
     {
       "id": "149299903",
@@ -206,8 +206,8 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 262
     },
     {
       "id": "515342263",
@@ -360,13 +360,13 @@
         "display_name": "GAMERGENtv",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5488330a-8fc8-4569-94a8-f76832b65dd1-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 1
+      "is_live": false,
+      "viewer_count": 0
     }
   ],
   "stats": {
     "live_count": 2,
-    "total_viewers": 6,
+    "total_viewers": 264,
     "total_members": 33
   }
 }
