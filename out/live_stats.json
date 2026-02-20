@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 10
+      "viewer_count": 8
     },
     {
       "id": "158945723",
@@ -115,8 +115,8 @@
       "user_data": {
         "id": "454434987",
         "login": "nymphelya",
-        "display_name": "Nymphelya",
-        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/40508753-517b-4bab-88a3-b82b61a5ece1-profile_image-300x300.png"
+        "display_name": "NYMPHELYA",
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/89a58970-5222-4a4f-8b1b-be7e38e1402e-profile_image-300x300.png"
       },
       "is_live": false,
       "viewer_count": 0
@@ -174,7 +174,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e0a2cc5e-fda3-405c-a4ba-67d499f5b8a5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 6
+      "viewer_count": 7
     },
     {
       "id": "149299903",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 270
+      "viewer_count": 255
     },
     {
       "id": "515342263",
@@ -306,7 +306,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 6
+      "viewer_count": 7
     },
     {
       "id": "922542142",
@@ -366,7 +366,7 @@
   ],
   "stats": {
     "live_count": 4,
-    "total_viewers": 292,
+    "total_viewers": 277,
     "total_members": 33
   }
 }
