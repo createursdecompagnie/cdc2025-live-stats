@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 19
+      "viewer_count": 21
     },
     {
       "id": "158945723",
@@ -272,8 +272,8 @@
         "display_name": "NacaratTV",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 8
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "159857073",
@@ -317,7 +317,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8d35abfa-df8f-4409-b701-9676b18cc285-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 9
+      "viewer_count": 13
     },
     {
       "id": "768284594",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 36,
+    "live_count": 2,
+    "total_viewers": 34,
     "total_members": 33
   }
 }
