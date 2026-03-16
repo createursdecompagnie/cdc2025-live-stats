@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 8
+      "viewer_count": 12
     },
     {
       "id": "158945723",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 370
+      "viewer_count": 395
     },
     {
       "id": "515342263",
@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/06089dfe-73c8-49dd-812c-fc72346b5118-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 75
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -305,8 +305,8 @@
         "display_name": "Qentiko",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 10
     },
     {
       "id": "922542142",
@@ -366,7 +366,7 @@
   ],
   "stats": {
     "live_count": 3,
-    "total_viewers": 453,
+    "total_viewers": 417,
     "total_members": 33
   }
 }
