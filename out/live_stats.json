@@ -52,8 +52,8 @@
         "display_name": "RenegadesLive",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f6957efa-12b5-4185-83f2-003aaebe07f5-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 2
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "71762061",
@@ -218,7 +218,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/beabc079-a200-48ad-b81b-d793e92b9f92-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 4
     },
     {
       "id": "487828823",
@@ -365,7 +365,7 @@
     }
   ],
   "stats": {
-    "live_count": 3,
+    "live_count": 2,
     "total_viewers": 30,
     "total_members": 33
   }
