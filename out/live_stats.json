@@ -53,7 +53,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f6957efa-12b5-4185-83f2-003aaebe07f5-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 5
+      "viewer_count": 7
     },
     {
       "id": "71762061",
@@ -130,7 +130,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 18
+      "viewer_count": 21
     },
     {
       "id": "103569937",
@@ -250,8 +250,8 @@
         "display_name": "Aurorexpress",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e10da63d-d5e4-4421-ac66-4ef8cc01091a-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 32
     },
     {
       "id": "61642471",
@@ -317,7 +317,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8d35abfa-df8f-4409-b701-9676b18cc285-profile_image-300x300.jpeg"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 14
     },
     {
       "id": "768284594",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 35,
+    "live_count": 4,
+    "total_viewers": 74,
     "total_members": 33
   }
 }
