@@ -140,8 +140,8 @@
         "display_name": "PiikaShall",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e7b89bdd-14d3-4d34-8ac0-feb3e06d80e5-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 4
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "624201380",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 4,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 33
   }
 }
