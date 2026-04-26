@@ -86,7 +86,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/80288fed-bef0-4d84-acf0-1777feb8b478-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 11
+      "viewer_count": 7
     },
     {
       "id": "62305678",
@@ -261,8 +261,8 @@
         "display_name": "Le_Maty",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4d1a9875-e6a7-4f2e-8a66-39cd4154f152-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 2
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "652413685",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 13,
+    "live_count": 1,
+    "total_viewers": 7,
     "total_members": 33
   }
 }
