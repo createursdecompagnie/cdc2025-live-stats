@@ -107,8 +107,8 @@
         "display_name": "Misterkiva",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/40f68f8e-332d-4091-9a8f-a8e66e307082-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 1
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "454434987",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 2,
-    "total_viewers": 5,
+    "live_count": 1,
+    "total_viewers": 4,
     "total_members": 33
   }
 }
