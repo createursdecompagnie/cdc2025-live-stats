@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 3
+      "viewer_count": 9
     },
     {
       "id": "158945723",
@@ -85,8 +85,8 @@
         "display_name": "Shaellaa",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b4fa86d9-7fcd-41d6-87f1-8cc83e82403f-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 13
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "62305678",
@@ -108,7 +108,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/40f68f8e-332d-4091-9a8f-a8e66e307082-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 0
+      "viewer_count": 1
     },
     {
       "id": "454434987",
@@ -118,8 +118,8 @@
         "display_name": "NYMPHELYA",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/89a58970-5222-4a4f-8b1b-be7e38e1402e-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 17
     },
     {
       "id": "866393580",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 185
+      "viewer_count": 238
     },
     {
       "id": "515342263",
@@ -283,8 +283,8 @@
         "display_name": "Yunaleska",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 14
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "405413203",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 6,
-    "total_viewers": 221,
+    "live_count": 5,
+    "total_viewers": 271,
     "total_members": 33
   }
 }
