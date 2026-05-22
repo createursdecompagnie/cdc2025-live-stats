@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 8
+      "viewer_count": 7
     },
     {
       "id": "158945723",
@@ -86,7 +86,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b4fa86d9-7fcd-41d6-87f1-8cc83e82403f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 11
+      "viewer_count": 15
     },
     {
       "id": "62305678",
@@ -195,8 +195,8 @@
         "display_name": "Raivals_SiO2",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/ad8d968f-5719-4000-83cb-1a72dca65bd7-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 1
     },
     {
       "id": "86729677",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 227
+      "viewer_count": 237
     },
     {
       "id": "515342263",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 246,
+    "live_count": 4,
+    "total_viewers": 260,
     "total_members": 33
   }
 }
