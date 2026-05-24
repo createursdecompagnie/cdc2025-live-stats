@@ -86,7 +86,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b4fa86d9-7fcd-41d6-87f1-8cc83e82403f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 2
+      "viewer_count": 7
     },
     {
       "id": "62305678",
@@ -217,8 +217,8 @@
         "display_name": "mushlyn",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/beabc079-a200-48ad-b81b-d793e92b9f92-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 3
     },
     {
       "id": "487828823",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 2,
+    "live_count": 2,
+    "total_viewers": 10,
     "total_members": 33
   }
 }
