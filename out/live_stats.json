@@ -129,8 +129,8 @@
         "display_name": "MlleCkat",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 13
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "103569937",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f9ea45df-2a01-4d25-9f76-eb90be9df4a2-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 60
+      "viewer_count": 56
     },
     {
       "id": "538688273",
@@ -250,8 +250,8 @@
         "display_name": "Aurorexpress",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/e10da63d-d5e4-4421-ac66-4ef8cc01091a-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 57
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "61642471",
@@ -261,8 +261,8 @@
         "display_name": "Le_Maty",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/06d5bb7a-d7e4-4167-bf5d-ca682e16cca3-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 5
     },
     {
       "id": "652413685",
@@ -339,7 +339,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/7e0ee2fa-0ccb-422a-b5ba-cd3fa14c880a-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 56
+      "viewer_count": 37
     },
     {
       "id": "766279480",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 5,
-    "total_viewers": 190,
+    "live_count": 4,
+    "total_viewers": 102,
     "total_members": 33
   }
 }
