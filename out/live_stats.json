@@ -41,8 +41,8 @@
         "display_name": "soKyutie",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 11
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "158945723",
@@ -206,8 +206,8 @@
         "display_name": "FLaPiiX",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 150
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "515342263",
@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f9ea45df-2a01-4d25-9f76-eb90be9df4a2-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 69
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -281,7 +281,7 @@
         "id": "159857073",
         "login": "yunaleska",
         "display_name": "Yunaleska",
-        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3dc7e054-fa4f-4b1b-9d49-d5e049cb1e18-profile_image-300x300.png"
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2c34db5-c79b-4cdd-99ad-ee2676060240-profile_image-300x300.png"
       },
       "is_live": false,
       "viewer_count": 0
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 230,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 33
   }
 }
