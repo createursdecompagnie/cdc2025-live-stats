@@ -83,7 +83,7 @@
         "id": "138566598",
         "login": "shaellaa",
         "display_name": "Shaellaa",
-        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/b4fa86d9-7fcd-41d6-87f1-8cc83e82403f-profile_image-300x300.png"
+        "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/031ccdd9-b9ec-4a7b-9669-044732b3c3c8-profile_image-300x300.png"
       },
       "is_live": false,
       "viewer_count": 0
@@ -151,8 +151,8 @@
         "display_name": "NX_Stormy",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/4e43d254-a242-4bc9-9a38-edabd0097382-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 15
     },
     {
       "id": "658160635",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 0,
-    "total_viewers": 0,
+    "live_count": 1,
+    "total_viewers": 15,
     "total_members": 33
   }
 }
