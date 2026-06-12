@@ -42,7 +42,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f10e040c-6191-4fee-be12-116684eac580-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 6
+      "viewer_count": 16
     },
     {
       "id": "158945723",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 187
+      "viewer_count": 202
     },
     {
       "id": "515342263",
@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f9ea45df-2a01-4d25-9f76-eb90be9df4a2-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 48
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -273,7 +273,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/45f444a8-8d66-4276-bb5b-182eb245875d-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 12
+      "viewer_count": 18
     },
     {
       "id": "159857073",
@@ -294,8 +294,8 @@
         "display_name": "FlavienSR",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/8717394d-9cee-46ca-8c64-39314e232ced-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 3
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "106179685",
@@ -305,8 +305,8 @@
         "display_name": "Qentiko",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/9a8a4015-c827-4420-aeb0-25b9675e8138-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 2
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "922542142",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 6,
-    "total_viewers": 258,
+    "live_count": 3,
+    "total_viewers": 236,
     "total_members": 33
   }
 }
