@@ -129,8 +129,8 @@
         "display_name": "MlleCkat",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/2eafff81-56ff-467f-90db-252d20c636dc-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 11
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "103569937",
@@ -207,7 +207,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fa476540-f84c-42fd-8356-1ab0f66c071f-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 177
+      "viewer_count": 221
     },
     {
       "id": "515342263",
@@ -240,7 +240,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f9ea45df-2a01-4d25-9f76-eb90be9df4a2-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 65
+      "viewer_count": 68
     },
     {
       "id": "538688273",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 253,
+    "live_count": 2,
+    "total_viewers": 289,
     "total_members": 33
   }
 }
