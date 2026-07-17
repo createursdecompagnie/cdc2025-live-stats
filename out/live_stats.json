@@ -239,8 +239,8 @@
         "display_name": "EosCall__",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/f9ea45df-2a01-4d25-9f76-eb90be9df4a2-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 76
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "538688273",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 92,
+    "live_count": 2,
+    "total_viewers": 16,
     "total_members": 33
   }
 }
