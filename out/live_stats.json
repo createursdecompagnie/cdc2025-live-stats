@@ -195,8 +195,8 @@
         "display_name": "Raivals_SiO2",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/75b4cf7f-eceb-4e91-8a26-549427f4ad5f-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 1
     },
     {
       "id": "86729677",
@@ -283,8 +283,8 @@
         "display_name": "Yunaleska",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/c2c34db5-c79b-4cdd-99ad-ee2676060240-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 9
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "405413203",
@@ -366,7 +366,7 @@
   ],
   "stats": {
     "live_count": 2,
-    "total_viewers": 26,
+    "total_viewers": 18,
     "total_members": 33
   }
 }
