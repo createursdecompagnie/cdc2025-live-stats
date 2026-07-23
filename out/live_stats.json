@@ -85,8 +85,8 @@
         "display_name": "Shaellaa",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fe62b7ff-6d97-4076-ac19-730ac9c6018e-profile_image-300x300.png"
       },
-      "is_live": true,
-      "viewer_count": 6
+      "is_live": false,
+      "viewer_count": 0
     },
     {
       "id": "62305678",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 1,
-    "total_viewers": 6,
+    "live_count": 0,
+    "total_viewers": 0,
     "total_members": 33
   }
 }
