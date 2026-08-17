@@ -327,8 +327,8 @@
         "display_name": "Faylhee",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/d5224087-1d8b-4b21-a680-4908e2ca93a5-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 8
     },
     {
       "id": "458949785",
@@ -365,8 +365,8 @@
     }
   ],
   "stats": {
-    "live_count": 3,
-    "total_viewers": 36,
+    "live_count": 4,
+    "total_viewers": 44,
     "total_members": 33
   }
 }
