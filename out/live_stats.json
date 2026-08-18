@@ -195,8 +195,8 @@
         "display_name": "Raivals_SiO2",
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/75b4cf7f-eceb-4e91-8a26-549427f4ad5f-profile_image-300x300.png"
       },
-      "is_live": false,
-      "viewer_count": 0
+      "is_live": true,
+      "viewer_count": 1
     },
     {
       "id": "86729677",
@@ -229,7 +229,7 @@
         "profile_image_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/fbb4a83c-b39d-4ac7-9527-64767d4ac60b-profile_image-300x300.png"
       },
       "is_live": true,
-      "viewer_count": 10
+      "viewer_count": 9
     },
     {
       "id": "205342156",
@@ -365,7 +365,7 @@
     }
   ],
   "stats": {
-    "live_count": 2,
+    "live_count": 3,
     "total_viewers": 295,
     "total_members": 33
   }
